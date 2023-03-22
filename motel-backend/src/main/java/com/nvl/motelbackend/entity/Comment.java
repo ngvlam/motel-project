@@ -1,5 +1,6 @@
 package com.nvl.motelbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.*;
+import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -16,38 +18,30 @@ import java.util.*;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "post")
-public class Post {
+@Table(name = "comment")
+public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    @Column(nullable = false)
-    private String title;
-
+    @NotBlank
     private String content;
-
-    private boolean isApproved;
-
-    private boolean del;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private Date createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "post",
-            orphanRemoval = true)
-    private Set<Image> images = new HashSet<>();
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Date createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "post",
-            orphanRemoval = true)
-    private Set<Comment> comments = new HashSet<>();
+    private long rate;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

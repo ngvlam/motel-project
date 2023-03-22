@@ -9,6 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Data
 public class PostDTO {
@@ -27,4 +29,8 @@ public class PostDTO {
     private Date createdAt;
 
     private Date updatedAt;
+
+    private Set<CommentDTO> comments;
+
+    private Set<String> imageStrings;
 }
