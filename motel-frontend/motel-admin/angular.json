@@ -25,9 +25,23 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/css/feathericon.min.css",
+              "src/assets/plugins/morris/morris.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/jquery-3.5.1.min.js",
+              "src/assets/js/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/js/moment.min.js",
+              "src/assets/js/select2.min.js",
+              "src/assets/plugins/slimscroll/jquery.slimscroll.min.js",
+              "src/assets/plugins/raphael/raphael.min.js",
+              "src/assets/plugins/morris/morris.min.js",
+              "src/assets/js/chart.morris.js",
+              "src/assets/js/script.js"
+            ]
           },
           "configurations": {
             "production": {

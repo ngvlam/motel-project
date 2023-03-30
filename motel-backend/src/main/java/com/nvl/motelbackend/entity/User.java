@@ -19,13 +19,16 @@ import java.util.Set;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"email"})
+})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "full_name")
@@ -57,4 +60,13 @@ public class User {
             orphanRemoval = true)
     private Set<Post> comments = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {
+                CascadeType.PERSIST, CascadeType.MERGE
+            })
+    @JoinTable(name = "user_roles",
+                joinColumns = @JoinColumn(name = "user_id"),
+                inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 }

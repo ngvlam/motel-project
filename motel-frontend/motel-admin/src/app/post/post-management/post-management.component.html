@@ -1,0 +1,95 @@
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+           
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="mt-5">
+                        <h4 class="card-title float-left mt-2">Tất cả các phòng</h4> <a th:href="@{/room/them-phong}" class="btn btn-primary float-right veiwbutton">Thêm phòng</a> </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <form th:action="@{/room}">
+                    <div class="row formtype">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Nhập từ khóa</label>
+                                <input class="form-control" type="search" name="keyword" th:value="${keyword}"> </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Tìm kiếm</label>
+                                <button type="submit" class="btn btn-success btn-block mt-0 search_button"> Tìm kiếm </button>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label></label>
+                            <button type="button" class="btn btn-dark mt-2" onclick="clearFilter()">Trở lại</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table">
+                    <div class="card-body booking_card">
+                        <div class="table-responsive">
+                            <table class="datatable table table-stripped table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Loại phòng</th>
+                                        <th>Tầng</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hoạt động</th>
+                                        <th>Ghi chú</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="room: ${roomList}">
+                                        <td th:text="${room.id}"></td>
+                                        <td th:text="${room.roomCategory.name}"></td>
+                                        <td th:text="${room.floor}"></td>
+                                        <td th:if="${room.status == 1}" class="text-primary">Sẵn sàng <i class="fas fa-check"></i></td>
+                                        <td th:if="${room.status == 2}">Đang sử dụng <i class="fas fa-person-booth"></i></td>
+                                        <td th:if="${room.status == 3}">Đang sửa chữa <i class="fas fa-screwdriver"></i></td>
+                                        <td th:if="${room.active == true}">
+                                            <a th:href="@{'/room/' + ${room.id} + '/hoat-dong/false'}" class="text-success" title="Chuyển sang không cho sử dụng">Cho sử dụng</a>
+                                        </td>
+                                        <td th:if="${room.active == false}" class="text-danger">
+                                            <a th:href="@{'/room/' + ${room.id} + '/hoat-dong/true'}" class="text-danger" title="Chuyển sang cho sử dụng">Không cho sử dụng</a>
+                                        </td>
+                                        <td th:text="${room.note}"></td>
+                                        <td>
+                                            <div class="actions">
+                                                <a th:href="@{'room/sua/' + ${room.id}}" class="fas fa-edit fa-2x mr-2" style="color: #00bf6f" title="Sửa thông tin phòng này"></a>
+                                                <a th:onclick="'fillModal('+ ${room.id}+ ')'" data-toggle="modal" data-target="#delete_asset" class="fas fa-trash fa-2x mr-2" style="color: #0b2e13" title="Xóa phòng này"></a>
+                                                <form th:action="@{'room/xoa/' + ${room.id} }" th:hidden="true" th:id="'deleteForm' + ${room.id}"></form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="delete_asset" class="modal fade delete-modal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center"> <img th:src="@{/img/sent.png}" alt="" width="50" height="46">
+                    <h3 class="delete_class">Bạn chắc chắn muốn xóa phòng này?</h3>
+                    <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Hủy bỏ</a>
+                        <button type="submit" class="btn btn-danger btnConfirm">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
