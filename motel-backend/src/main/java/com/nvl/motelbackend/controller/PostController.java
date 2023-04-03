@@ -28,6 +28,21 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
+    @GetMapping("/approved/true")
+    public Page<PostDTO> getAllPostApproved (@PageableDefault(page = 0, size = 12) Pageable page) {
+        return postService.getAllPostByApproved(true, page);
+    }
+
+    @GetMapping("/approved/false")
+    public Page<PostDTO> getAllPostNotApproved (@PageableDefault(page = 0, size = 12) Pageable page) {
+        return postService.getAllPostByApproved(false, page);
+    }
+
+    @GetMapping("/user/{userId}")
+    public Page<PostDTO> getPostByUserId(@PathVariable long userId, @RequestParam int page) {
+        return postService.getPostByUserId(userId, page);
+    }
+
     @PostMapping
     public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO) {
         return new ResponseEntity<>(postService.createPost(postDTO), HttpStatus.CREATED);

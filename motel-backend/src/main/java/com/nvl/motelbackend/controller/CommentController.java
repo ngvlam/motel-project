@@ -11,12 +11,12 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/posts/{postId}/comments")
+@RequestMapping("/api")
 public class CommentController {
     @Autowired
     CommentService commentService;
 
-    @GetMapping()
+    @GetMapping("/comments/post/{postId}/")
     public Page<CommentDTO> getCommentByPostId(@PathVariable(value = "postId") Long postId, @RequestParam("page") int page) {
         return commentService.getCommentByPostId(postId, page);
     }

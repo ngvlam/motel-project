@@ -30,6 +30,10 @@ public class PostDTO {
 
     private Date updatedAt;
 
+    private UserDTO user;
+
+    private AccomodationDTO accomodation;
+    
     private Set<CommentDTO> comments;
 
     private Set<String> imageStrings;

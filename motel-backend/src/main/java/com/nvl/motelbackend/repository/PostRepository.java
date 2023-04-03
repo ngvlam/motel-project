@@ -1,8 +1,18 @@
 package com.nvl.motelbackend.repository;
 
 import com.nvl.motelbackend.entity.Post;
+import com.nvl.motelbackend.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface PostRepository extends JpaRepository<Post, Long> {
+    Page<Post> findByUser(User user, Pageable pageable);
+    Optional<Post> findPostById(Long id);
+
+    Page<Post> findAllByApprovedAndDel(boolean approved, boolean del, Pageable pageable);
+    Page<Post> findAllByApproved(boolean approved, Pageable pageable);
 
 }

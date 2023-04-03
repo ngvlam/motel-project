@@ -1,14 +1,23 @@
 package com.nvl.motelbackend.service.impl;
 
+import com.nvl.motelbackend.entity.ActionName;
 import com.nvl.motelbackend.entity.Post;
+import com.nvl.motelbackend.entity.User;
+import com.nvl.motelbackend.exception.MotelAPIException;
 import com.nvl.motelbackend.exception.ResourceNotFoundException;
 import com.nvl.motelbackend.model.PostDTO;
 import com.nvl.motelbackend.repository.PostRepository;
+import com.nvl.motelbackend.repository.UserRepository;
+import com.nvl.motelbackend.service.ActionService;
 import com.nvl.motelbackend.service.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +25,15 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ActionService actionService;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     private ModelMapper mapper;
@@ -27,6 +45,21 @@ public class PostServiceImpl implements PostService {
 
         return posts;
     }
+
+    @Override
+    public Page<PostDTO> getAllPostByApproved( boolean approved, Pageable page) {
+        Page<PostDTO> postDTOS;
+        if(approved) {
+            postDTOS = postRepository.findAllByApprovedAndDel(true, false, page)
+                    .map(this::mapToDTO);
+        }
+        else {
+            postDTOS = postRepository.findAllByApprovedAndDel(false, false, page)
+                    .map(this::mapToDTO);
+        }
+        return postDTOS;
+    }
+
 
     @Override
     public PostDTO createPost(PostDTO postDTO) {
@@ -43,7 +76,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO getPostById(long id) {
+    public Page<PostDTO> getPostByUserId(Long userId, int page) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+        return postRepository.findByUser(user, PageRequest.of(page, 10, Sort.by("createdAt").descending()))
+                .map(this::mapToDTO);
+    }
+
+    @Override
+    public Page<PostDTO> getPostByUserEmail(String email, Pageable page) {
+        return null;
+    }
+
+    @Override
+    public PostDTO getPostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         return mapToDTO(post);
     }
@@ -59,9 +104,35 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePostById(long id) {
+    public PostDTO hidePost(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        post.setDel(true);
+        Post hidePost = postRepository.save(post);
+        return mapToDTO(hidePost);
+    }
+
+    @Override
+    public void deletePostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         postRepository.delete(post);
+    }
+
+    @Override
+    public PostDTO approvePost(Long id, String usernameApproved, boolean isApprove) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        if (isApprove) {
+            User user = userRepository.findByEmail(usernameApproved).orElseThrow(() -> new MotelAPIException(HttpStatus.NOT_FOUND, "Không tìm thấy tài khoản: " + usernameApproved));
+            post.setApproved(true);
+            actionService.createAction(post, user, ActionName.APPROVE);
+        }
+        else {
+            User user = userRepository.findByEmail(usernameApproved).orElseThrow(() -> new MotelAPIException(HttpStatus.NOT_FOUND, "Không tìm thấy tài khoản: " + usernameApproved));
+            post.setApproved(false);
+            actionService.createAction(post, user, ActionName.BLOCK);
+        }
+
+        Post updatedPost = postRepository.save(post);
+        return mapToDTO(updatedPost);
     }
 
 
