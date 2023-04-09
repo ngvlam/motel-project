@@ -27,7 +27,10 @@ public class Post {
 
     private String content;
 
-    private boolean isApproved;
+    private boolean approved;
+
+    @Column(name = "not_approved")
+    private boolean notApproved;
 
     private boolean del;
 
@@ -48,6 +51,12 @@ public class Post {
             mappedBy = "post",
             orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL,
+            mappedBy = "post",
+            fetch = FetchType.LAZY,
+            optional = false)
+    private Accommodation accommodation;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

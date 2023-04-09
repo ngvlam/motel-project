@@ -1,10 +1,12 @@
 package com.nvl.motelbackend.controller;
 
+import com.nvl.motelbackend.entity.Post;
 import com.nvl.motelbackend.model.PostDTO;
 import com.nvl.motelbackend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +31,17 @@ public class PostController {
     }
 
     @GetMapping("/approved/true")
-    public Page<PostDTO> getAllPostApproved (@PageableDefault(page = 0, size = 12) Pageable page) {
+    public Page<PostDTO> getAllPostApproved (@PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page) {
         return postService.getAllPostByApproved(true, page);
     }
 
+    @GetMapping("/waiting")
+    public Page<PostDTO> getPostWaitingApprove(@PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page) {
+        return postService.getPostWaitingApprove(page);
+    }
+
     @GetMapping("/approved/false")
-    public Page<PostDTO> getAllPostNotApproved (@PageableDefault(page = 0, size = 12) Pageable page) {
+    public Page<PostDTO> getAllPostNotApproved (@PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page) {
         return postService.getAllPostByApproved(false, page);
     }
 
@@ -52,6 +59,11 @@ public class PostController {
     public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDTO, @PathVariable(name = "id") long id) {
         PostDTO postResponse = postService.updatePost(postDTO, id);
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/hide/{id}")
+    public ResponseEntity<PostDTO> hidePost(@PathVariable Long id) {
+        return ResponseEntity.ok(postService.hidePost(id));
     }
 
     @DeleteMapping("/{id}")

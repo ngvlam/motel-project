@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findByUser(User user, Pageable pageable);
     Optional<Post> findPostById(Long id);
+    Page<Post> findAllByApprovedAndNotApprovedAndDel(boolean approved, boolean notApproved, boolean del, Pageable pageable);
+    Page<Post> findAllByApprovedAndNotApproved(boolean approved, boolean notApproved, Pageable pageable);
 
     Page<Post> findAllByApprovedAndDel(boolean approved, boolean del, Pageable pageable);
     Page<Post> findAllByApproved(boolean approved, Pageable pageable);

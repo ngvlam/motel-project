@@ -8,6 +8,8 @@ public interface PostService {
     Page<PostDTO> getAllPost(Pageable page);
 
     Page<PostDTO> getAllPostByApproved(boolean approved, Pageable page);
+
+    Page<PostDTO> getPostWaitingApprove(Pageable page);
     PostDTO createPost(PostDTO postDTO);
 
     Page<PostDTO> getPostByUserId(Long userId, int page);
@@ -23,4 +25,6 @@ public interface PostService {
     void deletePostById(Long id);
 
     PostDTO approvePost(Long id, String usernameApproved, boolean isApprove);
+
+
 }

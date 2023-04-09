@@ -1,0 +1,31 @@
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+           
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="mt-5">
+                        <h4 class="card-title float-left mt-2">Danh sách các tin đăng</h4> <a th:href="@{/room/them-phong}" class="btn btn-primary float-right veiwbutton">Thêm bài đăng</a> </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-menu">
+            <button class="tab-button active tab-btn1" (click)="openTab($event, 'tab1')">Chờ duyệt</button>
+            <button class="tab-button tab-btn2" (click)="openTab($event, 'tab2')">Đã duyệt</button>
+            <button class="tab-button tab-btn3" (click)="openTab($event, 'tab3')">Đã từ chối</button>
+            <button class="tab-button tab-btn3" (click)="openTab($event, 'tab4')">Tất cả</button>
+          
+            <div id="tab1" class="tab-content">
+              <app-post-list [filterBy]="'WAITING'"></app-post-list>
+            </div>
+            <div id="tab2" class="tab-content">
+              <app-post-list [filterBy]="'APPROVED'"></app-post-list>
+            </div>
+            <div id="tab3" class="tab-content">
+              <app-post-list [filterBy]="'BLOCKED'"></app-post-list>
+            </div>
+            <div id="tab4" class="tab-content">
+              <app-post-list [filterBy]="'*'"></app-post-list>
+            </div>
+          </div>
+</div>

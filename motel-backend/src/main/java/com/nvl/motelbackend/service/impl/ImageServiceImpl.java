@@ -76,7 +76,7 @@ public class ImageServiceImpl implements ImageService {
         List<Image> images = imageRepository.findImageByPost(post);
         for (Image image : images)
             uri.add(ServletUriComponentsBuilder.fromCurrentContextPath()
-                            .path("/api/image")
+                            .path("/api/image/")
                             .path(image.getId())
                             .toUriString()
                     );

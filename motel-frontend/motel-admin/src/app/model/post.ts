@@ -5,10 +5,11 @@ export class Post {
     title?: string;
     content?: string;
     approved?: boolean;
-    createAt?: string;
+    notApproved?: boolean;
+    createdAt?: string;
     updatedAt?: string;
-    delete?: boolean;
+    del?: boolean;
     username?: string;
-    accomodation?: Accomodation;
-    imageStrings?: string[];
+    accommodation?: Accomodation;
+    imageStrings!: string[];
 } 

@@ -1,14 +1,17 @@
 package com.nvl.motelbackend.service.impl;
 
+import com.nvl.motelbackend.entity.Accommodation;
 import com.nvl.motelbackend.entity.ActionName;
 import com.nvl.motelbackend.entity.Post;
 import com.nvl.motelbackend.entity.User;
 import com.nvl.motelbackend.exception.MotelAPIException;
 import com.nvl.motelbackend.exception.ResourceNotFoundException;
+import com.nvl.motelbackend.model.AccommodationDTO;
 import com.nvl.motelbackend.model.PostDTO;
 import com.nvl.motelbackend.repository.PostRepository;
 import com.nvl.motelbackend.repository.UserRepository;
 import com.nvl.motelbackend.service.ActionService;
+import com.nvl.motelbackend.service.ImageService;
 import com.nvl.motelbackend.service.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -31,6 +36,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private ActionService actionService;
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
@@ -47,16 +55,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostDTO> getAllPostByApproved( boolean approved, Pageable page) {
+    public Page<PostDTO> getAllPostByApproved(boolean approved, Pageable page) {
         Page<PostDTO> postDTOS;
         if(approved) {
-            postDTOS = postRepository.findAllByApprovedAndDel(true, false, page)
+            postDTOS = postRepository.findAllByApprovedAndNotApprovedAndDel(true, false, false, page)
                     .map(this::mapToDTO);
         }
         else {
-            postDTOS = postRepository.findAllByApprovedAndDel(false, false, page)
+            postDTOS = postRepository.findAllByApprovedAndNotApproved(false, true, page)
                     .map(this::mapToDTO);
         }
+        return postDTOS;
+    }
+
+    @Override
+    public Page<PostDTO> getPostWaitingApprove(Pageable page) {
+        Page<PostDTO> postDTOS = postRepository.findAllByApprovedAndNotApproved(false, false, page)
+                .map(this::mapToDTO);
         return postDTOS;
     }
 
@@ -68,6 +83,11 @@ public class PostServiceImpl implements PostService {
         Post post = mapToEntity(postDTO);
         post.setDel(false);
         post.setApproved(false);
+        //Gán value cho accomodation
+        Accommodation accommodation = mapper.map(postDTO.getAccommodation(), Accommodation.class);
+        accommodation.setPost(post);
+        post.setAccommodation(accommodation);
+
         Post newPost = postRepository.save(post);
 
         //convert entity to DTO
@@ -123,11 +143,13 @@ public class PostServiceImpl implements PostService {
         if (isApprove) {
             User user = userRepository.findByEmail(usernameApproved).orElseThrow(() -> new MotelAPIException(HttpStatus.NOT_FOUND, "Không tìm thấy tài khoản: " + usernameApproved));
             post.setApproved(true);
+            post.setNotApproved(false);
             actionService.createAction(post, user, ActionName.APPROVE);
         }
         else {
             User user = userRepository.findByEmail(usernameApproved).orElseThrow(() -> new MotelAPIException(HttpStatus.NOT_FOUND, "Không tìm thấy tài khoản: " + usernameApproved));
             post.setApproved(false);
+            post.setNotApproved(true);
             actionService.createAction(post, user, ActionName.BLOCK);
         }
 
@@ -138,6 +160,10 @@ public class PostServiceImpl implements PostService {
 
     private PostDTO mapToDTO(Post post) {
         PostDTO postDTO = mapper.map(post, PostDTO.class);
+//        postDTO.getAccommodation().setCategoryId(post.getAccommodation().getCategory().);
+        postDTO.getAccommodation().setCategory(String.valueOf(post.getAccommodation().getCategory().getName()));
+        List<String> images = imageService.getImageByPostId(post.getId());
+        postDTO.setImageStrings(images);
         return postDTO;
     }
 

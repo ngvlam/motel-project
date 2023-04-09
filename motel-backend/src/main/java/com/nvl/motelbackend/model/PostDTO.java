@@ -3,8 +3,6 @@ package com.nvl.motelbackend.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -13,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostDTO {
     private Long id;
 
@@ -22,7 +22,8 @@ public class PostDTO {
 
     private String content;
 
-    private boolean isApproved;
+    private boolean approved;
+    private boolean notApproved;
 
     private boolean del;
 
@@ -32,9 +33,9 @@ public class PostDTO {
 
     private UserDTO user;
 
-    private AccomodationDTO accomodation;
+    private AccommodationDTO accommodation;
     
     private Set<CommentDTO> comments;
 
-    private Set<String> imageStrings;
+    private List<String> imageStrings;
 }
