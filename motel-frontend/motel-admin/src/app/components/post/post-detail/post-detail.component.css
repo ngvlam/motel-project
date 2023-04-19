@@ -1,0 +1,126 @@
+.ribbon-2 {
+    --f: 10px; /* control the folded part*/
+    --r: 15px; /* control the ribbon shape */
+    --t: 10px; /* the top offset */
+
+    position: absolute;
+    inset: var(--t) calc(-1*var(--f)) auto auto;
+    padding: 0 10px var(--f) calc(10px + var(--r));
+    clip-path: 
+      polygon(0 0,100% 0,100% calc(100% - var(--f)),calc(100% - var(--f)) 100%,
+        calc(100% - var(--f)) calc(100% - var(--f)),0 calc(100% - var(--f)),
+        var(--r) calc(50% - var(--f)/2));
+    color: #fff;
+    box-shadow: 0 calc(-1*var(--f)) 0 inset #0005;
+    z-index: 10;
+}
+
+.ribbon-2.ribbon-green {
+    background: rgba(114, 242, 70, 1);
+}
+
+.ribbon-2.ribbon-red {
+    background: #e84646;
+}
+
+.icon {
+    color: #009688;
+}
+
+.term {
+    color: #888;
+}
+
+.base-info {
+    border: 1px solid #F2F2F2;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #fff;
+    position: sticky;
+    top: 80px;
+}
+
+#post-img {
+    height: 300px;
+}
+
+#carouselExampleControls {
+    height: 300px;
+}
+
+.carousel-inner {
+    height: 100%;
+}
+
+.post-detail {
+    background-color: #fff;
+    border-radius: 8px;
+    position: relative;
+}
+
+.post-detail .content {
+    padding: 16px;
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+.post-tag {
+    font-size: 12px;
+    color: #009688;
+    border: 1px solid #009688;
+    padding: 4px;
+}
+
+.price-text {
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 5px;
+}
+
+.post-price {
+    border-top: 1px solid #F2F2F2;
+    border-bottom: 1px solid #F2F2F2;
+    padding: 20px 0;
+}
+
+.section {
+    margin-top: 40px;
+}
+
+.spec-item {
+    font-size: 14px;
+    border-top: 1px solid #F2F2F2;
+    border-bottom: 1px solid #F2F2F2;
+    padding: 10px;
+}
+
+.section-title {
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 500;
+    color: #2C2C2C;
+    display: block;
+    margin-bottom: 24px;
+}
+
+
+.spec-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+}
+
+.spec-title {
+    margin-left: 16px;
+    color: #2C2C2C;
+    font-weight: 500;
+    width: 140px;
+    display: inline-block;
+}
+
+.spec-value {
+    margin-bottom: 10px;
+}

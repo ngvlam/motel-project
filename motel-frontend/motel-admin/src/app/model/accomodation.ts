@@ -10,6 +10,6 @@ export class Accomodation {
     tv?: boolean
     price?: number
     status?: boolean
-    category?: string;
+    categoryId?: number;
     postId?: number;
 }

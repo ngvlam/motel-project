@@ -5,16 +5,27 @@
             <div class="row align-items-center">
                 <div class="col">
                     <div class="mt-5">
-                        <h4 class="card-title float-left mt-2">Danh sách các tin đăng</h4> <a th:href="@{/room/them-phong}" class="btn btn-primary float-right veiwbutton">Thêm bài đăng</a> </div>
+                        <h4 class="card-title float-left mt-2">Danh sách các tin đăng</h4> 
+                        <!-- <a th:href="@{/room/them-phong}" class="btn btn-primary float-right veiwbutton">Thêm bài đăng</a> -->
+                       </div>
                 </div>
             </div>
         </div>
         <div class="tab-menu">
-            <button class="tab-button active tab-btn1" (click)="openTab($event, 'tab1')">Chờ duyệt</button>
-            <button class="tab-button tab-btn2" (click)="openTab($event, 'tab2')">Đã duyệt</button>
-            <button class="tab-button tab-btn3" (click)="openTab($event, 'tab3')">Đã từ chối</button>
-            <button class="tab-button tab-btn3" (click)="openTab($event, 'tab4')">Tất cả</button>
-          
+          <div class="container">
+            <div class="row justify-content-between">
+              <div>
+                <button class="tab-button active tab-btn1" (click)="openTab($event, 'tab1')">Chờ duyệt</button>
+                <button class="tab-button tab-btn2" (click)="openTab($event, 'tab2')">Đã duyệt</button>
+                <button class="tab-button tab-btn3" (click)="openTab($event, 'tab3')">Đã từ chối</button>
+                <button class="tab-button tab-btn3" (click)="openTab($event, 'tab4')">Tất cả</button>
+               </div>
+              <div>
+               
+                
+              </div>
+             </div>
+          </div>
             <div id="tab1" class="tab-content">
               <app-post-list [filterBy]="'WAITING'"></app-post-list>
             </div>

@@ -27,14 +27,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "full_name")
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @NotBlank
+    @Column(name = "password", nullable = false)
     @Size(min = 6, max = 100)
     private String password;
 

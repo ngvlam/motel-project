@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -27,9 +28,11 @@ public class PostDTO {
 
     private boolean del;
 
-    private Date createdAt;
+    private int priority;
 
-    private Date updatedAt;
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     private UserDTO user;
 

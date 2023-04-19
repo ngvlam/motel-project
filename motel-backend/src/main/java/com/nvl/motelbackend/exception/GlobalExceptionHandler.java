@@ -26,10 +26,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(MotelAPIException.class)
-    public ResponseEntity<ErrorDetails> handleBlogAPIException(MotelAPIException exception,
+    public ResponseEntity<ErrorDetails> handleMotelAPIException(MotelAPIException exception,
                                                                         WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDetails, exception.getStatus());
     }
 
     //global exceptions

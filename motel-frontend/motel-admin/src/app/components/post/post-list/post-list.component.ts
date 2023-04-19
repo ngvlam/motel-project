@@ -26,7 +26,7 @@ export class PostListComponent implements OnInit{
   getData = this.postService.getAllPosts;
 
   constructor(private postService: PostService, private modalService: NgbModal, private modalConfig: NgbModalConfig) {
-    this.modalConfig.backdrop = false ;
+    this.modalConfig.backdrop = 'static' ;
     this.modalConfig.keyboard = false;
   }
 
@@ -100,6 +100,24 @@ export class PostListComponent implements OnInit{
       console.log(error);
     });
   }
-  
 
+  // filteredPost: Post[] = []
+  
+  // filterPostByCategory(categoryId: string) {
+  //   this.filteredPost = this.posts.filter(item => (categoryId == '' || item.accommodation?.categoryId === parseInt(categoryId)))
+  //   console.log(this.filteredPost)
+  // }
+
+  // categoryId: string = '';
+
+  // filterByCategory(arg: string, page: number) {
+  //   this.categoryId = arg;
+  //   console.log(arg)
+  //   this.getData = this.loadDataFilterCategoryId
+  //   this.loadData(page)
+  // }
+
+  // loadDataFilterCategoryId(page: number) {
+  //   return this.postService.getPostByCategory(this.categoryId, page);
+  // }
 }

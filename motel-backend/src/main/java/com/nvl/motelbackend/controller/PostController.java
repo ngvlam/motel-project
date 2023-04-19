@@ -15,58 +15,63 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api")
 public class PostController {
     @Autowired
     private PostService postService;
 
-    @GetMapping
+    @GetMapping("/posts")
     public Page<PostDTO> getAllPost(@PageableDefault(page = 0, size = 12) Pageable page) {
         return postService.getAllPost(page);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/posts/category/{categoryId}")
+    public Page<PostDTO> getAllPostByCategory(@PathVariable Integer categoryId, @PageableDefault(page = 0, size = 12) Pageable page) {
+        return postService.getAllPostByCategory(categoryId, page);
+    }
+
+    @GetMapping("/posts/{id}")
     public ResponseEntity<PostDTO> getPostById(@PathVariable(name = "id") long id) {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
-    @GetMapping("/approved/true")
+    @GetMapping("/posts/approved/true")
     public Page<PostDTO> getAllPostApproved (@PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page) {
         return postService.getAllPostByApproved(true, page);
     }
 
-    @GetMapping("/waiting")
-    public Page<PostDTO> getPostWaitingApprove(@PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page) {
+    @GetMapping("/posts/waiting")
+    public Page<PostDTO> getPostWaitingApprove(@PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.ASC) Pageable page) {
         return postService.getPostWaitingApprove(page);
     }
 
-    @GetMapping("/approved/false")
+    @GetMapping("/posts/approved/false")
     public Page<PostDTO> getAllPostNotApproved (@PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page) {
         return postService.getAllPostByApproved(false, page);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/posts/user/{userId}")
     public Page<PostDTO> getPostByUserId(@PathVariable long userId, @RequestParam int page) {
         return postService.getPostByUserId(userId, page);
     }
 
-    @PostMapping
+    @PostMapping("/posts")
     public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO) {
         return new ResponseEntity<>(postService.createPost(postDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/posts/{id}")
     public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDTO, @PathVariable(name = "id") long id) {
         PostDTO postResponse = postService.updatePost(postDTO, id);
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/hide/{id}")
+    @PutMapping("/posts/hide/{id}")
     public ResponseEntity<PostDTO> hidePost(@PathVariable Long id) {
         return ResponseEntity.ok(postService.hidePost(id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/posts/{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id) {
         postService.deletePostById(id);
         return new ResponseEntity<>("Đã xóa tin đăng thành công", HttpStatus.OK);

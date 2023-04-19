@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 public interface PostService {
     Page<PostDTO> getAllPost(Pageable page);
 
+    Page<PostDTO> getAllPostByCategory(Integer categoryId, Pageable pageable);
+
     Page<PostDTO> getAllPostByApproved(boolean approved, Pageable page);
 
     Page<PostDTO> getPostWaitingApprove(Pageable page);

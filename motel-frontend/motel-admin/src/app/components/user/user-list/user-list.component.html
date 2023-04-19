@@ -1,0 +1,168 @@
+<div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+</div>
+  
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="mt-5">
+                        <div class="d-flex justify-content-between">
+                            <h4 class="card-title float-left mt-2">Danh sách người dùng</h4>
+                            <div class="">
+                                <div class="search-container d-inline-block">
+                                    <input type="text" placeholder="Tìm kiếm" class="search-input" [(ngModel)]="searchText" name="searchText" (ngModelChange)="onSearchTextChange()">
+                                    <span class="search-icon" [ngClass]="{'hidden': searchText}"><i class="fa fa-search"></i></span>
+                                    <button class="clear-button" *ngIf="searchText" (click)="onClearButtonClick()"><i class="fa fa-times"></i></button>
+                                </div>
+                                <a routerLink="/users/add" class="btn btn-primary float-right veiwbutton ml-3">Thêm người dùng</a> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-lg-12">
+                <form th:action="@{/khach-hang}">
+                    <div class="row formtype">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Nhập từ khóa</label>
+                                <input class="form-control" type="search" name="keyword" th:value="${keyword}"> </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Tìm kiếm</label>
+                                <button type="submit" class="btn btn-success btn-block mt-0 search_button"> Tìm kiếm </button>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label></label>
+                            <button type="button" class="btn btn-dark mt-2" onclick="clearFilter()">Trở lại</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="checkbox-list">
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()">
+                                <label class="form-check-label">Chọn tất cả</label>
+                            </div>
+                            <div class="form-check form-check-inline" *ngFor="let item of accountOptions">
+                                <input type="checkbox" class="form-check-input" [(ngModel)]="item.checked" (ngModelChange)="updateSingleChecked()">
+                                <label class="form-check-label">{{item.label}}</label>
+                            </div>
+                        
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-stripped table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th (sort)="onSort($event)" appSort="email" [direction]="currentSort.column === 'email' ? currentSort.direction : ''">
+                                            Email
+                                            <!-- <i *ngIf="currentSort.column === 'email'"
+                                            [ngClass]="{'fa-solid fa-sort-up': currentSort.direction === 'asc',
+                                                        'fa-solid fa-sort-down': currentSort.direction === 'desc'}"></i> -->
+                                                        <i *ngIf="currentSort.column === 'email'" class="fa-solid fa-sort-{{currentSort.direction === 'asc' ? 'up' : currentSort.direction ==='desc' ? 'down' : ''}}"></i>
+                                        </th>
+                                        <th (sort)="onSort($event)" appSort="fullName" [direction]="currentSort.column === 'fullName' ? currentSort.direction : ''">
+                                            Tên đầy đủ
+                                            <!-- <i *ngIf="currentSort.column === 'fullName'"
+                                            [ngClass]="{'fa-solid fa-sort-up': currentSort.direction === 'asc',
+                                                        'fa-solid fa-sort-down': currentSort.direction === 'desc'}"></i> -->
+                                            <i *ngIf="currentSort.column === 'fullName'" class="fa-solid fa-sort-{{currentSort.direction === 'asc' ? 'up' : currentSort.direction ==='desc' ? 'down' : ''}}"></i>
+                                        </th>
+                                        <th>Số điện thoại</th>
+                                        <th (sort)="onSort($event)" appSort="block" [direction]="currentSort.column === 'block' ? currentSort.direction : ''">
+                                            Trạng thái
+                                            <i *ngIf="currentSort.column === 'block'" class="fa-solid fa-sort-{{currentSort.direction === 'asc' ? 'up' : currentSort.direction ==='desc' ? 'down' : ''}}"></i>
+                                        </th>
+                                        <th>
+                                            Loại tài khoản
+                                            
+                                        </th>
+                                        <th class="text-center">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <h3 *ngIf="page.content.length == 0" class="mt-4 ml-4 text-danger">Danh sách thành viên trống</h3>
+                                    <tr *ngFor="let user of page.content">
+                                        <td><a routerLink="/users/{{user.id}}/detail" title="Xem thông tin người dùng này">
+                                            <!-- <img width="40" height="40" style="border-radius: 50%;" [src]="avatar" alt=""> -->
+                                             {{user.email}}</a></td>
+                                        <td>{{user.fullName}}</td>
+                                        <td>{{user.phone}}</td>
+                                        <td *ngIf="user.block"><div class="tag block">Đã khóa</div></td>
+                                        <td *ngIf="!user.block"><div class="tag active">Hoạt động</div></td>
+                                        <td>{{ user?.roles?.length <= 0 ? ROLE_NAME['ROLE_USER'] : ROLE_NAME[user.roles[0]]}}</td>
+                                        <td>
+                                            <div class="actions text-center">
+                                                <button class="btn-action" routerLink="/users/{{user.id}}/detail/edit"><i class="fa-regular fa-pen-to-square" title="Sửa"></i></button>
+                                                <button class="btn-action" (click)="openConfirmationModal(user)">
+                                                    <i *ngIf="!user.block" class="fa-solid fa-lock text-danger" title="Khóa"></i>
+                                                    <i *ngIf="user.block" class="fa-solid fa-lock-open text-green" title="Mở khóa"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="user-pagination">
+                                <div class="row">
+                                    <div class="col-md-3 mt-3">
+                                        <span style="margin-left: 16px;">Tổng số bản ghi: <b>{{page.totalElements}}</b></span>
+                                    </div>
+                                    <div class="col-md-9 mt-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6" style="text-align: right; margin-bottom: 16px;">
+                                 
+                                                <select #mySelect class="recordPerPage" (change)="updatePageSize(mySelect.value)">
+                                                    <option value="5">5 bản ghi/trang</option>
+                                                    <option value="10" selected="true">10 bản ghi/trang</option>
+                                                    <option value="20">20 bản ghi/trang</option>
+                                                    <option value="30">30 bản ghi/trang</option>
+                                                    <option value="40">40 bản ghi/trang</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ngb-pagination class="" [(page)]="page.number" 
+                                                [pageSize]="page.size" 
+                                                [maxSize]="5"
+                                                [collectionSize]="page.totalElements" 
+                                                [boundaryLinks]="true"
+                                                (pageChange)="loadData($event)">
+
+                                                </ngb-pagination>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="delete_asset" class="modal fade delete-modal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center"> <img th:src="@{/img/sent.png}" alt="" width="50" height="46">
+                    <h3 class="delete_class">Bạn chắc chắn muốn xóa?</h3>
+                    <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Hủy</a>
+                        <button href="submit" class="btn btn-danger btnConfirm">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

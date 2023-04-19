@@ -9,7 +9,6 @@ import com.nvl.motelbackend.repository.ImageRepository;
 import com.nvl.motelbackend.repository.PostRepository;
 import com.nvl.motelbackend.service.ImageService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -24,13 +23,16 @@ import java.util.List;
 @Service
 public class ImageServiceImpl implements ImageService {
 
-    @Autowired
-    ImageRepository imageRepository;
+    private final ImageRepository imageRepository;
 
-    @Autowired
-    PostRepository postRepository;
+    private final PostRepository postRepository;
 
     ModelMapper mapper = new ModelMapper();
+
+    public ImageServiceImpl(ImageRepository imageRepository, PostRepository postRepository, ModelMapper mapper) {
+        this.imageRepository = imageRepository;
+        this.postRepository = postRepository;
+    }
 
     @Override
     public ImageDTO uploadFile(Long postId, MultipartFile file) {

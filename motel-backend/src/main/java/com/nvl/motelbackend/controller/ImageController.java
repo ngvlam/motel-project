@@ -32,7 +32,7 @@ public class ImageController {
         imageService.deleteAllImage(postId);
     }
 
-    @PostMapping("/uploadMultipleFiles/post/{idPost}")
+    @PostMapping("/uploadMultipleFiles/post/{postId}")
     public List<ImageDTO> uploadMultipleFiles(@PathVariable Long postId, @RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
                 .stream()
@@ -45,10 +45,10 @@ public class ImageController {
         return imageService.getImageDTOByPostId(postId);
     }
 
-    @GetMapping("/image/{fileId}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
+    @GetMapping("/image/{id}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String id) {
         // Load file from database
-        Image image = imageService.getImage(fileId);
+        Image image = imageService.getImage(id);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(image.getFileType()))

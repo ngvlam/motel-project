@@ -16,7 +16,7 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
-    @GetMapping("/comments/post/{postId}/")
+    @GetMapping("/posts/{postId}/comments")
     public Page<CommentDTO> getCommentByPostId(@PathVariable(value = "postId") Long postId, @RequestParam("page") int page) {
         return commentService.getCommentByPostId(postId, page);
     }

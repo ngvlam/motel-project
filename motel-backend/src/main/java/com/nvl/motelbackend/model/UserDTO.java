@@ -5,6 +5,8 @@ import lombok.Data;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -26,5 +28,5 @@ public class UserDTO {
     private String fileType;
 
     @Enumerated(EnumType.STRING)
-    private List<RoleName> role;
+    private List<RoleName> roles;
 }

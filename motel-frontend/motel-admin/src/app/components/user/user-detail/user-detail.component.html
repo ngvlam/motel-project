@@ -1,0 +1,76 @@
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="profile-nav col-md-3">
+                <div class="panel">
+                    <div class="user-heading round">
+                        <a href="#">
+                            <img [src]="avatar" alt="">
+                        </a>
+                        <h1>{{user.fullName}}</h1>
+                        <p>{{user.email}}</p>
+                        <b *ngIf="role == 'ROLE_USER'">Khách hàng</b>
+                        <b *ngIf="role == 'ROLE_MODERATOR'">Kiểm duyệt viên</b>
+                        <b *ngIf="role == 'ROLE_ADMIN'">Quản trị viên</b>
+                        <b *ngIf="user.block"><div class="btn-danger btn tag block">Đã bị khóa</div></b> 
+                    </div>
+          
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="#"  routerLink="/users/{{ user.id }}/detail/edit"> <i class="fa fa-edit"></i>Chỉnh sửa thông tin</a></li>
+                        <li *ngIf="!user.block"><a href="javascript:void(0)" (click)="openConfirmationModal(user.block)"> <i class="fa fa-lock"></i> Khóa tài khoản này</a></li> 
+                        <li *ngIf="user.block" ><a href="javascript:void(0)" (click)="openConfirmationModal(user.block)"> <i class="fa fa-unlock"></i>Mở Khóa tài khoản này</a></li> 
+                        <li><a routerLink="/users/{{user.id}}/detail/security"> <i class="fa fa-key"></i>Đổi mật khẩu hoặc thay đổi quyền</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="profile-info col-md-9">
+                <div class="content">
+                    <div *ngIf="role=='ROLE_USER'">
+                        <h5 class="pt-2 ml-2 text-center font-weight-bold">Danh sách bài đăng</h5>
+                    </div>
+                    <app-post-list *ngIf="role == 'ROLE_USER'" [filterBy]="id"></app-post-list>
+
+                    <div *ngIf="role != 'ROLE_USER'">
+                        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                            <li [ngbNavItem]="1">
+                                <button ngbNavLink>Hoạt động</button>
+                                <ng-template ngbNavContent>
+                                  <div class="actions">
+                                    <p class="alert alert-danger" *ngIf="actions.length <= 0">Tài khoản này hiện không có hoạt động nào!</p>
+                                    <div class="action" *ngFor="let action of actions">
+                                        <p>
+                                            <small *ngIf="action.action=='APPROVE'"> <span class="icon-timeline-green"><i class="fa-regular fa-circle"></i> </span>  {{ fomatDateTime(action.time)}}</small>
+                                            <small *ngIf="action.action=='CREATE'"> <span class="icon-timeline-blue"><i class="fa-regular fa-circle"></i></span>   {{ fomatDateTime(action.time)}}</small>
+                                            <small *ngIf="action.action=='BLOCK'"><span class="icon-timeline-red"><i class="fa-regular fa-circle"></i></span>   {{ fomatDateTime(action.time)}}</small>
+                                        </p>
+                                        <p class="ml-3"><b>{{ action.username }}</b>
+                                            <span *ngIf="action.action == 'CREATE'"> đã tạo một bài đăng </span>
+                                            <span *ngIf="action.action == 'APPROVE'"> đã duyệt bài đăng </span>
+                                            <span *ngIf="action.action == 'BLOCK'"> đã từ chối bài đăng </span>
+                                            <a href="javascript:void(0)" routerLink="/posts/{{ action.postId }}/detail">{{ action.postTitle }}</a>
+                                            <span *ngIf="action.action == 'CREATE'"> đang chờ kiểm duyệt</span>
+                                        </p>
+                                   </div>
+                                   <ng-template #more>
+                                    <a href="javascript:void(0)" (click)="loadAction(user.id)">Xem thêm...</a>
+                                  </ng-template>
+                                  </div>
+                                </ng-template>
+                            </li>
+                            <li [ngbNavItem]="2">
+                                <button ngbNavLink>Bài đăng</button>
+                                <ng-template ngbNavContent>
+                                    <app-post-list [filterBy]="id"></app-post-list>
+                                </ng-template>
+                            </li>
+                            
+                        </ul>
+                        
+                        <div [ngbNavOutlet]="nav" class=""></div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

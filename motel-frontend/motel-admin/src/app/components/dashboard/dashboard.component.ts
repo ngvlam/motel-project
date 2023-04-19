@@ -1,10 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Post } from 'src/app/model/post';
+import { PostService } from 'src/app/services/post.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
 
+export class DashboardComponent implements OnInit{
+
+  totalPost: number = 0;
+  totalApprovedPost: number = 0;
+  constructor(private postService: PostService,
+              private userService: UserService) {}
+
+  ngOnInit(): void {
+    this.getTotalPost()
+    this.getTotalApprovedPost();
+  }
+  
+  getTotalPost() {
+    this.postService.getAllPosts(1)
+    .subscribe({
+      next: data => this.totalPost = data.totalElements
+    })
+  }
+
+  getTotalApprovedPost() {
+    this.postService.getApprovedPosts(1)
+    .subscribe({
+      next: data => this.totalApprovedPost = data.totalElements
+    })
+  }
+
+  getTotalUser() {
+    
+  }
+
+  getTotalApprovedPostToday() {
+    
+  }
 }

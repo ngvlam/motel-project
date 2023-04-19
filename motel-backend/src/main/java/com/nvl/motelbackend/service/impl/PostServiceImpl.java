@@ -6,7 +6,6 @@ import com.nvl.motelbackend.entity.Post;
 import com.nvl.motelbackend.entity.User;
 import com.nvl.motelbackend.exception.MotelAPIException;
 import com.nvl.motelbackend.exception.ResourceNotFoundException;
-import com.nvl.motelbackend.model.AccommodationDTO;
 import com.nvl.motelbackend.model.PostDTO;
 import com.nvl.motelbackend.repository.PostRepository;
 import com.nvl.motelbackend.repository.UserRepository;
@@ -14,7 +13,6 @@ import com.nvl.motelbackend.service.ActionService;
 import com.nvl.motelbackend.service.ImageService;
 import com.nvl.motelbackend.service.PostService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,29 +26,37 @@ import java.util.List;
 @Service
 public class PostServiceImpl implements PostService {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ActionService actionService;
+    private final ActionService actionService;
 
-    @Autowired
-    private ImageService imageService;
+    private final ImageService imageService;
 
-    @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
-    @Autowired
-    private ModelMapper mapper;
+    ModelMapper mapper = new ModelMapper();
+
+    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, ActionService actionService, ImageService imageService, ApplicationEventPublisher applicationEventPublisher) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+        this.actionService = actionService;
+        this.imageService = imageService;
+        this.applicationEventPublisher = applicationEventPublisher;
+    }
 
     @Override
     public Page<PostDTO> getAllPost(Pageable page) {
-        Page<PostDTO> posts = postRepository.findAll(page)
+        Page<PostDTO> posts = postRepository.findAllByOrderByPriorityDesc(page)
                 .map(this::mapToDTO);
 
+        return posts;
+    }
+
+    @Override
+    public Page<PostDTO> getAllPostByCategory(Integer categoryId, Pageable pageable) {
+        Page<PostDTO> posts = postRepository.findAllByCategory(categoryId, pageable).map(this::mapToDTO);
         return posts;
     }
 
@@ -161,7 +167,7 @@ public class PostServiceImpl implements PostService {
     private PostDTO mapToDTO(Post post) {
         PostDTO postDTO = mapper.map(post, PostDTO.class);
 //        postDTO.getAccommodation().setCategoryId(post.getAccommodation().getCategory().);
-        postDTO.getAccommodation().setCategory(String.valueOf(post.getAccommodation().getCategory().getName()));
+//        postDTO.getAccommodation().setCategory(String.valueOf(post.getAccommodation().getCategory().getName()));
         List<String> images = imageService.getImageByPostId(post.getId());
         postDTO.setImageStrings(images);
         return postDTO;

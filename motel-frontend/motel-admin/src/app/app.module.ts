@@ -12,6 +12,20 @@ import { PostListComponent } from './components/post/post-list/post-list.compone
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { PostDetailComponent } from './components/post/post-detail/post-detail.component';
+import { FilterPostComponent } from './components/post/filter-post/filter-post.component';
+import { ToastrModule } from 'ngx-toastr';
+import { UserListComponent } from './components/user/user-list/user-list.component';
+import { UserDetailComponent } from './components/user/user-detail/user-detail.component';
+import { UserEditProfileComponent } from './components/user/user-edit-profile/user-edit-profile.component';
+import { UserCreateNewComponent } from './components/user/user-create-new/user-create-new.component';
+import { UserChangePassComponent } from './components/user/user-change-pass/user-change-pass.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SortDirective } from './directive/sort.directive';
+import { NgxFileDropModule } from 'ngx-file-drop';
+import { LoginComponent } from './components/fragments/login/login.component';
+import { LogoutComponent } from './components/fragments/logout/logout.component';
+import { ActivityComponent } from './components/activity/activity.component';
+import { ViolateComponent } from './components/violate/violate.component';
 
 @NgModule({
   declarations: [
@@ -23,13 +37,28 @@ import { PostDetailComponent } from './components/post/post-detail/post-detail.c
     PostListComponent,
     ConfirmationModalComponent,
     PostDetailComponent,
+    FilterPostComponent,
+    UserListComponent,
+    UserDetailComponent,
+    UserEditProfileComponent,
+    UserCreateNewComponent,
+    SortDirective,
+    UserChangePassComponent,
+    LoginComponent,
+    LogoutComponent,
+    ActivityComponent,
+    ViolateComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
-    NgbModule
+    FormsModule,
+    NgbModule,
+    NgxFileDropModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

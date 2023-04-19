@@ -6,7 +6,6 @@ import com.nvl.motelbackend.repository.CommentRepository;
 import com.nvl.motelbackend.repository.PostRepository;
 import com.nvl.motelbackend.service.CommentService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,12 +13,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CommentServiceImpl implements CommentService {
-    @Autowired
-    CommentRepository commentRepository;
-    @Autowired
-    PostRepository postRepository;
+
+    private final CommentRepository commentRepository;
+
+    private final PostRepository postRepository;
 
     ModelMapper mapper = new ModelMapper();
+
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository) {
+        this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
+    }
 
 
     @Override

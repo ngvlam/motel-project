@@ -1,5 +1,23 @@
+<div *ngIf="loading" class="loading">
+  <div class="spinner"></div>
+</div>
 <section style="background-color: #eee;">
     <div class="container py-5">
+      <!-- <div class="d-flex justify-content-end">
+        <div class="">
+          <span>Danh mục: </span>
+        <select #mySelect class="custom-select w-50 float-right" (change)="filterPostByCategory(mySelect.value)" >
+          <option value="">Tất cả</option>
+          <option value="1">Phòng trọ</option>
+          <option value="2">Tìm người ở ghép</option>
+          <option value="3">Nhà nguyên căn</option>
+          <option value="4">Chung cư, CCMN</option>
+        </select>
+        </div>
+      </div> -->
+      <div *ngIf="posts.length <= 0" class="alert alert-warning col-md-12" role="alert">
+        Không có bài đăng nào
+      </div>
       <div *ngFor="let post of posts" class="row justify-content-left mb-3">
         <div class="col-md-12 col-xl-12">
           <div class="card shadow-0 border rounded-3">
@@ -10,8 +28,8 @@
                     <div class="img-box">
                       <a href="javascript:void(0)" routerLink="/posts/{{ post.id }}/detail"><img [src]="post?.imageStrings && post.imageStrings.length > 0 ? post.imageStrings[0] : null" ></a>
                       <div *ngIf="!post.approved && !post.notApproved" class="tag wating"><span>Chờ duyệt <i class="fas fa-history"></i></span></div>
-                      <div *ngIf="post.approved && !post.notApproved" class="tag approved"><span>Đã duyệt <i class="fas fa-check-circle"></i></span></div>
-                      <div *ngIf="post.notApproved" class="tag reject"><span>Đã từ chối <i class="fas fa-times-circle"></i></span></div>
+                      <div *ngIf="post.approved && !post.notApproved" class="tag approved"><span>Đã duyệt <i class="fa-regular fa-circle-check"></i></span></div>
+                      <div *ngIf="post.notApproved" class="tag reject"><span>Đã từ chối <i class="fa-regular fa-circle-xmark"></i></span></div>
                     </div>
   
                     <a href="#!">
@@ -22,7 +40,7 @@
                   </div>
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-6">
-                  <h5>{{post.title}}</h5>
+                  <h5>{{post.title}} <span *ngIf="post.priority == 1"  class="post-tag"><small class="fas fa-medal"></small> Tin ưu tiên</span></h5>
                   
                   <div class="post-content">
                     <div class="container">
@@ -42,10 +60,10 @@
                         <div class="col-md-6">
                           <div class="mt-1 mb-0 text-muted small">
                             <p class="detail">Danh mục: 
-                              <span class="detail-content" *ngIf="post.accommodation?.category == 'PHONG_TRO'">Phòng trọ</span>
-                              <span class="detail-content" *ngIf="post.accommodation?.category == 'TIM_NGUOI_O_GHEP'" >Tìm người ở ghép</span>
-                              <span class="detail-content" *ngIf="post.accommodation?.category == 'NHA_NGUYEN_CAN'">Nhà nguyên căn</span>
-                              <span class="detail-content" *ngIf="post.accommodation?.category == 'CHUNG_CU'">Chung cư, ccmn</span>
+                              <span class="detail-content" *ngIf="post.accommodation?.categoryId == 1">Phòng trọ</span>
+                              <span class="detail-content" *ngIf="post.accommodation?.categoryId == 2" >Tìm người ở ghép</span>
+                              <span class="detail-content" *ngIf="post.accommodation?.categoryId == 3">Nhà nguyên căn</span>
+                              <span class="detail-content" *ngIf="post.accommodation?.categoryId == 4">Chung cư, ccmn</span>
                             </p> 
                           </div>
 
@@ -92,7 +110,6 @@
       [collectionSize]="page.totalElements" 
       [boundaryLinks]="true"
       (pageChange)="loadData($event)">
-
       </ngb-pagination>
     </div>
   </section>

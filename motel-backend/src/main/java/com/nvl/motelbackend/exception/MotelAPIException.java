@@ -17,6 +17,10 @@ public class MotelAPIException extends RuntimeException{
         this.message = message1;
     }
 
+    public HttpStatus getStatus() {
+        return status;
+    }
+
     @Override
     public String getMessage() {
         return message;

@@ -1,4 +1,4 @@
-<div class="header" th:fragment="header">
+<div class="header">
     <div class="header-left">
         <a href="/" class="logo"> <img src="assets/img/logo.png" width="100" height="100" alt="logo"> <span class="logoclass">TÌM PHÒNG TRỌ</span> </a>
         <a href="/" class="logo logo-small"> <img src="assets/img/logo.png" alt="Logo" width="30" height="30"> </a>
@@ -84,9 +84,9 @@
                 <a class="dropdown-item" href="profile.html">My Profile</a> <a class="dropdown-item" href="../../settings.html">Đổi mật khẩu</a>
                 <a class="dropdown-item" href="" id="logoutLink">Logout</a>
             </div>
-            <form th:action="@{/logout}" hidden method="post" name="logoutForm">
+            <!-- <form th:action="@{/logout}" hidden method="post" name="logoutForm">
                 <input type="submit">
-            </form>
+            </form> -->
         </li>
     </ul>
 </div>

@@ -32,5 +32,5 @@ public class AccommodationDTO {
 
     private Long postId;
 
-    private String category;
+    private Integer categoryId;
 }

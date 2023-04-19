@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Page } from '../model/page';
 import { Post } from '../model/post';
 import { environment } from 'src/environments/environment';
+import { Action } from '../model/action';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,13 @@ export class PostService {
   
   constructor(private http: HttpClient) { }
 
+  getActionsByUserId(page: number, id: number): Observable<Page<Action>> {
+    return this.http.get<Page<Action>>(`${this.apiServerUrl}/api/actions/user/${id}?page=${page}`);
+  }
+
   getPostsWithApprove(page: number, approved: boolean): Observable<Page<Post>> {
-    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/approved/${approved}?page=${page}`);
+    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/approved/${approved}?page=${page}`
+                                    );
   }
 
   getWaitingPosts = (page: number): Observable<Page<Post>> => {
@@ -32,12 +38,30 @@ export class PostService {
   };
 
 
-
   getAllPosts = (page: number): Observable<Page<Post>> => {
     return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts?page=${page}`);
   };
 
   getPostOfUser(userId: number, page: number): Observable<Page<Post>>{
-    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/post/user/${userId}?page=${page}`);
+    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/user/${userId}?page=${page}`);
+  }
+
+  getPostByCategory(categoryId: string, page: number) :Observable<Page<Post>> {
+    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/search?categoryId=${categoryId}&page=${page}`);
+
+  }
+
+  getPostById(id: number): Observable<Post> {
+    return this.http.get<Post>(`${this.apiServerUrl}/api/posts/${id}`);
+  }
+
+
+  blockPostById(id: number) : Observable<Post>{
+    return this.http.put<Post>(`/api/posts/${id}/approve/false`, null);
+  }
+
+  approvePostById(id: number) : Observable<Post>{
+    return this.http.put<Post>(`/api/posts/${id}/approve/true`, null);
   }
 }
+
