@@ -6,8 +6,11 @@ import com.nvl.motelbackend.entity.Post;
 import com.nvl.motelbackend.entity.User;
 import com.nvl.motelbackend.exception.MotelAPIException;
 import com.nvl.motelbackend.exception.ResourceNotFoundException;
+import com.nvl.motelbackend.model.AccommodationDTO;
 import com.nvl.motelbackend.model.PostDTO;
+import com.nvl.motelbackend.model.SearchDTO;
 import com.nvl.motelbackend.repository.PostRepository;
+import com.nvl.motelbackend.repository.PostSpecification;
 import com.nvl.motelbackend.repository.UserRepository;
 import com.nvl.motelbackend.service.ActionService;
 import com.nvl.motelbackend.service.ImageService;
@@ -18,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +52,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostDTO> getAllPost(Pageable page) {
-        Page<PostDTO> posts = postRepository.findAllByOrderByPriorityDesc(page)
+        Page<PostDTO> posts = postRepository.findAll(page)
                 .map(this::mapToDTO);
 
         return posts;
@@ -83,21 +87,27 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostDTO createPost(PostDTO postDTO) {
+    public PostDTO createPost(PostDTO postDTO, String name) {
+        User user = userRepository.findByEmail(name).orElseThrow(() -> new ResourceNotFoundException("User", "id", postDTO.getUser().getId()));
 
         // convert DTO to entity
         Post post = mapToEntity(postDTO);
         post.setDel(false);
         post.setApproved(false);
+        post.setNotApproved(false);
+        post.setUser(user);
         //Gán value cho accomodation
         Accommodation accommodation = mapper.map(postDTO.getAccommodation(), Accommodation.class);
         accommodation.setPost(post);
         post.setAccommodation(accommodation);
 
         Post newPost = postRepository.save(post);
+        actionService.createAction(post, user, ActionName.CREATE);
 
         //convert entity to DTO
         PostDTO postResponse = mapToDTO(newPost);
+        postResponse.setAccommodation(mapper.map(accommodation, AccommodationDTO.class));
+
         return postResponse;
     }
 
@@ -117,6 +127,14 @@ public class PostServiceImpl implements PostService {
     public PostDTO getPostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         return mapToDTO(post);
+    }
+
+    @Override
+    public Page<PostDTO> searchPost(SearchDTO searchRequest, Pageable page) {
+        Specification<Post> spec = new PostSpecification(searchRequest);
+        Page<PostDTO> posts = postRepository.findAll(spec, page)
+                .map(this::mapToDTO);
+        return posts;
     }
 
     @Override
@@ -146,6 +164,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO approvePost(Long id, String usernameApproved, boolean isApprove) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+
         if (isApprove) {
             User user = userRepository.findByEmail(usernameApproved).orElseThrow(() -> new MotelAPIException(HttpStatus.NOT_FOUND, "Không tìm thấy tài khoản: " + usernameApproved));
             post.setApproved(true);

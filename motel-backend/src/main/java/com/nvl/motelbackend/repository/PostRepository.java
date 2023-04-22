@@ -5,15 +5,16 @@ import com.nvl.motelbackend.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
     Page<Post> findByUser(User user, Pageable pageable);
 
-    Page<Post> findAllByOrderByPriorityDesc(Pageable pageable);
+    Page<Post> findAll(Pageable pageable);
 
     @Query("SELECT p from Post p where p.accommodation.category.id = ?1")
     Page<Post> findAllByCategory(Integer categoryId, Pageable pageable);

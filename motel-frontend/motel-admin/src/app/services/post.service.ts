@@ -21,12 +21,12 @@ export class PostService {
   }
 
   getPostsWithApprove(page: number, approved: boolean): Observable<Page<Post>> {
-    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/approved/${approved}?page=${page}`
+    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/approved/${approved}?page=${page}&sort=updatedAt,desc`
                                     );
   }
 
   getWaitingPosts = (page: number): Observable<Page<Post>> => {
-    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/waiting?page=${page}`);
+    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/waiting?page=${page}&sort=priority,desc&sort=updatedAt,asc`);
   };
 
   getBlockedPosts = (page: number): Observable<Page<Post>> => {
@@ -57,11 +57,11 @@ export class PostService {
 
 
   blockPostById(id: number) : Observable<Post>{
-    return this.http.put<Post>(`/api/posts/${id}/approve/false`, null);
+    return this.http.put<Post>(`${this.apiServerUrl}/api/posts/${id}/approve/false?auth=nvlam@example.com`, null);
   }
 
   approvePostById(id: number) : Observable<Post>{
-    return this.http.put<Post>(`/api/posts/${id}/approve/true`, null);
+    return this.http.put<Post>(`${this.apiServerUrl}/api/posts/${id}/approve/true?auth=nvlam@example.com`, null);
   }
 }
 

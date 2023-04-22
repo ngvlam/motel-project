@@ -4,6 +4,7 @@ import { Page } from 'src/app/model/page';
 import { Post } from 'src/app/model/post';
 import { PostService } from 'src/app/services/post.service';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
@@ -25,7 +26,8 @@ export class PostListComponent implements OnInit{
 
   getData = this.postService.getAllPosts;
 
-  constructor(private postService: PostService, private modalService: NgbModal, private modalConfig: NgbModalConfig) {
+  constructor(private postService: PostService, private modalService: NgbModal, private modalConfig: NgbModalConfig,
+    private toastr: ToastrService) {
     this.modalConfig.backdrop = 'static' ;
     this.modalConfig.keyboard = false;
   }
@@ -77,28 +79,63 @@ export class PostListComponent implements OnInit{
   }
 
 
-  openConfirmationApproveModal() {
+  openConfirmationApproveModal(postId:number) {
     const modalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.message = 'Bạn chắc chắn muốn duyệt bài viết này ngay';
     modalRef.result.then((result) => {
       if (result === 'confirm') {
-        // handle confirmation logic
+        this.approvePost(postId)
       }
     }).catch((error) => {
       console.log(error);
     });
   }
 
-  openConfirmationRejectModal() {
+  openConfirmationRejectModal(postId: number) {
     const modalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.message = 'Bạn chắc chắn muốn từ chối bài viết này ngay';
     modalRef.result.then((result) => {
       if (result === 'confirm') {
-        // handle confirmation logic
+        this.blockPost(postId)
       }
     }).catch((error) => {
       console.log(error);
     });
+  }
+
+  approvePost(postId: number) {
+    
+    this.postService.approvePostById(postId)
+      .subscribe( {
+        next: 
+        data => {
+          this.toastr.success(`Bài viết "${data.title}" đã được kiểm duyệt.`,'Duyệt bài' , {
+            timeOut: 3000,
+          });
+          this.loadData(this.page.number)
+        }, 
+      
+        error: err => {
+          console.log(err)
+        }
+      });
+  }
+
+  blockPost(postId: number) {
+    this.postService.blockPostById(postId)
+      .subscribe( {
+        next: 
+        data => {
+          this.toastr.success(`Bài viết "${data.title}" đã bị từ chối.`,'Duyệt bài' , {
+            timeOut: 3000,
+          });
+          this.loadData(this.page.number)
+        }, 
+      
+        error: err => {
+          console.log(err)
+        }
+      });
   }
 
   // filteredPost: Post[] = []

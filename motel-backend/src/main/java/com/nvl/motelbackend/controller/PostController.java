@@ -2,6 +2,7 @@ package com.nvl.motelbackend.controller;
 
 import com.nvl.motelbackend.entity.Post;
 import com.nvl.motelbackend.model.PostDTO;
+import com.nvl.motelbackend.model.SearchDTO;
 import com.nvl.motelbackend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,17 +37,17 @@ public class PostController {
     }
 
     @GetMapping("/posts/approved/true")
-    public Page<PostDTO> getAllPostApproved (@PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page) {
+    public Page<PostDTO> getAllPostApproved (@PageableDefault(page = 0, size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable page) {
         return postService.getAllPostByApproved(true, page);
     }
 
     @GetMapping("/posts/waiting")
-    public Page<PostDTO> getPostWaitingApprove(@PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.ASC) Pageable page) {
+    public Page<PostDTO> getPostWaitingApprove(@PageableDefault(page = 0, size = 10, sort = "updatedAt", direction = Sort.Direction.ASC) Pageable page) {
         return postService.getPostWaitingApprove(page);
     }
 
     @GetMapping("/posts/approved/false")
-    public Page<PostDTO> getAllPostNotApproved (@PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page) {
+    public Page<PostDTO> getAllPostNotApproved (@PageableDefault(page = 0, size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable page) {
         return postService.getAllPostByApproved(false, page);
     }
 
@@ -55,15 +56,27 @@ public class PostController {
         return postService.getPostByUserId(userId, page);
     }
 
+    @GetMapping("/posts/search")
+    public Page<PostDTO> searchPost(SearchDTO searchRequest, @PageableDefault(page = 0, size = 10) Pageable page){
+//        searchForm.setPriceStart(searchForm.getPriceStart()*1000000);
+//        searchForm.setPriceEnd(searchForm.getPriceEnd()*1000000);
+        return postService.searchPost(searchRequest, page);
+    }
+
     @PostMapping("/posts")
-    public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO) {
-        return new ResponseEntity<>(postService.createPost(postDTO), HttpStatus.CREATED);
+    public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO, @RequestParam String auth) {
+        return new ResponseEntity<>(postService.createPost(postDTO, auth), HttpStatus.CREATED);
     }
 
     @PutMapping("/posts/{id}")
     public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDTO, @PathVariable(name = "id") long id) {
         PostDTO postResponse = postService.updatePost(postDTO, id);
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/posts/{id}/approve/{bool}")
+    public PostDTO approvePost(@PathVariable Long id, @PathVariable boolean bool, @RequestParam String auth) {
+        return postService.approvePost(id, auth, bool);
     }
 
     @PutMapping("/posts/hide/{id}")

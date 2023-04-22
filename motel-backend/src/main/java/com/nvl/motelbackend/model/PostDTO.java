@@ -18,9 +18,13 @@ public class PostDTO {
     private Long id;
 
     @NotEmpty
-    @Size(min = 2, message = "Tiêu đề tin phải chứa 2 kí tự trở lên")
+    @Size(min = 10, message = "Tiêu đề phải chứa từ 10 kí tự trở lên")
+    @Size(max = 100, message = "Tiêu đề chỉ chứa tối đa 100 ký tự")
     private String title;
 
+    @NotEmpty
+    @Size(min = 10, message = "Nội dung phải chứa từ 10 kí tự trở lên")
+    @Size(max = 1000, message = "Nội dung chỉ chứa tối đa 1000 ký tự")
     private String content;
 
     private boolean approved;

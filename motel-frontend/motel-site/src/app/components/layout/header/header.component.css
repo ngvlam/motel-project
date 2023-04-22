@@ -3,6 +3,8 @@
     top:0;
     right: 0;
     left: 0;
+    background-color: #fff;
+    z-index: 999;
 }
 
 /* .header-box header {
@@ -10,12 +12,12 @@
 } */
 
 .nav-box {
-
+ 
 }
 
 .logo-img {
     height: 60px;
-    width: 100;
+    width: 100px;
 }
 
 .menu {
@@ -78,8 +80,4 @@
     height: 16px;
     background: #e5e5e5;
     margin: 15px 0;
-}
-
-.box-search {
-    border-top: 1px solid #F2F2F2;
 }

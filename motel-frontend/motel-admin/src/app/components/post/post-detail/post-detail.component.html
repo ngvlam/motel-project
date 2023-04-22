@@ -29,8 +29,8 @@
                     <div class="content">
                       <p class="card-title mt2">{{post.title }}   <span *ngIf="post.priority == 1"  class="post-tag"><small class="fas fa-medal"></small> Tin ưu tiên</span></p>
                       <div class="post-price and d-flex align-items-center">
-                        <span class="icon"><i class="fas fa-map-marker-alt"></i></span> <span style="margin-left: 5px;">{{post.accommodation?.address}}</span>
-                        <span class="ml-5 icon"><i class="fas fa-hand-holding-usd"></i></span> <span class="price-text"> {{post.accommodation?.price | number}} đ/tháng</span>
+                        <span class="icon"><i class="fas fa-map-marker-alt"></i></span> <span style="margin-left: 5px;">{{post.accommodation.address}}</span>
+                        <span class="ml-5 icon"><i class="fas fa-hand-holding-usd"></i></span> <span class="price-text"> {{post.accommodation.price | number}} đ/tháng</span>
                       </div>
                       <div class="section">
                         <span class="section-title">Đặc điểm</span>
@@ -39,7 +39,7 @@
                             <div class="spec-item">
                               <span class="spec-icon"><i class="fas fa-chart-area"></i></span>
                               <span class="spec-title">Diện tích</span>
-                              <span class="spec-value">{{post.accommodation?.acreage}} m<sup>2</sup></span>
+                              <span class="spec-value">{{post.accommodation.acreage}} m<sup>2</sup></span>
                             </div>
                           </div>
                           <div class="col-md-6">
@@ -99,13 +99,14 @@
                         <span class="section-title">Mô tả chi tiết</span>
                         <p>{{post.content}}</p>
                       </div>
+                      
                     </div>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="base-info text-center">
                     <div class=" d-flex justify-content-center">
-                      <button class="btn btn-outline-danger mr-2" [disabled]="disableBtnAction" *ngIf="!post.notApproved || post.approved">Từ chối tin</button>
+                      <button class="btn btn-outline-danger mr-2" [disabled]="disableBtnAction" (click)="blockPost()" *ngIf="!post.notApproved || post.approved">Từ chối tin</button>
                       <button class="btn btn-primary" [disabled]="disableBtnAction" *ngIf="!post.approved" (click)="approvePost()">Duyệt tin</button>
                     </div>
                     <div class="my-3 d-flex flex-column align-items-center">

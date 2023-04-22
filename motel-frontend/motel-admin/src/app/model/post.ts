@@ -2,8 +2,8 @@ import { Accomodation } from "./accomodation";
 import { User } from "./user";
 
 export class Post {
-    id?: number
-    title?: string;
+    id!: number
+    title!: string;
     content?: string;
     approved?: boolean;
     notApproved?: boolean;
@@ -13,6 +13,6 @@ export class Post {
     priority?: number;
 
     user?: User;
-    accommodation?: Accomodation;
+    accommodation!: Accomodation;
     imageStrings!: string[];
 } 

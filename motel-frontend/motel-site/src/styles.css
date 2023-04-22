@@ -2,6 +2,7 @@
     --red-color: #E03C31;
     --text-color: #2c2c2c;
     --grey-color: #999;
+    --select2-single-height: 32px;
 }
 
 ul{
@@ -15,4 +16,17 @@ a{
 body {
     font-family: "Lexend Regular", Roboto, Arial;
     font-size: 14px;
+}
+
+.main-wrapper {
+    
+}
+
+.invalid-input {
+    color: red;
+    font-size: 12px;
+}
+
+input.ng-touched.ng-invalid {
+    border: 1px solid red;
 }

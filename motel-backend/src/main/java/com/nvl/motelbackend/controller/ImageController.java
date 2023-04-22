@@ -22,17 +22,17 @@ public class ImageController {
     @Autowired
     private ImageServiceImpl imageService;
 
-    @PostMapping("/uploadImage/post/{postId}")
+    @PostMapping("/image/post/{postId}")
     public ImageDTO uploadFile(@PathVariable Long postId, @RequestParam("file") MultipartFile file) {
         return imageService.uploadFile(postId, file);
     }
 
-    @DeleteMapping("/deleteImage/post/{postId}")
+    @DeleteMapping("/image/post/{postId}")
     public void deleteFile(@PathVariable Long postId) {
         imageService.deleteAllImage(postId);
     }
 
-    @PostMapping("/uploadMultipleFiles/post/{postId}")
+    @PostMapping("/image/post/{postId}/multiple")
     public List<ImageDTO> uploadMultipleFiles(@PathVariable Long postId, @RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
                 .stream()
@@ -40,7 +40,7 @@ public class ImageController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/imageByte/post/{postId}")
+    @GetMapping("/image/post/{postId}")
     public List<ImageDTO> getImageDTOByIdPost(@PathVariable Long postId) {
         return imageService.getImageDTOByPostId(postId);
     }

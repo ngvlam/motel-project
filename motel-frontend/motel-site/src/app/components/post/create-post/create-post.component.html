@@ -1,0 +1,190 @@
+<div class="main-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <form [formGroup]="postFormGroup">
+                    <div class="form-section">
+                        <h2 class="title">Địa chỉ cho thuê</h2>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12">
+                                    <label for="" class="control-label">
+                                        Tỉnh/Thành
+                                        <span class="red_require">*</span>
+                                    </label>
+                                    <select2 
+                                    [data]="province"
+                                    (update)="getDistrict($event)"
+                                    placeholder="-- Tỉnh/thành--"
+                                    >
+                                    </select2>
+                                </div>
+                                <div class="col-sm-6 col-xs-12">
+                                    <label for="" class="control-label">
+                                        Quận/Huyện
+                                        <span class="red_require">*</span>
+                                    </label>
+                                    <select2 #myselect2
+                                    [data]="district"
+                                    (update)="getWard($event)"
+                                    placeholder="-- Quận/Huyện--"
+                                    >
+                                    </select2>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-sm-6 col-xs-12">
+                                    <label for="" class="control-label">
+                                        Phường/Xã
+                                        <span class="red_require">*</span>
+                                    </label>
+                                    <select2 
+                                    [data]="ward"
+                                    placeholder="-- Phường/Xã--"
+                                    (update)="updateWardToAddress($event)"
+                                    >
+                                    </select2>
+                                </div>
+                                <div class="col-sm-6 col-xs-12">
+                                    <label for="" class="control-label">
+                                        Số nhà, đường
+                                    </label>
+                                    <input type="text" class="form-input" [formControl]="streetInput" placeholder="Nhập đường">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 mt-3">
+                                <label for="" class="control-label">
+                                    Địa chỉ
+                                    <span class="red_require">*</span>
+                                </label>
+                                <input type="text" class="form-input"  formControlName="address" placeholder="Nhập địa chỉ và kéo điểm màu đỏ tới vị trí chính xác">
+                                <div *ngIf="address?.invalid && (address?.dirty || address?.touched)" class="invalid-input">         
+                                    <div *ngIf="address?.errors?.['required'] || address?.errors?.['notOnlyWhiteSpace']">
+                                        Vui lòng nhập địa chỉ
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="google-map mt-4">
+                                <google-map height="400px"
+                                        width="100%"
+                                        [center]="center"
+                                        [zoom]="zoom"
+                                        (mapClick)="addMarker($event)"
+                                        (mapMousemove)="move($event)">
+
+                                    <map-marker  
+                                    [options]="marker.options"
+                                    [position]="markerPosition"
+                                    (mapDragend)="onDragEnd($event)"
+                                    >
+                                    
+                                    </map-marker>    
+                                </google-map>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2 class="title">Thông tin bài viết</h2>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="" class="control-label">
+                                        Tiêu đề
+                                        <span class="red_require">*</span>
+                                    </label>
+                                    <textarea type="text" id="post-title" placeholder="VD: Cho thuê phòng trọ chính chủ tại Cầu Giấy" formControlName="title"></textarea>
+                                    <span class="description">Tối thiểu 10 ký tự, tối đa 99 ký tự</span>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-sm-12">
+                                    <label for="" class="control-label">
+                                        Nội dung bài viết
+                                        <span class="red_require">*</span>
+                                    </label>
+                                    <textarea type="text" id="post-content" placeholder="VD: Khu nhà có vị trí thuận lợi, gần công viên, gần trường học ..." formControlName="content"></textarea>
+                                    <span class="description">Tối thiểu 10 ký tự, tối đa 1000 ký tự</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="form-section">
+                        <h2 class="title">Thông tin phòng</h2>
+                        <div class="form-group" formGroupName="accommodation">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <label class="control-label">
+                                        Chuyên mục
+                                        <span class="red_require">*</span>
+                                    </label>
+                                    <select class="form-input" formControlName="categoryId">
+                                        <option value="1">Cho thuê phòng trọ</option>
+                                        <option value="2">Nhà nguyên căn</option>
+                                        <option value="3">Chung cư, CCMN</option>
+                                        <option value="4">Tìm người ở ghép</option>
+                                      </select>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-sm-6">
+                                    <label for="" class="control-label">
+                                        Mức giá
+                                        <span class="red_require">*</span>
+                                    </label>
+                                    
+                                    <input type="text" class="form-input" formControlName="price" placeholder="Nhập giá, VD: 3000000">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="" class="control-label">
+                                        Diện tích
+                                        <span class="red_require">*</span>
+                                    </label>
+                                    <input type="text" class="form-input" formControlName="acreage" placeholder="Nhập diện tích, VD: 20 m2 thì nhập 20">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <label class="control-label">
+                                    Tiện ích (Tùy chọn)
+                                </label>
+                                <div class="col-sm-6">
+
+                                    <div class="form-checkbox-group">
+                                        <div class="form-checkbox">
+                                            <input class="" type="checkbox" formControlName="parking"> Chỗ để xe
+                                        </div>
+                                        <div class="form-checkbox">
+                                            <input class="" type="checkbox" formControlName="airConditioner"> Điều hòa
+                                        </div>
+                                        <div class="form-checkbox">
+                                            <input class="" type="checkbox" formControlName="heater"> Bình nóng lạnh
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-checkbox-group">
+                                        <div class="form-checkbox">
+                                            <input class="" type="checkbox" formControlName="parking"> Internet
+                                        </div>
+                                        <div class="form-checkbox">
+                                            <input class="" type="checkbox" formControlName="tv"> TV
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="form-section">
+                        <h2 class="title">Hình ảnh</h2>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+    </div>
+</div>

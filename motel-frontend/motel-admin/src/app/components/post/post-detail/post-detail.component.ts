@@ -45,7 +45,7 @@ export class PostDetailComponent implements OnInit{
 
   approvePost() {
     this.disableBtnAction = true;
-    this.postService.approvePostById(this.post.id!)
+    this.postService.approvePostById(this.post.id)
       .subscribe( {
         next: 
         data => {
@@ -55,8 +55,28 @@ export class PostDetailComponent implements OnInit{
           this.router.navigateByUrl('/posts');
         }, 
       
-        error: () => {
+        error: err => {
           this.disableBtnAction = false;
+          console.log(err)
+        }
+      });
+  }
+
+  blockPost() {
+    this.disableBtnAction = true;
+    this.postService.blockPostById(this.post.id)
+      .subscribe( {
+        next: 
+        data => {
+          this.toastr.success(`Bài viết "${data.title}" đã bị từ chối.`,'Duyệt bài' , {
+            timeOut: 3000,
+          });
+          this.router.navigateByUrl('/posts');
+        }, 
+      
+        error: err => {
+          this.disableBtnAction = false;
+          console.log(err)
         }
       });
   }
