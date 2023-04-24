@@ -47,14 +47,32 @@ public class PostSpecification implements Specification<Post> {
             double centerLat = searchRequest.getXCoordinate();
             double centerLng = searchRequest.getYCoordinate();
 
-            //Calculate the distance
-            Expression<Double> latDiff = criteriaBuilder.diff(root.get("accommodation").get("xCoordinate"), centerLat);
-            Expression<Double> lngDiff = criteriaBuilder.diff(root.get("accommodation").get("yCoordinate"), centerLng);
-            Expression<Double> distance = criteriaBuilder.sqrt(criteriaBuilder.sum(criteriaBuilder.prod(latDiff, latDiff), criteriaBuilder.prod(lngDiff, lngDiff)));
+            double earthRadius = 6371; // kilometers average radius of the earth in km
+            double latInRadians = Math.toRadians(centerLat);
+            double lngInRadians = Math.toRadians(centerLng);
 
-            // Add the distance check to the list of predicates
-            predicates.add(criteriaBuilder.le(distance, radius));
+            double minLat = Math.toDegrees(latInRadians - radius / earthRadius);
+            double maxLat = Math.toDegrees(latInRadians + radius / earthRadius);
+            double minLng = Math.toDegrees(lngInRadians - radius / earthRadius / Math.cos(latInRadians));
+            double maxLng = Math.toDegrees(lngInRadians + radius / earthRadius / Math.cos(latInRadians));
+
+            Predicate latPredicate = criteriaBuilder.between(root.get("accommodation").get("xCoordinate"), minLat, maxLat);
+            Predicate lngPredicate = criteriaBuilder.between(root.get("accommodation").get("yCoordinate"), minLng, maxLng);
+
+            predicates.add(criteriaBuilder.and(latPredicate, lngPredicate));
+
+//            //Calculate the distance
+//            Expression<Double> latDiff = criteriaBuilder.diff(root.get("accommodation").get("xCoordinate"), centerLat);
+//            Expression<Double> lngDiff = criteriaBuilder.diff(root.get("accommodation").get("yCoordinate"), centerLng);
+//            Expression<Double> distance = criteriaBuilder.sqrt(criteriaBuilder.sum(criteriaBuilder.prod(latDiff, latDiff), criteriaBuilder.prod(lngDiff, lngDiff)));
+//
+//            // Add the distance check to the list of predicates
+//            predicates.add(criteriaBuilder.le(distance, radius));
         }
+
+        predicates.add(criteriaBuilder.equal(root.get("del"), false));
+        predicates.add(criteriaBuilder.equal(root.get("approved"), true));
+        predicates.add(criteriaBuilder.equal(root.get("notApproved"), false));
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
     }

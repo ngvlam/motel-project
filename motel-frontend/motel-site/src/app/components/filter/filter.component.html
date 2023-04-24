@@ -3,50 +3,53 @@
         <div class="row align-items-center mt-3">
             <div class="col-md-2">
                 <!-- <label for="">Chọn danh mục</label> -->
-                <select class="form-select">
-                    <option value="">Tất cả danh mục</option>
+                <select class="form-select" ngModel [ngModelOptions]="{standalone: true}" [(ngModel)]="searchForm.categoryId" >
+                    <option [ngValue]="undefined">Tất cả danh mục</option>
                     <option value="1">Cho thuê phòng trọ</option>
-                    <option value="accommodation.price,desc">Nhà nguyên căn</option>
-                    <option value="accommodation.acreage,asc">Chung cư, CCMN</option>
-                    <option value="accommodation.acreage,desc">Tìm người ở ghép</option>
+                    <option value="2">Nhà nguyên căn</option>
+                    <option value="3">Chung cư, CCMN</option>
+                    <option value="4">Tìm người ở ghép</option>
                 </select>
             </div>
             <div class="col-md-2">
                 <!-- <label for="">Chọn khu vực</label> -->
-                <select class="form-select">
-                    <option value="">Tất cả khu vực</option>
-                    <option value="1">Cầu Giấy</option>
-                    <option value="accommodation.price,desc">Bắc Từ Liêm</option>
-                    <option value="accommodation.acreage,asc">Hà Đông</option>
-                    <option value="accommodation.acreage,desc">Ba Đình</option>
+                <select class="form-select" ngModel [ngModelOptions]="{standalone: true}" [(ngModel)]="searchForm.address">
+                    <option [ngValue]="undefined">Tất cả khu vực</option>
+                    <option value="Cầu Giấy">Cầu Giấy</option>
+                    <option value="Bắc Từ Liêm">Bắc Từ Liêm</option>
+                    <option value="Nam Từ Liêm">Nam Từ Liêm</option>
+                    <option value="Ba Đình">Ba Đình</option>
                 </select>
             </div>
             <div class="col-md-2">
                 <!-- <label for="">Chọn khu vực</label> -->
-                <select class="form-select">
-                    <option value="">Mức giá</option>
+                <select class="form-select" ngModel [ngModelOptions]="{standalone: true}" [(ngModel)]="priceRange">
+                    <option [ngValue]="undefined">Mức giá</option>
                     <option value="1">Dưới 1 triệu</option>
-                    <option value="accommodation.price,desc">Từ 1 đến 3 triệu</option>
-                    <option value="accommodation.acreage,asc">Từ 3 đến 5 triệu</option>
-                    <option value="accommodation.acreage,desc">Từ 5 đến 10 triệu</option>
+                    <option value="2">Từ 1 đến 3 triệu</option>
+                    <option value="3">Từ 3 đến 5 triệu</option>
+                    <option value="4">Từ 5 đến 10 triệu</option>
+                    <option value="5">Từ 10 triệu trở lên</option>
                 </select>
             </div>
             <div class="col-md-2">
                 <!-- <label for="">Chọn khu vực</label> -->
-                <select class="form-select">
-                    <option value="">Diện tích</option>
+                <select class="form-select" ngModel [ngModelOptions]="{standalone: true}" [(ngModel)]="acreageRange">
+                    <option [ngValue]="undefined">Diện tích</option>
                     <option value="1">Dưới 20 m<sup>2</sup></option>
-                    <option value="accommodation.price,desc">Từ 20 m<sup>2</sup> đến 30 m<sup>2</sup></option>
-                    <option value="accommodation.acreage,asc">Từ 30 m<sup>2</sup> đến 50 m<sup>2</sup></option>
-                    <option value="accommodation.acreage,desc">Từ 50 m<sup>2</sup> đến 70 m<sup>2</sup></option>
+                    <option value="2">Từ 20 m<sup>2</sup> đến 30 m<sup>2</sup></option>
+                    <option value="3">Từ 30 m<sup>2</sup> đến 50 m<sup>2</sup></option>
+                    <option value="4">Từ 50 m<sup>2</sup> đến 70 m<sup>2</sup></option>
+                    <option value="5">Từ 70 m<sup>2</sup> trở lên</option>
                 </select>
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary" style="font-size: 14px;"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+                <button type="submit" class="btn btn-primary" style="font-size: 14px;"  (click)="navigateToSearchPage()"><i class="fa-duotone fa-filter-list"></i> Lọc</button>
             </div>
             <div class="col-md-2">
-                <button  class="btn btn-outline-primary" style="font-size: 14px;"><img src="assets/google-map-icon.png" width="14" height="14">  Tìm bằng Google Map</button>
+                <button  class="btn btn-outline-primary" style="font-size: 14px;" (click)="openSearchByMaps()"><img src="assets/google-map-icon.png" width="14" height="14">  Tìm bằng Google Map</button>
             </div>
         </div>
     </div>
 </form>
+<app-maps-search [isActive]="isModalActive" (closeModalEvent)="closeModal()"></app-maps-search>

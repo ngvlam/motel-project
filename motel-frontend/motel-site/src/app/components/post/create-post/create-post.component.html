@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <form [formGroup]="postFormGroup">
+                <form [formGroup]="postFormGroup" (ngSubmit)="onSubmit()">
                     <div class="form-section">
                         <h2 class="title">Địa chỉ cho thuê</h2>
                         <div class="form-group">
@@ -10,7 +10,6 @@
                                 <div class="col-sm-6 col-xs-12">
                                     <label for="" class="control-label">
                                         Tỉnh/Thành
-                                        <span class="red_require">*</span>
                                     </label>
                                     <select2 
                                     [data]="province"
@@ -22,7 +21,6 @@
                                 <div class="col-sm-6 col-xs-12">
                                     <label for="" class="control-label">
                                         Quận/Huyện
-                                        <span class="red_require">*</span>
                                     </label>
                                     <select2 #myselect2
                                     [data]="district"
@@ -36,7 +34,6 @@
                                 <div class="col-sm-6 col-xs-12">
                                     <label for="" class="control-label">
                                         Phường/Xã
-                                        <span class="red_require">*</span>
                                     </label>
                                     <select2 
                                     [data]="ward"
@@ -95,6 +92,14 @@
                                     </label>
                                     <textarea type="text" id="post-title" placeholder="VD: Cho thuê phòng trọ chính chủ tại Cầu Giấy" formControlName="title"></textarea>
                                     <span class="description">Tối thiểu 10 ký tự, tối đa 99 ký tự</span>
+                                    <div *ngIf="title?.invalid && (title?.dirty || title?.touched)" class="invalid-input">         
+                                        <div *ngIf="title?.errors?.['required'] || title?.errors?.['notOnlyWhiteSpace']">
+                                            Vui lòng nhập tiêu đề
+                                        </div>
+                                        <div *ngIf="title?.errors?.['minlength']">
+                                            Vui lòng nhập tối thiểu 10 ký tự
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -106,6 +111,14 @@
                                     </label>
                                     <textarea type="text" id="post-content" placeholder="VD: Khu nhà có vị trí thuận lợi, gần công viên, gần trường học ..." formControlName="content"></textarea>
                                     <span class="description">Tối thiểu 10 ký tự, tối đa 1000 ký tự</span>
+                                    <div *ngIf="content?.invalid && (content?.dirty || content?.touched)" class="invalid-input">         
+                                        <div *ngIf="content?.errors?.['required'] || content?.errors?.['notOnlyWhiteSpace']">
+                                            Vui lòng nhập nội dung bài viết
+                                        </div>
+                                        <div *ngIf="content?.errors?.['minlength']">
+                                            Vui lòng nhập tối thiểu 10 ký tự
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +138,30 @@
                                         <option value="2">Nhà nguyên căn</option>
                                         <option value="3">Chung cư, CCMN</option>
                                         <option value="4">Tìm người ở ghép</option>
-                                      </select>
+                                    </select>
+                                    <div *ngIf="categoryId?.invalid && (categoryId?.dirty || categoryId?.touched)" class="invalid-input">         
+                                        <div *ngIf="categoryId?.errors?.['required'] || categoryId?.errors?.['notOnlyWhiteSpace']">
+                                            Vui lòng chọn chuyên mục
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <label class="control-label">
+                                        Nhà vệ sinh
+                                        <span class="red_require">*</span>
+                                    </label>
+                                    <select class="form-input" formControlName="toilet">
+                                        <option value="KHEP_KIN">Khép kín</option>
+                                        <option value="CHUNG">Chung</option>
+                                        <option value="CHUA_XAC_DINH">Chưa xác định</option>
+                                    </select>
+                                    <div *ngIf="categoryId?.invalid && (categoryId?.dirty || categoryId?.touched)" class="invalid-input">         
+                                        <div *ngIf="categoryId?.errors?.['required'] || categoryId?.errors?.['notOnlyWhiteSpace']">
+                                            Vui lòng chọn chuyên mục
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -135,14 +171,24 @@
                                         <span class="red_require">*</span>
                                     </label>
                                     
-                                    <input type="text" class="form-input" formControlName="price" placeholder="Nhập giá, VD: 3000000">
+                                    <input type="text" appNumbersOnly class="form-input" formControlName="price" placeholder="Nhập giá, VD: 3000000">
+                                    <div *ngIf="price?.invalid && (price?.dirty || price?.touched)" class="invalid-input">         
+                                        <div *ngIf="price?.errors?.['required'] || price?.errors?.['notOnlyWhiteSpace']">
+                                            Vui lòng nhập giá cả
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="" class="control-label">
                                         Diện tích
                                         <span class="red_require">*</span>
                                     </label>
-                                    <input type="text" class="form-input" formControlName="acreage" placeholder="Nhập diện tích, VD: 20 m2 thì nhập 20">
+                                    <input type="text" appNumbersOnly class="form-input" formControlName="acreage" placeholder="Nhập diện tích, VD: 20 m2 thì nhập 20">
+                                    <div *ngIf="acreage?.invalid && (acreage?.dirty || acreage?.touched)" class="invalid-input">         
+                                        <div *ngIf="acreage?.errors?.['required'] || acreage?.errors?.['notOnlyWhiteSpace']">
+                                            Vui lòng nhập diện tích
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -150,7 +196,6 @@
                                     Tiện ích (Tùy chọn)
                                 </label>
                                 <div class="col-sm-6">
-
                                     <div class="form-checkbox-group">
                                         <div class="form-checkbox">
                                             <input class="" type="checkbox" formControlName="parking"> Chỗ để xe
@@ -166,7 +211,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-checkbox-group">
                                         <div class="form-checkbox">
-                                            <input class="" type="checkbox" formControlName="parking"> Internet
+                                            <input class="" type="checkbox" formControlName="internet"> Internet
                                         </div>
                                         <div class="form-checkbox">
                                             <input class="" type="checkbox" formControlName="tv"> TV
@@ -179,11 +224,51 @@
                 
                     <div class="form-section">
                         <h2 class="title">Hình ảnh</h2>
+                        <label for="" class="control-label">
+                            Chọn 1 hoặc nhiều hình ảnh
+                        </label>
+                        <div class="image-group d-flex">
+                            <div class="selected-files d-flex">
+                                <div class="selected-file me-2" *ngFor="let file of files; let i = index">
+                                    <img [src]="file.preview" alt="{{ file.name }}" width="100" height="120">
+                                    <div class="file-details">
+                                    <button class="btn btn-sm btn-outline-light" type="button" (click)="removeFile(i)">X</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="image-upload">
+                                <label for="file-input" class="label-select-img">
+                                    <i class="fa-solid fa-plus"></i>
+                                </label>
+                                <input id="file-input" type="file" formControlName="files" multiple (change)="onFileSelected($event)" accept="image/*" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="title">Chọn gói tin</h2>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn-submit" >
+                            Đăng tin
+                            <span *ngIf="showLoadding" class="spinner-border spinner-border-sm" role="status">
+                            </span>
+                        </button>
                     </div>
                 </form>
             </div>
             <div class="col-md-4">
-
+                <div class="instruction">
+                    <h2 class="title">Hướng dẫn đăng tin</h2>
+                    <ul style="list-style-type: disc">
+                        <li><strong>Thông tin có dấu <span class="red_require">*</span> là bắt buộc.</strong></li>
+                        <li><strong>Tiêu đề tin không dài quá 100 kí tự</strong></li>
+                        <li>Các bạn nên điền đầy đủ thông tin vào các mục để tin đăng có hiệu quả hơn.</li>
+                        <li>Để tăng độ tin cậy và tin rao được nhiều người quan tâm hơn, hãy sửa vị trí tin rao của bạn trên bản đồ bằng cách kéo icon tới đúng vị trí của tin rao.</li>
+                        <li>Tin đăng có hình ảnh rõ ràng sẽ được xem và gọi gấp nhiều lần so với tin rao không có ảnh. Hãy đăng ảnh để được giao dịch nhanh chóng!</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

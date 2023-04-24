@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, ElementRef, OnInit} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { GeocodingApiServiceService } from 'src/app/services/geocoding-api-service.service';
@@ -7,6 +7,11 @@ import { MapGeocoder } from '@angular/google-maps';
 import { ProvinceService } from 'src/app/services/province.service';
 import { MotelValidators } from 'src/app/validators/motel-site-validator';
 import { DecimalPipe } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { Post } from 'src/app/model/post';
+import { PostService } from 'src/app/services/post.service';
+import { ImageService } from 'src/app/services/image.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-post',
@@ -25,7 +30,6 @@ export class CreatePostComponent implements OnInit{
 
   marker = {
     position: {
-
     },
     options: {
       draggable: true
@@ -35,8 +39,8 @@ export class CreatePostComponent implements OnInit{
 
   display: any;
   center = {
-      lat: 20.9854595,
-      lng: 106.0463746
+      lat: 21.037376869189334,
+      lng: 105.77866948660191
   };
 
   markerPosition = {
@@ -75,19 +79,28 @@ export class CreatePostComponent implements OnInit{
   streetInput = new FormControl('');
 
   constructor(
+    private postService: PostService,
+    private imageService: ImageService,
     private geocodingApiService: GeocodingApiServiceService,
     private provinceService: ProvinceService,
+    private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private geocoder: MapGeocoder,
+    private router: Router,
+    private el: ElementRef,
     private decimalPipe: DecimalPipe,
     ) {
+
       this.postFormGroup = this.formBuilder.group({
         address: new FormControl('', [Validators.required, MotelValidators.notOnlyWhiteSpace]),
         title: new FormControl('', [Validators.required,
                                   Validators.minLength(10),
                                   Validators.maxLength(100),
                                   MotelValidators.notOnlyWhiteSpace]),
-        content: new FormControl(''),
+        content: new FormControl('', [Validators.required,
+                                Validators.minLength(10),
+                                Validators.maxLength(1000),
+                                MotelValidators.notOnlyWhiteSpace]),
         priority: new FormControl(''),
 
         user: this.formBuilder.group({
@@ -96,7 +109,7 @@ export class CreatePostComponent implements OnInit{
 
         accommodation: this.formBuilder.group({
           acreage: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
-          toilet: new FormControl(''),
+          toilet: new FormControl('', [Validators.required]),
           internet: new FormControl(''),
           parking: new FormControl(''),
           airConditioner: new FormControl(''),
@@ -106,7 +119,8 @@ export class CreatePostComponent implements OnInit{
           categoryId: new FormControl('', [Validators.required]),
           xCoordinate: new FormControl(''),
           yCoordinate: new FormControl('')
-        })
+        }),
+        files: new FormControl('')
       })
     }
 
@@ -206,16 +220,6 @@ export class CreatePostComponent implements OnInit{
     });
   }
 
-  // private commitAddress(selectedOption: { value: string; label: string; } | undefined) {
-  //   if (selectedOption) {
-  //     this.addressSelected = selectedOption.label + ", " + this.addressSelected;
-  //   }
-
-  //   this.postFormGroup.patchValue({
-  //     address: this.addressSelected
-  //   });
-  // }
-
   // Đưa lựa chọn phường, xã tới ô địa chỉ
   updateWardToAddress(event: any) {
     const selectedOption = this.ward.find((option) => option.value === event.value);
@@ -268,5 +272,150 @@ export class CreatePostComponent implements OnInit{
 
   get address() {
     return this.postFormGroup.get('address')
+  }
+
+  get title() {
+    return this.postFormGroup.get('title')
+  }
+
+  get content() {
+    return this.postFormGroup.get('content')
+  }
+
+  get price() {
+    return this.postFormGroup.get('accommodation.price')
+  }
+
+  get acreage() {
+    return this.postFormGroup.get('accommodation.acreage')
+  }
+
+  get categoryId() {
+    return this.postFormGroup.get('accommodation.categoryId')
+  }
+
+
+  // HANDLE SELECT FILE
+
+  files: any[] = [];
+
+
+  onFileSelected(event: any) {
+    const files = Array.from(event.target.files) as File[];
+    if (files.length === 0) {
+      return;
+    }
+
+    files.map(file => {
+      if(file.size <= 4*1024*1024) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.files.push({ name: file.name, preview: reader.result as string, file: file });
+        };
+        reader.readAsDataURL(file);
+      }
+      else {
+        this.toastr.warning('Vui lòng chọn ảnh nhỏ hơn 4MB', 'Cảnh báo', {
+          positionClass: 'toast-top-center'
+        });
+      }
+    });
+
+    // if (files.length !== files.length) {
+    //   alert('One or more files have a size greater than 4MB.'); // show an error message
+    // }
+
+    this.postFormGroup.patchValue({ files: this.files });
+  }
+
+  removeFile(index: number) {
+    this.files.splice(index, 1);
+    this.postFormGroup.patchValue({ files: this.files });
+  }
+
+  validateFileExtension(control: any) {
+    if (control.value) {
+      const file = control.value;
+      const fileExtension = file.name?.split('.').pop().toLowerCase();
+      const fileSize = file.size / 1024 / 1024; // convert bytes to megabytes
+      if (fileSize > 4) {
+        return { sizeExceeded: true };
+      }
+      if (fileExtension !== 'jpg' && fileExtension !== 'png') {
+        return { unsupportedFileType: true };
+      }
+    }
+    return null;
+  }
+
+  //END HANDLE SELECT FILES
+
+  // HANDLE SUBMIT FORM
+  disableSubmit = false;
+  showLoadding = false;
+  onSubmit() {
+    if (this.postFormGroup.invalid) {
+      this.postFormGroup.markAllAsTouched();
+      const invalidControl = this.el.nativeElement.querySelector('.ng-invalid');
+      invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center'});
+      this.toastr.warning('Vui lòng điền thông tin bắt buộc', 'Cảnh báo', {
+        positionClass: 'toast-top-center'
+      });
+    }
+    
+    else if(this.postFormGroup.get('files')?.value.length <= 0) {
+      this.toastr.warning('Vui lòng chọn ít nhất một ảnh', 'Cảnh báo', {
+        positionClass: 'toast-top-center'
+      });
+    }
+    else {
+      this.disableSubmit = true;
+      this.showLoadding = true;
+
+      const post: Post = {
+        title: this.postFormGroup.value.title,
+        content: this.postFormGroup.value.content,
+        accommodation: this.postFormGroup.controls['accommodation'].value,
+        imageStrings: []
+      }
+      post.accommodation.address = this.postFormGroup.value.address;
+      post.accommodation.xcoordinate = this.markerPosition.lat;
+      post.accommodation.ycoordinate = this.markerPosition.lng;
+
+      this.postService.createPost(post).subscribe({
+        next : data => {
+          this.addImageForPost(data.id!);
+        },
+
+        error: err => console.log(err)
+        }
+      );
+    }
+  }
+
+  addImageForPost(postId: number) {
+    if (postId != null) {
+      const formData = new FormData();
+      for (const image of this.postFormGroup.value.files) {
+        formData.append('files', image.file);
+      }
+      this.imageService.addImages(postId, formData).subscribe({
+        next: data => {
+          if(data) {
+            this.toastr.success('Tin được đăng thành công và chờ kiểm duyệt')
+            this.showLoadding = false;
+            this.toastr.info('Tự động chuyển trang sau 5s', '', {
+              positionClass: 'toast-top-center',
+              timeOut: 5000
+            })
+            setTimeout(() => {
+              this.router.navigate(['/home']);
+            }, 5000);
+          }
+        },
+        error: err => console.log(err)
+      })
+    }
+
   }
 }

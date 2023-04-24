@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class ActionServiceImpl implements ActionService {
     private final ActionRepository actionRepository;
@@ -24,8 +26,13 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Override
-    public void createAction(Post post, User user, ActionName approve) {
-
+    public void createAction(Post post, User user, ActionName actionName) {
+        Action action = new Action();
+        action.setPost(post);
+        action.setUser(user);
+        action.setAction(actionName);
+        action.setTime(LocalDateTime.now());
+        actionRepository.save(action);
     }
 
     @Override

@@ -13,12 +13,14 @@ export class DashboardComponent implements OnInit{
 
   totalPost: number = 0;
   totalApprovedPost: number = 0;
+  totalUser: number = 0;
   constructor(private postService: PostService,
               private userService: UserService) {}
 
   ngOnInit(): void {
     this.getTotalPost()
     this.getTotalApprovedPost();
+    this.getTotalUser()
   }
   
   getTotalPost() {
@@ -36,7 +38,13 @@ export class DashboardComponent implements OnInit{
   }
 
   getTotalUser() {
-    
+    let roles: string[] = []
+    roles.push('ROLE_USER')
+    roles.push('ROLE_MODERATOR')
+    roles.push('ROLE_ADMIN')
+    this.userService.getAllApproverAccounts(0, 5, '', roles).subscribe({
+      next: data => this.totalUser = data.totalElements
+    })
   }
 
   getTotalApprovedPostToday() {

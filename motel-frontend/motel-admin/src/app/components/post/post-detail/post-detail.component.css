@@ -40,18 +40,6 @@
     top: 80px;
 }
 
-#post-img {
-    height: 300px;
-}
-
-#carouselExampleControls {
-    height: 300px;
-}
-
-.carousel-inner {
-    height: 100%;
-}
-
 .post-detail {
     background-color: #fff;
     border-radius: 8px;
@@ -123,4 +111,27 @@
 
 .spec-value {
     margin-bottom: 10px;
+}
+
+#carouselExample {
+    height: 400px;
+    background-color: #ddd;
+}
+
+.carousel-item img {
+    margin: 0 auto;
+    height: 400px;
+}
+
+.carousel-inner {
+    height: 100%;
+    border-radius: 8px;
+}
+
+.carousel-control-next-icon {
+    background-color: #009688;
+}
+
+.carousel-control-prev-icon {
+    background-color: #009688;
 }

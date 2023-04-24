@@ -142,6 +142,11 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
+        post.setApproved(false);
+        post.setNotApproved(false);
+        Accommodation accommodation = mapper.map(postDto.getAccommodation(), Accommodation.class);
+        accommodation.setPost(post);
+        post.setAccommodation(accommodation);
 
         Post updatedPost = postRepository.save(post);
         return mapToDTO(updatedPost);

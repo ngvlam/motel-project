@@ -57,11 +57,11 @@ export class PostService {
 
 
   blockPostById(id: number) : Observable<Post>{
-    return this.http.put<Post>(`${this.apiServerUrl}/api/posts/${id}/approve/false?auth=nvlam@example.com`, null);
+    return this.http.put<Post>(`${this.apiServerUrl}/api/posts/${id}/approve/false?auth=daika88@gmail.com`, null);
   }
 
   approvePostById(id: number) : Observable<Post>{
-    return this.http.put<Post>(`${this.apiServerUrl}/api/posts/${id}/approve/true?auth=nvlam@example.com`, null);
+    return this.http.put<Post>(`${this.apiServerUrl}/api/posts/${id}/approve/true?auth=daika88@gmail.com`, null);
   }
 }
 

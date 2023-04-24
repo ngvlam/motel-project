@@ -20,6 +20,9 @@ import { FooterComponent } from './components/layout/footer/footer.component';
 import { Select2Module } from 'ng-select2-component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CommonModule } from '@angular/common';
+import { NumbersOnlyDirective } from './directives/onlynumber.directive';
+import { ToastrModule } from 'ngx-toastr';
+import { MapsSearchComponent } from './components/maps-search/maps-search.component';
 
 
 @NgModule({
@@ -32,7 +35,9 @@ import { CommonModule } from '@angular/common';
     HomeComponent,
     CreatePostComponent,
     ReportModalComponent,
-    FooterComponent
+    FooterComponent,
+    NumbersOnlyDirective,
+    MapsSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +52,8 @@ import { CommonModule } from '@angular/common';
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     GoogleMapsModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

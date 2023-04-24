@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Date;
@@ -49,5 +50,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put(fieldName, message);
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorDetails> handleMaxSizeException(MaxUploadSizeExceededException exc, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), "File must be less than 4MB", webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.EXPECTATION_FAILED);
     }
 }

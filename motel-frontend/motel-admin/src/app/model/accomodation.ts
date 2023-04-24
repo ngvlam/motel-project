@@ -12,4 +12,6 @@ export class Accomodation {
     status?: boolean
     categoryId?: number;
     postId?: number;
+    xcoordinate?: number;
+    ycoordinate?: number;
 }

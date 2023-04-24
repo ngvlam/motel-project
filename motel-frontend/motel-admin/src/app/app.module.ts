@@ -26,6 +26,7 @@ import { LoginComponent } from './components/fragments/login/login.component';
 import { LogoutComponent } from './components/fragments/logout/logout.component';
 import { ActivityComponent } from './components/activity/activity.component';
 import { ViolateComponent } from './components/violate/violate.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ViolateComponent } from './components/violate/violate.component';
     BrowserAnimationsModule,
     FormsModule,
     NgbModule,
+    GoogleMapsModule,
     NgxFileDropModule,
     ToastrModule.forRoot(),
   ],

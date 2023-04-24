@@ -17,8 +17,6 @@ export class HomeComponent implements OnInit{
 
   loading = false;
 
-  errorMessage: string = '';
-
   posts: Post[] = [];
 
   constructor(private postService: PostService,
@@ -36,11 +34,9 @@ export class HomeComponent implements OnInit{
       next: data => {
         this.page = data
         this.posts = data.content;
-        this.posts.map(item => (item.accommodation.price))
       },
       error: err => {
         console.log(err);
-        this.errorMessage = err.error.message;
       }
     })
   }

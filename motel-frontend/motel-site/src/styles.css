@@ -28,5 +28,15 @@ body {
 }
 
 input.ng-touched.ng-invalid {
-    border: 1px solid red;
+    border: 1px solid red !important;
+}
+
+
+textarea.ng-touched.ng-invalid {
+    border: 1px solid red !important;
+}
+
+select.ng-touched.ng-invalid {
+    border: 1px solid red !important;
+
 }

@@ -1,7 +1,7 @@
 export class Accomodation {
     id?: number;
-    acreage?: number;
-    address?: string;
+    acreage!: number;
+    address!: string;
     toilet?: string;
     internet?: boolean
     parking?: boolean
@@ -12,6 +12,6 @@ export class Accomodation {
     status?: boolean
     categoryId?: number;
     postId?: number;
-    xCoordinate?: number;
-    yCoordinate?: number;
+    xcoordinate?: number;
+    ycoordinate?: number;
 }

@@ -121,9 +121,22 @@
                     </div>
                     <div class="section">
                       <span class="section-title">Mô tả chi tiết</span>
-                      <p>{{post.content}}</p>
+                      <p class="post-des" [innerText]="post.content"></p>
                     </div>
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14896.602629703322!2d105.77034019999999!3d21.026657000000018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1682008499085!5m2!1svi!2s" height="350" style="width: 100%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <div class="google-map mt-4">
+                      <google-map height="400px"
+                              width="100%"
+                              [center]="center"
+                              [zoom]="zoom">
+
+                          <map-marker  
+                          [options]="marker.options"
+                          [position]="marker.position"
+                          >
+                          
+                          </map-marker>    
+                      </google-map>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -152,9 +165,9 @@
                     <span class="term">Danh mục: </span> 
                     <b>
                       <a href="" *ngIf="post.accommodation?.categoryId == 1">Phòng trọ</a>
-                      <a href="" *ngIf="post.accommodation?.categoryId == 2" >Tìm người ở ghép</a>
-                      <a href="" *ngIf="post.accommodation?.categoryId == 3">Nhà nguyên căn</a>
-                      <a href="" *ngIf="post.accommodation?.categoryId == 4">Chung cư, CCMN</a>
+                      <a href="" *ngIf="post.accommodation?.categoryId == 2">Nhà nguyên căn</a>
+                      <a href="" *ngIf="post.accommodation?.categoryId == 3">Chung cư, CCMN</a>
+                      <a href="" *ngIf="post.accommodation?.categoryId == 4">Tìm người ở ghép</a>
                     </b>
                   </div>
                 </div>

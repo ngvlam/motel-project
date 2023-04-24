@@ -18,8 +18,11 @@ public class Accommodation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private double acreage;
 
+    @Column(nullable = false)
     private String address;
 
 //    @Column(name = "electric_price")
@@ -39,6 +42,7 @@ public class Accommodation {
 
     private boolean tv;
 
+    @Column(nullable = false)
     private double price;
 
     private boolean status;
