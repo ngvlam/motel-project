@@ -5,6 +5,7 @@ import com.nvl.motelbackend.model.PostDTO;
 import com.nvl.motelbackend.model.SearchDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 
 public interface PostService {
     Page<PostDTO> getAllPost(Pageable page);
@@ -24,9 +25,9 @@ public interface PostService {
 
     Page<PostDTO> searchPost(SearchDTO searchRequest, Pageable page);
 
-    PostDTO updatePost(PostDTO postDto, long id);
+    PostDTO updatePost(PostDTO postDto, Long id, Authentication authentication);
 
-    PostDTO hidePost(Long id);
+    PostDTO hidePost(Long id, Authentication authentication);
 
     void deletePostById(Long id);
 

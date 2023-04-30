@@ -12,21 +12,21 @@ import { Action } from '../model/action';
 })
 export class PostService {
 
-  private apiServerUrl = environment.apiBaseUrl;
+  private apiUrl = '/api';
   
   constructor(private http: HttpClient) { }
 
   getActionsByUserId(page: number, id: number): Observable<Page<Action>> {
-    return this.http.get<Page<Action>>(`${this.apiServerUrl}/api/actions/user/${id}?page=${page}`);
+    return this.http.get<Page<Action>>(`${this.apiUrl}/actions/user/${id}?page=${page}`);
   }
 
   getPostsWithApprove(page: number, approved: boolean): Observable<Page<Post>> {
-    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/approved/${approved}?page=${page}&sort=updatedAt,desc`
+    return this.http.get<Page<Post>>(`${this.apiUrl}/posts/approved/${approved}?page=${page}&sort=updatedAt,desc`
                                     );
   }
 
   getWaitingPosts = (page: number): Observable<Page<Post>> => {
-    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/waiting?page=${page}&sort=priority,desc&sort=updatedAt,asc`);
+    return this.http.get<Page<Post>>(`${this.apiUrl}/posts/waiting?page=${page}&sort=priority,desc&sort=updatedAt,asc`);
   };
 
   getBlockedPosts = (page: number): Observable<Page<Post>> => {
@@ -39,29 +39,29 @@ export class PostService {
 
 
   getAllPosts = (page: number): Observable<Page<Post>> => {
-    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts?page=${page}`);
+    return this.http.get<Page<Post>>(`${this.apiUrl}/posts?page=${page}`);
   };
 
   getPostOfUser(userId: number, page: number): Observable<Page<Post>>{
-    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/user/${userId}?page=${page}`);
+    return this.http.get<Page<Post>>(`${this.apiUrl}/posts/user/${userId}?page=${page}`);
   }
 
   getPostByCategory(categoryId: string, page: number) :Observable<Page<Post>> {
-    return this.http.get<Page<Post>>(`${this.apiServerUrl}/api/posts/search?categoryId=${categoryId}&page=${page}`);
+    return this.http.get<Page<Post>>(`${this.apiUrl}/posts/search?categoryId=${categoryId}&page=${page}`);
 
   }
 
   getPostById(id: number): Observable<Post> {
-    return this.http.get<Post>(`${this.apiServerUrl}/api/posts/${id}`);
+    return this.http.get<Post>(`${this.apiUrl}/posts/${id}`);
   }
 
 
   blockPostById(id: number) : Observable<Post>{
-    return this.http.put<Post>(`${this.apiServerUrl}/api/posts/${id}/approve/false?auth=daika88@gmail.com`, null);
+    return this.http.put<Post>(`${this.apiUrl}/posts/${id}/approve/false`, null);
   }
 
   approvePostById(id: number) : Observable<Post>{
-    return this.http.put<Post>(`${this.apiServerUrl}/api/posts/${id}/approve/true?auth=daika88@gmail.com`, null);
+    return this.http.put<Post>(`${this.apiUrl}/posts/${id}/approve/true`, null);
   }
 }
 

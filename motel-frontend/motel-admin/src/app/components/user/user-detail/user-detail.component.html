@@ -1,12 +1,11 @@
+
 <div class="page-wrapper">
     <div class="content container-fluid">
         <div class="row">
             <div class="profile-nav col-md-3">
                 <div class="panel">
                     <div class="user-heading round">
-                        <a href="#">
-                            <img [src]="avatar" alt="">
-                        </a>
+                        <img [src]="avatar" alt="Ảnh đại diện">
                         <h1>{{user.fullName}}</h1>
                         <p>{{user.email}}</p>
                         <b *ngIf="role == 'ROLE_USER'">Khách hàng</b>

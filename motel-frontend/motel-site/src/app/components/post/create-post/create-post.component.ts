@@ -12,6 +12,7 @@ import { Post } from 'src/app/model/post';
 import { PostService } from 'src/app/services/post.service';
 import { ImageService } from 'src/app/services/image.service';
 import { Router } from '@angular/router';
+import { ConfirmationModalService } from 'src/app/services/confirmation-modal.service';
 
 @Component({
   selector: 'app-create-post',
@@ -88,6 +89,7 @@ export class CreatePostComponent implements OnInit{
     private geocoder: MapGeocoder,
     private router: Router,
     private el: ElementRef,
+    private confirmationModalService: ConfirmationModalService,
     private decimalPipe: DecimalPipe,
     ) {
 
@@ -396,26 +398,50 @@ export class CreatePostComponent implements OnInit{
   addImageForPost(postId: number) {
     if (postId != null) {
       const formData = new FormData();
+
       for (const image of this.postFormGroup.value.files) {
         formData.append('files', image.file);
       }
+
       this.imageService.addImages(postId, formData).subscribe({
         next: data => {
           if(data) {
             this.toastr.success('Tin được đăng thành công và chờ kiểm duyệt')
             this.showLoadding = false;
-            this.toastr.info('Tự động chuyển trang sau 5s', '', {
-              positionClass: 'toast-top-center',
-              timeOut: 5000
-            })
-            setTimeout(() => {
-              this.router.navigate(['/home']);
-            }, 5000);
+            // this.toastr.info('Tự động chuyển trang sau 5s', '', {
+            //   positionClass: 'toast-top-center',
+            //   timeOut: 5000
+            // })
+            // setTimeout(() => {
+            //   this.router.navigate(['/home']);
+            // }, 5000);
+            this.openModalConfirmNavigate()
           }
         },
         error: err => console.log(err)
       })
     }
 
+  }
+
+  countdown = 5;
+  openModalConfirmNavigate() {
+    const interval = setInterval(() => {
+      this.countdown--;
+      if (this.countdown === 0) {
+        clearInterval(interval);
+        this.router.navigate(['/home']);
+      }
+    }, 1000);
+    this.confirmationModalService.openModal('Xác nhận', `Trang sẽ được tự động chuyển sau ${this.countdown}s
+    Bạn có muốn tiếp tục đăng tin không?`)
+    .subscribe(result => {
+      if (!result.confirmed) {
+        this.router.navigate(['/home']);
+      }
+      else {
+        clearInterval(interval);
+      }
+    });
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/model/post';
+import { AuthService } from 'src/app/services/auth.service';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -15,7 +16,7 @@ export class DashboardComponent implements OnInit{
   totalApprovedPost: number = 0;
   totalUser: number = 0;
   constructor(private postService: PostService,
-              private userService: UserService) {}
+              private userService: UserService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.getTotalPost()

@@ -12,19 +12,28 @@ import { LoginComponent } from './components/fragments/login/login.component';
 import { LogoutComponent } from './components/fragments/logout/logout.component';
 import { ActivityComponent } from './components/activity/activity.component';
 import { ViolateComponent } from './components/violate/violate.component';
+import { AuthGuard } from './auth/authguard';
+import { RoleGuard } from './auth/roleguard';
+import { AccessDeniedComponent } from './components/error/access-denied/access-denied.component';
+import { LoginLayoutComponent } from './components/login-layout/login-layout.component';
 
 const routes: Routes = [
-  {path: 'posts', component: PostManagementComponent},
-  {path: 'posts', data: {breadcrumb: 'Quản lý bài đăng', title: 'Danh sách bài đăng'},
+  {path: '', component: DashboardComponent, canActivate: [AuthGuard, RoleGuard], data: {requireRole: ['ROLE_ADMIN', 'ROLE_MODERATOR']}},
+
+  {path: 'posts', component: PostManagementComponent, canActivate: [AuthGuard, RoleGuard], data: {requireRole: ['ROLE_ADMIN', 'ROLE_MODERATOR'] }},
+  {path: 'posts', data: {breadcrumb: 'Quản lý bài đăng', title: 'Danh sách bài đăng', requireRole: ['ROLE_ADMIN', 'ROLE_MODERATOR'] },
+      canActivateChild: [AuthGuard, RoleGuard],
+      
         children: [
           {path: ':id/detail', component: PostDetailComponent, data: {breadcrumb: 'Chi tiết bài đăng', title: 'Chi tiết bài đăng'}}
         ]
   },
   
   {path: 'users', component: UserListComponent,
-        data: {breadcrumb: 'Quản lý người dùng', title: 'Danh sách người dùng'}},
+  canActivate: [AuthGuard, RoleGuard], data: {requireRole: ['ROLE_ADMIN'] }},
       {path: 'users',
-        data: {breadcrumb: 'Quản lý người dùng', title: 'Danh sách người dùng'},
+        data: {breadcrumb: 'Quản lý người dùng', title: 'Danh sách người dùng', requireRole: ['ROLE_ADMIN'] },
+        canActivateChild: [AuthGuard, RoleGuard],
         children: [
           {path: ':id/detail', component: UserDetailComponent, data: {breadcrumb: 'Thông tin cá nhân', title: 'Thông tin người dùng'}},
           {path: ':id/detail', data: {breadcrumb: 'Thông tin cá nhân', title: 'Thông tin người dùng'},
@@ -35,11 +44,13 @@ const routes: Routes = [
           {path: 'add', component: UserCreateNewComponent, data: {breadcrumb: 'Tạo mới người dùng', title: 'Tạo mới người dùng'}}
         ]
       },
-  {path: 'activity', component: ActivityComponent},
-  {path: 'violate', component: ViolateComponent},
-  {path: '', component: DashboardComponent},
-  {path: 'login', component: LoginComponent},
+
+  {path: 'activity', component: ActivityComponent, canActivate: [AuthGuard, RoleGuard], data: {requireRole: ['ROLE_ADMIN'] }},
+  {path: 'violate', component: ViolateComponent, canActivate: [AuthGuard, RoleGuard], data: {requireRole: ['ROLE_ADMIN', 'ROLE_MODERATOR'] }},
+  
+  {path: 'login', component: LoginComponent, data: { layout: LoginLayoutComponent } },
   {path: 'logout', component: LogoutComponent},
+  {path: 'access-denied', component: AccessDeniedComponent, data: {layout: LoginLayoutComponent}}
 ];
 
 @NgModule({

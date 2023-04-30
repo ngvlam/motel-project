@@ -10,10 +10,14 @@ import com.nvl.motelbackend.model.UserDTO;
 import com.nvl.motelbackend.repository.RoleRepository;
 import com.nvl.motelbackend.repository.UserRepository;
 import com.nvl.motelbackend.service.UserService;
+import com.nvl.motelbackend.utils.UserUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -27,6 +31,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     ModelMapper mapper = new ModelMapper();
 
@@ -49,8 +56,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmail(String username) {
-        return null;
+    public UserDTO getUserByEmail(String username) {
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new MotelAPIException(HttpStatus.NOT_FOUND, "User not found"));
+        return mapToDTOWithRoles(user);
     }
 
     @Override
@@ -59,13 +67,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO changePassword(Long id, String newPassword, String oldPassword, String role) {
+    public UserDTO changePassword(Long id, String newPassword, String oldPassword, Authentication authentication) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id", "User", id));
 
-//        if (role.equals("ROLE_USER")) {
-//            if (!passwordEncoder.matches(oldPassword, user.getPassword()))
-//                throw new WrongPasswordException("Mật khẩu không đúng");
-//        }
+        UserUtils.checkUpdateProfileAuthorization(id, authentication);
+
+        if (authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"))) {
+            if (!passwordEncoder.matches(oldPassword, user.getPassword()))
+                throw new MotelAPIException(HttpStatus.FORBIDDEN, "Old password is not match");
+        }
 
         user.setPassword(newPassword);
 
@@ -87,8 +97,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateProfile(UserDTO userDTO, long id) {
+    public UserDTO updateProfile(UserDTO userDTO, long id, Authentication authentication) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id", "User", id));
+
+        UserUtils.checkUpdateProfileAuthorization(id, authentication);
+
         user.setPhone(userDTO.getPhone());
         user.setFullName(userDTO.getFullName());
         user.setAddress(userDTO.getAddress());
@@ -117,7 +130,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(accountDTO.getEmail());
         user.setAddress(accountDTO.getAddress());
         user.setPhone(accountDTO.getPhone());
-        user.setPassword(accountDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
         user.setB64(accountDTO.getB64());
 
         if (accountDTO.getRoles() != null && !accountDTO.getRoles().isEmpty()) {

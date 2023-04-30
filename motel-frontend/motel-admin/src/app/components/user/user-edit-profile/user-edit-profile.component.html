@@ -1,3 +1,4 @@
+
 <div class="page-wrapper">
     <div class="content container-fluid">
         <div class="row align-items-center">
@@ -56,7 +57,7 @@
                                 <div *ngIf="fullName?.invalid && (fullName?.dirty || fullName?.touched)" class="invalid-input">
                                     
                                     <div *ngIf="fullName?.errors?.['required'] || fullName?.errors?.['notOnlyWhiteSpace']">
-                                        Họ và tên là bắt buộc
+                                        Vui lòng nhập họ và tên
                                     </div>
 
                                     <div *ngIf="fullName?.errors?.['minlength']">

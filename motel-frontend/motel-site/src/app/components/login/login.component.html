@@ -1,0 +1,103 @@
+<div class="container">
+    <div class="page-wrapper">
+        <section class="form-group forms">
+            <div class="form login">
+                <div class="form-content">
+                    <header>Login</header>
+                    <form [formGroup]="loginForm" (ngSubmit)="login()">
+                        <div class="field input-field">
+                            <input type="email" placeholder="Email" class="input" formControlName="email">
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="password" placeholder="Mật khẩu" class="password" formControlName="password">
+                            <i class='bx bx-hide eye-icon'></i>
+                        </div>
+
+                        <input type="checkbox" class="mt-2" formControlName="rememberMe" >Nhớ mật khẩu
+
+                        <div *ngIf="errorLoginMess" class="login-message">
+                            <span>{{errorLoginMess}}</span>
+                        </div>
+
+                        <div class="form-link">
+                            <a href="#" class="forgot-pass">Quên mật khẩu?</a>
+                        </div>
+
+                        <div class="field button-field">
+                            <button type="submit">Đăng nhập</button>
+                        </div>
+                    </form>
+
+                    <div class="form-link">
+                        <span>Chưa có tài khoản? <a href="#" class="link signup-link">Đăng ký</a></span>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+
+                <div class="media-options">
+                    <a href="#" class="field facebook">
+                        <i class='bx bxl-facebook facebook-icon'></i>
+                        <span>Đăng nhập với Facebook</span>
+                    </a>
+                </div>
+
+                <div class="media-options">
+                    <a href="#" class="field google">
+                        <img src="#" alt="" class="google-img">
+                        <span>Đăng nhập với Google</span>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Signup Form -->
+
+            <div class="form signup">
+                <div class="form-content">
+                    <header>Signup</header>
+                    <form action="#">
+                        <div class="field input-field">
+                            <input type="email" placeholder="Email" class="input">
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="password" placeholder="Create password" class="password">
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="password" placeholder="Confirm password" class="password">
+                            <i class='bx bx-hide eye-icon'></i>
+                        </div>
+
+                        <div class="field button-field">
+                            <button>Signup</button>
+                        </div>
+                    </form>
+
+                    <div class="form-link">
+                        <span>Already have an account? <a href="#" class="link login-link">Login</a></span>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+
+                <div class="media-options">
+                    <a href="#" class="field facebook">
+                        <i class='bx bxl-facebook facebook-icon'></i>
+                        <span>Login with Facebook</span>
+                    </a>
+                </div>
+
+                <div class="media-options">
+                    <a href="#" class="field google">
+                        <img src="#" alt="" class="google-img">
+                        <span>Login with Google</span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</div>

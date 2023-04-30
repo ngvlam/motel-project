@@ -12,9 +12,11 @@ import com.nvl.motelbackend.model.SearchDTO;
 import com.nvl.motelbackend.repository.PostRepository;
 import com.nvl.motelbackend.repository.PostSpecification;
 import com.nvl.motelbackend.repository.UserRepository;
+import com.nvl.motelbackend.security.CustomUserDetails;
 import com.nvl.motelbackend.service.ActionService;
 import com.nvl.motelbackend.service.ImageService;
 import com.nvl.motelbackend.service.PostService;
+import com.nvl.motelbackend.utils.PostUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -138,8 +141,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO updatePost(PostDTO postDto, long id) {
+    public PostDTO updatePost(PostDTO postDto, Long id, Authentication authentication) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        PostUtils.checkPostUpdateAuthorization(post, authentication);
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         post.setApproved(false);
@@ -153,8 +157,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO hidePost(Long id) {
+    public PostDTO hidePost(Long id, Authentication authentication) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        PostUtils.checkPostUpdateAuthorization(post, authentication);
         post.setDel(true);
         Post hidePost = postRepository.save(post);
         return mapToDTO(hidePost);
@@ -200,5 +205,26 @@ public class PostServiceImpl implements PostService {
     private Post mapToEntity(PostDTO postDTO) {
         Post post = mapper.map(postDTO, Post.class);
         return post;
+    }
+
+    private boolean isAuthorizedToHidePost(Authentication authentication, Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
+
+
+        if (authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
+            // Admin can hide any post
+            return true;
+        } else if (authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"))) {
+            // User can only hide their own post
+            if (authentication.getName().equals(authentication.getName())) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

@@ -7,18 +7,36 @@
                     <div class="login-right-wrap">
                         <h1>Đăng nhập</h1>
                         <p class="account-subtitle">Access to our dashboard</p>
-                        <form [formGroup]="formLogin">
+                        <form [formGroup]="formLogin" (ngSubmit)="login()">
                             <div class="form-group">
-                                <input class="form-control" type="text" placeholder="Email" formControlName="email"> </div>
+                                <input class="form-control" type="text" placeholder="Email" formControlName="email"> 
+                                
+                                <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="invalid-input">         
+                                    <div *ngIf="email?.errors?.['required']">
+                                        Nhập địa chỉ email
+                                    </div>
+                                    <div *ngIf="email?.errors?.['pattern']">
+                                        Email không đúng định dạng
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <input class="form-control" type="password" placeholder="Mật khẩu" formControlName="password">
+                                <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="invalid-input">         
+                                    <div *ngIf="password?.errors?.['required']">
+                                        Nhập mật khẩu
+                                    </div>
+                                    <div *ngIf="password?.errors?.['minlength']">
+                                        Mật khẩu phải từ 8 ký tự trở lên
+                                    </div>
+                                </div>
                             </div>
                             <p>
-                                <input type="checkbox" name="remember-me"> &nbsp;Nhớ mật khẩu
+                                <input type="checkbox" name="remember-me" formControlName="rememberMe"> &nbsp;Nhớ mật khẩu
                             </p>
-                            <!-- <div th:if="${param.error}">
-                                <p class="text-danger">Tên đăng nhập hoặc mật khẩu không đúng</p>
-                            </div> -->
+                            <div *ngIf="errorLoginMess">
+                                <p class="text-danger">{{errorLoginMess}}</p>
+                            </div>
                             <div class="form-group">
                                 <button class="btn btn-primary btn-block" type="submit">Đăng nhập</button>
                             </div>

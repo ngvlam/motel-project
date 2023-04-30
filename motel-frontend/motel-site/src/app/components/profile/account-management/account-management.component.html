@@ -1,0 +1,161 @@
+<div class="d-flex flex-column w-100" style="background-color: rgb(249, 249, 249);">
+    <div class="page-wrapper">
+        <div class="d-flex justify-content-center">
+            <div class="page-right">
+                <h3>Quản lý tài khoản</h3>
+                <div>
+                    <!-- Tab items -->
+                    <div class="tabs">
+                        <div class="tab-item active">
+                            Chỉnh sửa thông tin
+                        </div>
+                        <div class="tab-item">
+                            Đổi mật khẩu
+                        </div>
+                        <div class="line"></div>
+                    </div>
+
+                    <!-- Tab content -->
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <form [formGroup]="accFormGroup" (ngSubmit)="updateProfile()">
+                                <h4 class="mb-3">Thông tin cá nhân</h4>
+                                <div class="d-flex justify-content-center">
+                                    <div class="box-img">
+                                        <label>
+                                            <input type="file" (change)="onFileSelected($event)">
+                                            <img [src]="accFormGroup.get('avatarUrl')?.value" alt="anh dai dien"
+                                                class="avatar-edit">
+                                            <button class="btn-remove-img" (click)="removeAvatar()">x</button>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-6">
+                                        <label for="" class="control-label">
+                                            Họ và tên
+                                        </label>
+                                        <span class="red_require"> *</span>
+                                        <input type="text" class="form-input" formControlName="fullName">
+                                        <div *ngIf="fullName?.invalid && (fullName?.dirty || fullName?.touched)"
+                                            class="invalid-input">
+
+                                            <div
+                                                *ngIf="fullName?.errors?.['required'] || fullName?.errors?.['notOnlyWhiteSpace']">
+                                                Vui lòng nhập họ và tên
+                                            </div>
+
+                                            <div *ngIf="fullName?.errors?.['minlength']">
+                                                Họ và tên phải từ 2 ký tự trở lên
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-6">
+                                        <label for="" class="control-label">
+                                            Email
+                                        </label>
+                                        <input type="text" class="form-input" formControlName="email">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="" class="control-label">
+                                            Số điện thoại
+                                        </label>
+                                        <span class="red_require"> *</span>
+                                        <input type="text" appNumbersOnly class="form-input" formControlName="phone">
+                                        <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)"
+                                            class="invalid-input">
+                                            <div
+                                                *ngIf="phone?.errors?.['required'] || phone?.errors?.['notOnlyWhiteSpace']">
+                                                Vui lòng nhập số điện thoại
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-12">
+                                        <label for="" class="control-label">
+                                            Địa chỉ
+                                        </label>
+                                        <!-- <span class="red_require"> *</span> -->
+                                        <input type="text" class="form-input" formControlName="address">
+                                    </div>
+                                </div>
+                                <div class="btn-save-group">
+                                    <button class="btn-save btn-save-profile">Lưu thay đổi</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane">
+                            <form [formGroup]="passwordFormGroup" (ngSubmit)="changePass()">
+                                <h4 class="mb-3">Đổi mật khẩu</h4>
+                                <div class="row mt-3">
+                                    <div class="col-sm-6">
+                                        <label for="" class="control-label">
+                                            Mật khẩu hiện tại
+                                        </label>
+                                        <span class="red_require"> *</span>
+                                        <div class="input-group">
+                                            <input type="{{ currentPasswordVisible ? 'text' : 'password' }}"
+                                                class="form-input" formControlName="currentPassword">
+                                            <i class="fa-solid" style="margin: 10px 0 0 -30px; cursor: pointer;"
+                                                [ngClass]="{'fa-eye': currentPasswordVisible, 'fa-eye-slash': !currentPasswordVisible }"
+                                                (click)="togglePasswordVisibility()"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-6">
+                                        <label for="" class="control-label">
+                                            Mật khẩu mới
+                                        </label>
+                                        <span class="red_require"> *</span>
+                                        <div class="input-group">
+                                            <input type="{{ newPasswordVisible ? 'text' : 'password' }}"
+                                                class="form-input" formControlName="newPassword">
+                                            <i class="fa-solid" style="margin: 10px 0 0 -30px; cursor: pointer;"
+                                                [ngClass]="{'fa-eye': newPasswordVisible, 'fa-eye-slash': !newPasswordVisible }"
+                                                (click)="toggleNewPasswordVisibility()"></i>
+                                        </div>
+                                        <div *ngIf="newPassword?.invalid && (newPassword?.dirty || newPassword?.touched)" class="invalid-input">         
+                                            <div *ngIf="newPassword?.errors?.['required']">
+                                                Nhập mật khẩu mới
+                                            </div>
+                                            <div *ngIf="newPassword?.errors?.['minlength']">
+                                                Mật khẩu mới phải từ 8 kí tự trở lên
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-6">
+                                        <label for="" class="control-label">
+                                            Xác nhận mật khẩu mới
+                                        </label>
+                                        <span class="red_require"> *</span>
+                                        <div class="input-group">
+                                            <input type="{{ confirmPasswordVisible ? 'text' : 'password' }}"
+                                                class="form-input" formControlName="confirmPassword">
+                                            <i class="fa-solid" style="margin: 10px 0 0 -30px; cursor: pointer;"
+                                                [ngClass]="{'fa-eye': confirmPasswordVisible, 'fa-eye-slash': !confirmPasswordVisible }"
+                                                (click)="toggleConfirmPasswordVisibility()"></i>
+                                        </div>
+                                        <div *ngIf="confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)" class="invalid-input">         
+                                            <div *ngIf="confirmPassword?.errors?.['mustMatch']">
+                                                Xác nhận mật khẩu không khớp
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-save-pass-group">
+                                        <button class="btn-save btn-save-pass">Lưu thay đổi</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

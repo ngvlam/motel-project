@@ -1,0 +1,167 @@
+.page-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0px;
+    padding-left: 280px;
+    height: auto;
+    position: relative;
+    top: 60px;
+    margin-bottom: 140px;
+}
+
+.page-right {
+    width: 696px;
+    padding: 24px;
+    background-color: #fff;
+    margin-top: 20px;
+}
+
+/* =========TAB============= */
+
+.tabs {
+    display: flex;
+    position: relative;
+  }
+  .tabs .line {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    border-radius: 15px;
+    background-color: #c23564;
+    transition: all 0.2s ease;
+  }
+  .tab-item {
+    min-width: 80px;
+    padding: 12px 18px 6px 12px;
+    font-size: 14px;
+    text-align: center;
+    color: #c23564;
+    background-color: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: 3px solid transparent;
+    opacity: 0.6;
+    cursor: pointer;
+    transition: all 0.5s ease;
+  }
+  .tab-icon {
+    font-size: 24px;
+    width: 32px;
+    position: relative;
+    top: 2px;
+  }
+  .tab-item:hover {
+    opacity: 1;
+    background-color: rgba(194, 53, 100, 0.05);
+    border-color: rgba(194, 53, 100, 0.1);
+  }
+  .tab-item.active {
+    opacity: 1;
+  }
+  .tab-content {
+    padding: 28px 0;
+  }
+  .tab-pane {
+    color: #333;
+    display: none;
+  }
+  .tab-pane.active {
+    display: block;
+  }
+  .tab-pane h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  
+.tab-content .box-img {
+  position: relative;
+  width: 100px;
+}
+
+.tab-content .box-img input[type="file"] {
+  display: none;
+}
+
+
+/* INFO */
+
+.avatar-edit {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.btn-remove-img {
+  position: relative;
+  border-radius: 100%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 24px;
+  height: 24px;
+  padding: 0px;
+  color: var(--red-color);
+  background-color: #fff;
+  border: none;
+  box-shadow: 0 12px 34px 6px rgb(104 112 118 / 0.18);
+}
+
+
+.btn-remove-img:hover {
+  background-color: #f2f2f2;
+}
+
+.form-input {
+  display: block;
+  padding: 5px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #aaa;
+}
+
+.control-label {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+
+.red_require {
+  color: red;
+}
+
+.btn-save-group {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.btn-save {
+  display: inline-block;
+  cursor: pointer;
+  white-space: nowrap;
+  width: fit-content;
+  background-color: rgb(224, 60, 49);
+  color: rgb(255, 255, 255);
+  border: none;
+  margin-top: 24px;
+}
+
+.btn-save:hover {
+  background-color: rgb(255, 131, 122);
+}
+
+.btn-save-profile {
+  height: 48px;
+  padding: 14px 16px;
+  border-radius: 8px;
+
+}
+
+.btn-save-pass {
+  padding: 6px 12px;
+  border-radius: 4px;
+}

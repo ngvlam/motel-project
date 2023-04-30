@@ -4,7 +4,7 @@ import { User } from 'src/app/model/user';
 import {Location} from '@angular/common';
 import { UserService } from 'src/app/services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControlOptions, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-change-pass',
@@ -41,7 +41,7 @@ export class UserChangePassComponent implements OnInit{
         confirmPassword: new FormControl('', [Validators.required])
       }, {
         validators : this.matchPasswords('password', 'confirmPassword')
-      });
+      } as AbstractControlOptions);
     }
 
   ngOnInit(): void {

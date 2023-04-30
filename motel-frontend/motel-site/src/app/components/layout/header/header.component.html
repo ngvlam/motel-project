@@ -43,9 +43,25 @@
                     <a href="" class="favorite-post-link" title="Danh sách tin đã lưu">
                         <i class="heart-icon d-block fa-regular fa-heart"></i>
                     </a>
-                    <a href="">Đăng nhập</a>
-                    <span class="line"></span>
-                    <a href="">Đăng ký</a>
+
+                    <a *ngIf="!user" routerLink="login">Đăng nhập</a>
+                    <span *ngIf="!user" class="line"></span>
+                    <a *ngIf="!user" href="">Đăng ký</a>
+
+                    <div *ngIf="user" class="welcome-user" (click)="toggleDropdown()">
+                        <img [src]="avatar" class="avatar">
+                        <div class="user-name">{{user.fullName}}</div>
+                        <i class="fa-solid fa-angle-down"></i>
+                        <div class="dropdown" *ngIf="showDropdown">
+                            <ul>
+                                <li><a routerLink="trang-ca-nhan/danh-sach-tin-dang">Quản lý tin đăng</a></li>
+                                <li><a routerLink="trang-ca-nhan/thong-tin-ca-nhan">Thay đổi thông tin cá nhân</a></li>
+                                <li><a href="trang-ca-nha/nap-tien">Nạp tiền</a></li>
+                                <hr>
+                                <li><a routerLink="/logout">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
 
                     <a routerLink="/dang-tin" class="btn-post">Đăng tin</a>
                 </div>

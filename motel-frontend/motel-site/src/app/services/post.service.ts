@@ -30,7 +30,7 @@ export class PostService {
   }
 
   createPost(post: Post) : Observable<Post> {
-    return this.http.post<Post>(`${this.apiUrl}/posts?auth=tieuphong@ex.com`, post);
+    return this.http.post<Post>(`${this.apiUrl}/posts`, post);
   }
 
   searchPost(searchForm: SearchForm, page: number, sort: string): Observable<Page<Post>> {
@@ -47,4 +47,7 @@ export class PostService {
     return this.http.get<Page<Post>>(this.apiUrl + '/posts/search?' + '&page=' + page + '&sort=' + sort, {params});
   }
 
+  hidePost(id: number) : Observable<Post> {
+    return this.http.put<Post>(`${this.apiUrl}/posts/hide/${id}`, null)
+  }
 }

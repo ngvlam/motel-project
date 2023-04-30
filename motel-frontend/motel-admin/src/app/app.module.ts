@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/fragments/sidebar/sidebar.component';
@@ -27,6 +27,11 @@ import { LogoutComponent } from './components/fragments/logout/logout.component'
 import { ActivityComponent } from './components/activity/activity.component';
 import { ViolateComponent } from './components/violate/violate.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { CookieService } from 'ngx-cookie-service';
+import { AccessDeniedComponent } from './components/error/access-denied/access-denied.component';
+import { AuthInterceptor } from './auth/intercept/AuthInterceptor';
+import { MainLayoutComponent } from './components/main-layout/main-layout.component';
+import { LoginLayoutComponent } from './components/login-layout/login-layout.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +54,9 @@ import { GoogleMapsModule } from '@angular/google-maps';
     LogoutComponent,
     ActivityComponent,
     ViolateComponent,
+    AccessDeniedComponent,
+    MainLayoutComponent,
+    LoginLayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +70,10 @@ import { GoogleMapsModule } from '@angular/google-maps';
     NgxFileDropModule,
     ToastrModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
