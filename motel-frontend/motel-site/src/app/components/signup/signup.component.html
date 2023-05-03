@@ -1,0 +1,102 @@
+<div class="container">
+    <div class="page-wrapper">
+        <div class="form-group">
+            <!-- Signup Form -->
+
+            <div class="form signup">
+                <div class="form-content">
+                    <header>Đăng ký</header>
+                    <form [formGroup]="signupForm" (ngSubmit)="signup()">
+                        <div class="field input-field">
+                            <input type="text" placeholder="Họ và tên" class="input" formControlName="fullName">
+                            <div *ngIf="fullName?.invalid && (fullName?.dirty || fullName?.touched)"
+                                class="invalid-input">
+                                <div *ngIf="fullName?.errors?.['required']">
+                                    Vui lòng nhập họ tên
+                                </div>
+                                <div *ngIf="fullName?.errors?.['minlength']">
+                                    Họ tên phải từ 2 ký tự trở lên
+                                </div>  
+                            </div> 
+                            
+                        </div>
+                        <div class="field input-field">
+                            <input type="email" placeholder="Email" class="input" formControlName="email">
+                            <div *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+                                class="invalid-input">
+                                <div *ngIf="email?.errors?.['required']">
+                                    Vui lòng nhập email
+                                </div>
+                                <div *ngIf="email?.errors?.['pattern']">
+                                    Email không đúng định dạng
+                                </div>
+                            </div>               
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="{{ passwordVisible ? 'text' : 'password' }}" class="form-input"
+                                formControlName="password" placeholder="Mật khẩu">
+                            <i class="fa-solid" style="margin: 10px 0 0 -30px; cursor: pointer;"
+                                [ngClass]="{'fa-eye': passwordVisible, 'fa-eye-slash': !passwordVisible }"
+                                (click)="togglePasswordVisibility()"></i>
+
+                            <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+                                class="invalid-input">
+                                <div *ngIf="password?.errors?.['required']">
+                                    Vui lòng nhập mật khẩu
+                                </div>
+                                <div *ngIf="password?.errors?.['minlength']">
+                                    Mật khẩu phải từ 8 kí tự trở lên
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="{{ confirmPasswordVisible ? 'text' : 'password' }}" class="form-input"
+                                formControlName="confirmPassword" placeholder="Xác nhận mật khẩu">
+                            <i class="fa-solid" style="margin: 10px 0 0 -30px; cursor: pointer;"
+                                [ngClass]="{'fa-eye': confirmPasswordVisible, 'fa-eye-slash': !confirmPasswordVisible }"
+                                (click)="toggleConfirmPasswordVisibility()"></i>
+                            <div *ngIf="confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)"
+                                class="invalid-input">
+                                <div *ngIf="confirmPassword?.errors?.['mustMatch']">
+                                    Xác nhận mật khẩu không khớp
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field button-field">
+                            <button [disabled]="disableSubmit">Đăng ký</button>
+                        </div>
+                    </form>
+
+                    <div *ngIf="errorSignupMess" class="login-message">
+                        <span>{{errorSignupMess}}</span>
+                    </div>
+
+                    <div class="form-link">
+                        <span>Đã có tài khoản? <a routerLink="/login" class="link login-link">Đăng nhập</a></span>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+
+                <div class="media-options">
+                    <a href="" class="field facebook">
+                        <i class="fa-brands fa-facebook facebook-icon"></i>
+                        <span style="color: #fff;">Đăng nhập với Facebook</span>
+                    </a>
+                </div>
+
+                <div class="media-options">
+                    <a href="#" class="field google">
+                        <img src="https://static.vecteezy.com/system/resources/previews/009/469/630/original/google-logo-isolated-editorial-icon-free-vector.jpg"
+                            alt="" class="google-img">
+                        <span>Đăng nhập với Google</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

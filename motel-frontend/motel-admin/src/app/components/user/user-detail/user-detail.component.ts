@@ -35,8 +35,8 @@ export class UserDetailComponent implements OnInit{
     ROLE_MODERATOR: 'Kiểm duyệt viên'
   };
 
-  @ViewChild('more')
-  pendingTemp: TemplateRef<any> | undefined;
+  // @ViewChild('more')
+  // pendingTemp!: TemplateRef<any>;
 
   pending: any;
 
@@ -82,13 +82,14 @@ export class UserDetailComponent implements OnInit{
     })
   }
 
+  isActionLast = false;
+
   loadAction(id: number) {
     this.postService.getActionsByUserId(this.currentPage, id)
       .pipe(tap((value: any) => {
-        if (value.last) this.pending = false;
+        if (value.last) this.isActionLast = true;
         else {
           this.currentPage++;
-          this.pending = this.pendingTemp;
         }
       }))
       .subscribe((value: Page<Action>) => {

@@ -3,20 +3,39 @@
         <section class="form-group forms">
             <div class="form login">
                 <div class="form-content">
-                    <header>Login</header>
+                    <header>Đăng nhập</header>
                     <form [formGroup]="loginForm" (ngSubmit)="login()">
                         <div class="field input-field">
                             <input type="email" placeholder="Email" class="input" formControlName="email">
+                            <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="invalid-input">
+                                <div *ngIf="email?.errors?.['required']">
+                                    Vui lòng nhập email
+                                </div>
+                                <div *ngIf="email?.errors?.['pattern']">
+                                    Email không đúng định dạng
+                                </div>
+                            </div>
                         </div>
 
                         <div class="field input-field">
                             <input type="password" placeholder="Mật khẩu" class="password" formControlName="password">
                             <i class='bx bx-hide eye-icon'></i>
+                            <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+                                class="invalid-input">
+                                <div *ngIf="password?.errors?.['required']">
+                                    Vui lòng nhập mật khẩu
+                                </div>
+                                <div *ngIf="password?.errors?.['minlength']">
+                                    Mật khẩu phải từ 8 kí tự trở lên
+                                </div>
+                            </div>
                         </div>
 
-                        <input type="checkbox" class="mt-2" formControlName="rememberMe" >Nhớ mật khẩu
+                        <div class="mt-3">
+                            <input type="checkbox" class="mt-2" formControlName="rememberMe"> Nhớ mật khẩu
+                        </div>
 
-                        <div *ngIf="errorLoginMess" class="login-message">
+                        <div *ngIf="errorLoginMess" class="signup-message">
                             <span>{{errorLoginMess}}</span>
                         </div>
 
@@ -30,74 +49,28 @@
                     </form>
 
                     <div class="form-link">
-                        <span>Chưa có tài khoản? <a href="#" class="link signup-link">Đăng ký</a></span>
+                        <span>Chưa có tài khoản? <a routerLink="/signup" class="link signup-link">Đăng ký</a></span>
                     </div>
                 </div>
 
                 <div class="line"></div>
 
                 <div class="media-options">
-                    <a href="#" class="field facebook">
-                        <i class='bx bxl-facebook facebook-icon'></i>
-                        <span>Đăng nhập với Facebook</span>
+                    <a href="" class="field facebook">
+                        <i class="fa-brands fa-facebook facebook-icon"></i>
+                        <span style="color: #fff;">Đăng nhập với Facebook</span>
                     </a>
                 </div>
 
                 <div class="media-options">
                     <a href="#" class="field google">
-                        <img src="#" alt="" class="google-img">
+                        <img src="https://static.vecteezy.com/system/resources/previews/009/469/630/original/google-logo-isolated-editorial-icon-free-vector.jpg"
+                            alt="" class="google-img">
                         <span>Đăng nhập với Google</span>
                     </a>
                 </div>
-
             </div>
 
-            <!-- Signup Form -->
-
-            <div class="form signup">
-                <div class="form-content">
-                    <header>Signup</header>
-                    <form action="#">
-                        <div class="field input-field">
-                            <input type="email" placeholder="Email" class="input">
-                        </div>
-
-                        <div class="field input-field">
-                            <input type="password" placeholder="Create password" class="password">
-                        </div>
-
-                        <div class="field input-field">
-                            <input type="password" placeholder="Confirm password" class="password">
-                            <i class='bx bx-hide eye-icon'></i>
-                        </div>
-
-                        <div class="field button-field">
-                            <button>Signup</button>
-                        </div>
-                    </form>
-
-                    <div class="form-link">
-                        <span>Already have an account? <a href="#" class="link login-link">Login</a></span>
-                    </div>
-                </div>
-
-                <div class="line"></div>
-
-                <div class="media-options">
-                    <a href="#" class="field facebook">
-                        <i class='bx bxl-facebook facebook-icon'></i>
-                        <span>Login with Facebook</span>
-                    </a>
-                </div>
-
-                <div class="media-options">
-                    <a href="#" class="field google">
-                        <img src="#" alt="" class="google-img">
-                        <span>Login with Google</span>
-                    </a>
-                </div>
-
-            </div>
         </section>
     </div>
 </div>

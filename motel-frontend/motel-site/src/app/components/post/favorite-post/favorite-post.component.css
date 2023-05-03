@@ -1,0 +1,33 @@
+.main-section {
+    position: relative;
+    top: 120px;
+    margin-bottom: 140px;
+}
+
+.total-count {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.title {
+    font-size: 24px;
+    line-height: 32px;
+    margin-top: 16px;
+}
+
+
+.nav-bar {
+    margin: 16px 0;
+}
+
+.post-item {
+    border-radius: 4px;
+    box-shadow: 0px 4px 6px 0px rgba(44,44,44,0.04);
+    border: 1px solid #F2F2F2;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.post-item:hover {
+    box-shadow: 0px 4px 16px 0px rgba(44,44,44,0.08);
+}

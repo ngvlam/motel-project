@@ -1,0 +1,66 @@
+
+    <div class="filter-box">
+        <h4 class="filter-title">Xem theo khoảng giá</h4>
+        <div class="content">
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{maxPrice: 1000000}">Dưới 1 triệu</a>
+            </h5>
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{minPrice: 1000000, maxPrice: 3000000}">Từ 1
+                    đến 3 triệu</a>
+            </h5>
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{minPrice: 1000000, maxPrice: 5000000}">Từ 3
+                    đến 5 triệu</a>
+            </h5>
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{minPrice: 1000000, maxPrice: 7000000}">Từ 5
+                    đến 10 triệu</a>
+            </h5>
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{minPrice: 10000000}">Từ 10 triệu trở lên</a>
+            </h5>
+        </div>
+    </div>
+
+    <div class="filter-box">
+        <h4 class="filter-title">Xem theo diện tích</h4>
+        <div class="content">
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{maxAcreage: 20}">Dưới 20 m<sup>2</sup></a>
+            </h5>
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{minAcreage: 20, maxAcreage: 30}">Từ 20
+                    m<sup>2</sup> đến 30 m<sup>2</sup></a>
+            </h5>
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{minAcreage: 30, maxAcreage: 50}">Từ 30
+                    m<sup>2</sup> đến 50 m<sup>2</sup></a>
+            </h5>
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{minAcreage: 50, maxAcreage: 70}">Từ 50
+                    m<sup>2</sup> đến 70 m<sup>2</sup></a>
+            </h5>
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{minAcreage: 70}">Từ 70 m<sup>2</sup> trở
+                    lên</a>
+            </h5>
+        </div>
+    </div>
+
+    <div class="filter-box">
+        <h4 class="filter-title">Xem theo khu vực</h4>
+        <div class="content">
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{address: 'Hà Nội'}">Hà Nội</a>
+            </h5>
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{address: 'Đã Nẵng'}">Đã Nẵng</a>
+            </h5>
+            <h5 class="item">
+                <a [routerLink]="['/filter']" [queryParams]="{address: 'Hồ Chí Minh'}">Thành phố Hồ Chí
+                    Minh</a>
+            </h5>
+        </div>
+    </div>
+

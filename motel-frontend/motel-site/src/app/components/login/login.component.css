@@ -2,7 +2,7 @@
 
 .page-wrapper {
     position: relative;
-    top: 60px;
+    top: 80px;
 }
 
 .form-group{
@@ -168,6 +168,6 @@ a.google span{
     
 }
 
-.login-message {
+.signup-message {
     color: red;
 }

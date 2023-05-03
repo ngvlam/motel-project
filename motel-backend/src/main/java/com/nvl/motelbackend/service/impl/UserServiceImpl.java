@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
                 throw new MotelAPIException(HttpStatus.FORBIDDEN, "Old password is not match");
         }
 
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
 
         return mapToDTOWithRoles(userRepository.save(user));
     }
@@ -123,10 +123,12 @@ public class UserServiceImpl implements UserService {
             throw new MotelAPIException(HttpStatus.CONFLICT, "Email đã tồn tại");
         }
         User user = new User();
+
         if (accountDTO.getFullName().trim().length() <= 0)
             user.setFullName(user.getEmail());
         else
             user.setFullName(accountDTO.getFullName());
+
         user.setEmail(accountDTO.getEmail());
         user.setAddress(accountDTO.getAddress());
         user.setPhone(accountDTO.getPhone());

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { FavoritesService } from 'src/app/services/favorites.service';
 import { defaultAvatar } from 'src/config';
 
 @Component({
@@ -13,13 +14,25 @@ export class HeaderComponent implements OnInit{
 
   user?: User;
   avatar: any = defaultAvatar;
+  totalQuantityFavorite: number = 0;
 
   constructor(private authService: AuthService,
-    private _sanitizer: DomSanitizer,) {
+    private _sanitizer: DomSanitizer,
+    private favoritesService: FavoritesService) {
 
   }
 
   ngOnInit(): void {
+    this.updateProfileHeader()
+    this.updateTotalFavoritePost()
+    
+  }
+
+  updateTotalFavoritePost() {
+    this.favoritesService.totalQuantity.subscribe(data => this.totalQuantityFavorite = data)
+  }
+
+  updateProfileHeader() {
     if(this.authService.isLoggedIn()) {
       this.authService.getCurrentUser().subscribe({
         next: data => {

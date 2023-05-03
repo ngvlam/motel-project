@@ -8,41 +8,48 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   errorLoginMess: string = ''
 
   constructor(private authService: AuthService,
     private fb: FormBuilder,
     private router: Router,) {
-      this.loginForm = fb.group({
-        email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
-        password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-        rememberMe: new FormControl('')
-      })
+    this.loginForm = fb.group({
+      email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      rememberMe: new FormControl('')
+    })
   }
 
+  get email(){return this.loginForm.get('email')}
+  get password() { return this.loginForm.get('password'); }
+
   ngOnInit(): void {
-    
+
   }
 
   login() {
-    this.authService.login(this.loginForm.value.email, this.loginForm.value.password, this.loginForm.value.rememberMe).subscribe({
-      next: data => {
-        this.router.navigate(['/home'])
-        .then(() => {
-          window.location.reload();
-        })
-      },
-      error: error => {
-        let errorMess = error.error.message;
-        if (errorMess == 'Bad credentials') {
-          this.errorLoginMess = "Email hoặc mật khẩu không đúng"
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+    }
+    else
+      this.authService.login(this.loginForm.value.email, this.loginForm.value.password, this.loginForm.value.rememberMe).subscribe({
+        next: data => {
+          this.router.navigate(['/home'])
+            .then(() => {
+              window.location.reload();
+            })
+        },
+        error: error => {
+          let errorMess = error.error.message;
+          if (errorMess == 'Bad credentials') {
+            this.errorLoginMess = "Email hoặc mật khẩu không đúng"
+          }
+          if (errorMess == 'User account is locked') {
+            this.errorLoginMess = "Tài khoản này đã bị khóa"
+          }
         }
-        if (errorMess == 'User account is locked') {
-          this.errorLoginMess = "Tài khoản này đã bị khóa"
-        }
-      }
-    })
+      })
   }
 }

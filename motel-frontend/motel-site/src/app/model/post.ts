@@ -12,6 +12,8 @@ export class Post {
     del?: boolean;
     priority?: number;
 
+    isFavorite?: boolean;
+
     user?: User;
     accommodation!: Accomodation;
     imageStrings!: string[];

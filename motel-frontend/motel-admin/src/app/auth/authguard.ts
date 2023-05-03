@@ -12,7 +12,6 @@ export const AuthGuard  = () => {
     if (authService.isLoggedIn()) {
       return true;
     } else {
-        toastr.info("Bạn cần đăng nhập để thực hiện chức năng này")
         return router.parseUrl('/login')
     }
 

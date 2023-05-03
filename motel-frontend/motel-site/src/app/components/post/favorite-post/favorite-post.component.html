@@ -1,0 +1,31 @@
+<app-filter></app-filter>
+<div class="main-section">
+    <div class="container">
+        <h1 class="title">Danh sách tin đăng yêu thích</h1>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="nav-bar d-flex justify-content-between align-items-center">
+                    <span class="total-count">Tổng có {{posts.length}} tin đăng</span>
+                    
+                </div>
+
+                <div class="post-section">
+                    <div class="post-list">
+                        <div *ngFor="let post of posts"
+                            class="post-item">
+                            <app-post-item [post]="post"></app-post-item>
+                        </div>
+                    </div>
+                    <!-- <div class="text-center">
+                        <pagination-controls (pageChange)="getAllPost($event)" [maxSize]="5">
+
+                        </pagination-controls>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-md-3">
+                <app-side-bar-filter></app-side-bar-filter>
+            </div>
+        </div>
+    </div>
+</div>

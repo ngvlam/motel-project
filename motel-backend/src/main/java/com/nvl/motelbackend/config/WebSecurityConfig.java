@@ -75,5 +75,5 @@ public class WebSecurityConfig {
 //        UserDetails client = User.builder().username("client").password(passwordEncoder().encode("123")).roles("USER").build();
 //        UserDetails admin = User.builder().username("admin").password(passwordEncoder().encode("123")).roles("ADMIN").build();
 //        return new InMemoryUserDetailsManager(client, admin);
-//   }
+//  }
 }

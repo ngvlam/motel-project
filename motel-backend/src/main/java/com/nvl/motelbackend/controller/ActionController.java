@@ -27,7 +27,7 @@ public class ActionController {
     }
 
     @GetMapping("/user/{id}")
-    public Page<ActionDTO> getAllActionByUserId(@PathVariable Long id, @PageableDefault(page = 0, size = 10, sort = "time", direction = Sort.Direction.DESC) Pageable page) {
+    public Page<ActionDTO> getAllActionByUserId(@PathVariable Long id, @PageableDefault(page = 0, size = 5, sort = "time", direction = Sort.Direction.DESC) Pageable page) {
         return actionService.getActionByUser(id, page);
     }
 }

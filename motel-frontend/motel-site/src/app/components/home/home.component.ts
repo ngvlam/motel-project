@@ -48,4 +48,10 @@ export class HomeComponent implements OnInit{
   filterPost(){
     this.getAllPost(1)
   }
+
+  isFavorite= false;
+
+  toggleFavorite(event: any) {
+    this.isFavorite = !this.isFavorite
+  }
 }

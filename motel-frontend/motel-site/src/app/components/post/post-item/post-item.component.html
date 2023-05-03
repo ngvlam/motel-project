@@ -1,0 +1,45 @@
+<a routerLink="/post/{{post.id}}" class="d-flex align-items-center">
+    <div class="thumbnail">
+        <img [src]="post.imageStrings[0]">
+        <span class="number-image">
+            <i class="fa-regular fa-image"></i>
+            <span> {{post.imageStrings.length}}</span>
+        </span>
+        <div *ngIf="post.priority==1" class="ribbon-wrapper">
+            <div class="ribbon">Ưu tiên<i class="fa-solid fa-medal"></i></div>
+        </div>
+    </div>
+
+    <div class="post-info w-100">
+        <div class="post-content">
+            <h3 class="post-title">{{post.title}}</h3>
+            <b style="float:right">
+                <a href="" *ngIf="post.accommodation?.categoryId == 1">Phòng trọ</a>
+                <a href="" *ngIf="post.accommodation?.categoryId == 2">Nhà nguyên căn</a>
+                <a href="" *ngIf="post.accommodation?.categoryId == 3">Chung cư, CCMN</a>
+                <a href="" *ngIf="post.accommodation?.categoryId == 4">Tìm người ở ghép</a>
+            </b>
+            <div class="post-config">
+                <span class="price me-3">{{post.accommodation.price/1000000 |
+                    number:'1.1-1'}} triệu/tháng</span>
+                <i class="fa-solid fa-chart-area"></i>
+                <span class="acreage ms-1">{{post.accommodation.acreage}}
+                    m<sup>2</sup></span>
+            </div>
+            <div class="post-location">
+                <i class="fa-solid fa-location-dot"></i>
+                <span class="location ms-2">{{post.accommodation.address}}</span>
+            </div>
+            <div class="contact mt-3 d-flex justify-content-between">
+                <div class="info">
+                    {{post.user?.fullName}}
+                </div>  
+
+            </div>
+        </div>
+    </div>
+</a>
+<div class="btn-save" (click)="toggleFavorite()">
+    <i class="fa-heart"
+        [ngClass]="{'fa-solid': isFavorite, 'fa-regular': !isFavorite }"></i>
+</div>

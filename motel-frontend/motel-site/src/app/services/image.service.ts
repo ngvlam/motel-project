@@ -31,4 +31,7 @@ export class ImageService {
     return this.http.delete(this.apiUrl + '/image/post/' + postId);
   }
  
+  áda() {
+    
+  }
 }

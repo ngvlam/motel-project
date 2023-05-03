@@ -4,6 +4,7 @@ import { Page } from '../model/page';
 import { Post } from '../model/post';
 import { Observable } from 'rxjs';
 import { SearchForm } from '../model/searchForm';
+import { FavoritesService } from './favorites.service';
 
 
 @Injectable({
@@ -13,7 +14,7 @@ export class PostService {
   private apiUrl = '/api';
   private searchUrl?: string;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private favoritesService: FavoritesService) { 
 
   }
 

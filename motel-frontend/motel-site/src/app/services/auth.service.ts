@@ -6,6 +6,7 @@ import { User } from '../model/user';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { Account } from '../model/account';
 
 
 @Injectable({
@@ -61,6 +62,10 @@ private apiUrl = '/api';
     const decodedToken = this.jwtHelper.decodeToken(jwtToken);
     const userId = decodedToken?.id || '';
     return userId;
+  }
+
+  signup(account: Account) : Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/auth/signup`, account)
   }
 
   // getUserInfo(): any {

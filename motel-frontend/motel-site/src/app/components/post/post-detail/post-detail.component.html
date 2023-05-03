@@ -69,7 +69,7 @@
                         <div class="col-md-6">
                           <div class="spec-item">
                             <span class="spec-icon"><i class="fas fa-parking"></i></span>
-                            <span class="spec-title">Bãi đỗ xe</span>
+                            <span class="spec-title">Chỗ để xe</span>
                             <span class="spec-value">
                               <span *ngIf="post.accommodation?.parking">Có</span>
                               <span *ngIf="!post.accommodation?.parking">Không</span>
@@ -90,15 +90,6 @@
                             <span class="spec-title">Điều hòa</span>
                             <span class="spec-value" *ngIf="post.accommodation?.airConditioner">Có</span>
                             <span class="spec-value" *ngIf="!post.accommodation?.airConditioner">Không</span>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="spec-item">
-                            <span class="spec-icon"><i class="fas fa-parking"></i></span>
-                            <span class="spec-title">Chỗ để xe</span>
-                            <span class="spec-value" *ngIf="post.accommodation?.parking">Có</span>
-                            <span class="spec-value" *ngIf="!post.accommodation?.parking">Không</span>
-
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -148,7 +139,7 @@
                     <span class="d-block term">Người đăng </span>
                     <b class="detail" ><a href="javascript:void(0)">{{ post.user?.fullName}}</a></b>
                     <div class="btn-contact">
-                        <a class="phone" href="tel:{{post.user?.phone}}"><i class="fa-solid fa-phone"></i>  {{post.user?.phone}}</a>
+                        <a class="phone" href="tel:{{post.user?.phone}}"><i class="fa-solid fa-phone"></i>  {{post.user!.phone | phoneHide:4:2}}</a>
                     </div>
                     <div class="btn-contact d-flex">
                         <a href="mailto:{{post.user?.email}}">Gửi email</a>

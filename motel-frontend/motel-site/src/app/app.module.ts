@@ -33,7 +33,12 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptor } from './auth/intercept/AuthInterceptor';
 import { CookieService } from 'ngx-cookie-service';
 import { LogoutComponent } from './components/logout/logout.component';
-import { AuthGuard } from './auth/authguard';
+import { PhoneHidePipe } from './pipe/phone-hide.pipe'; // import the pipe here
+import { PostItemComponent } from './components/post/post-item/post-item.component';
+import { FavoritePostComponent } from './components/post/favorite-post/favorite-post.component';
+import { SideBarFilterComponent } from './components/layout/side-bar-filter/side-bar-filter.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +60,12 @@ import { AuthGuard } from './auth/authguard';
     ConfirmationModalComponent,
     LoginComponent,
     LogoutComponent,
+    PostItemComponent,
+    FavoritePostComponent,
+    SideBarFilterComponent,
+    SignupComponent,
+    PaymentComponent,
+    PhoneHidePipe
   ],
   imports: [
     BrowserModule,

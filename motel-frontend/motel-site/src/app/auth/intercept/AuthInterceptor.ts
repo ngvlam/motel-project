@@ -26,6 +26,18 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private needsAuthorization(request: HttpRequest<any>): boolean {
-    return request.method === 'POST' || request.method === 'PUT' || request.method === 'DELETE';
+    const url = request.url.toLowerCase();
+    const isApiRequest = url.startsWith('/api');
+    const isSensitiveMethod = request.method === 'POST' || request.method === 'PUT' || request.method === 'DELETE';
+    const sensitiveData = ['credit_card'];
+
+    const requestBody = JSON.stringify(request.body);
+
+    // if(request.method === 'POST' && url.includes('auth')) {
+    //   return false;
+    // }
+
+    const hasSensitiveData = sensitiveData.some(data => requestBody.includes(data));
+    return isApiRequest && (isSensitiveMethod || hasSensitiveData);
   }
 }

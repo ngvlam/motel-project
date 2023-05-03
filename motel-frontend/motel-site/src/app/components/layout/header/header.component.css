@@ -106,3 +106,21 @@ img.avatar {
     z-index: 2;
 }
 
+.favorite-post-link {
+    position: relative;
+}
+
+.total-favorite-post {
+    position: absolute;
+    right: 8px;
+    top: 2px;
+    line-height: 10px;
+    border-radius: 30%;
+    width: 12px;
+    height: 12px;
+    background-color: #E03C31;
+    color: #fff;
+    font-size: 10px;
+    display: block;
+    padding: 2px;
+}

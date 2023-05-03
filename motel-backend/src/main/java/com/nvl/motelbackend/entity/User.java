@@ -49,6 +49,9 @@ public class User {
             orphanRemoval = true)
     private Set<Post> posts = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<FavoritePost> favoritePosts = new HashSet<>();
+
     @OneToMany(cascade = CascadeType.ALL,
             mappedBy = "user",
             orphanRemoval = true)

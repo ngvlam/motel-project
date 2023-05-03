@@ -143,7 +143,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO updatePost(PostDTO postDto, Long id, Authentication authentication) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+
         PostUtils.checkPostUpdateAuthorization(post, authentication);
+
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         post.setApproved(false);

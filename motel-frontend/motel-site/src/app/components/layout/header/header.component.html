@@ -40,13 +40,14 @@
             
             <div class="login-group me-4 d-flex align-items-center">
                 <div class="all-btn  d-flex align-items-center">
-                    <a href="" class="favorite-post-link" title="Danh sách tin đã lưu">
+                    <a routerLink="tin-yeu-thich" class="favorite-post-link" title="Danh sách tin đã lưu">
                         <i class="heart-icon d-block fa-regular fa-heart"></i>
+                        <span class="total-favorite-post">{{totalQuantityFavorite}}</span>
                     </a>
 
                     <a *ngIf="!user" routerLink="login">Đăng nhập</a>
                     <span *ngIf="!user" class="line"></span>
-                    <a *ngIf="!user" href="">Đăng ký</a>
+                    <a *ngIf="!user" routerLink="signup">Đăng ký</a>
 
                     <div *ngIf="user" class="welcome-user" (click)="toggleDropdown()">
                         <img [src]="avatar" class="avatar">
@@ -56,7 +57,7 @@
                             <ul>
                                 <li><a routerLink="trang-ca-nhan/danh-sach-tin-dang">Quản lý tin đăng</a></li>
                                 <li><a routerLink="trang-ca-nhan/thong-tin-ca-nhan">Thay đổi thông tin cá nhân</a></li>
-                                <li><a href="trang-ca-nha/nap-tien">Nạp tiền</a></li>
+                                <li><a href="trang-ca-nhan/nap-tien">Nạp tiền</a></li>
                                 <hr>
                                 <li><a routerLink="/logout">Đăng xuất</a></li>
                             </ul>

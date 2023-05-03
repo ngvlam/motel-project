@@ -67,8 +67,9 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-        @OneToMany(cascade = CascadeType.ALL,
+    @OneToMany(cascade = CascadeType.ALL,
             mappedBy = "post",
             orphanRemoval = true)
     private List<Action> actions = new ArrayList<>();
+
 }

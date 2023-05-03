@@ -5,7 +5,9 @@
             <div class="profile-nav col-md-3">
                 <div class="panel">
                     <div class="user-heading round">
-                        <img [src]="avatar" alt="Ảnh đại diện">
+                        <a href="javascript:void(0)">
+                            <img [src]="avatar" alt="Ảnh đại diện">
+                        </a>
                         <h1>{{user.fullName}}</h1>
                         <p>{{user.email}}</p>
                         <b *ngIf="role == 'ROLE_USER'">Khách hàng</b>
@@ -50,9 +52,7 @@
                                             <span *ngIf="action.action == 'CREATE'"> đang chờ kiểm duyệt</span>
                                         </p>
                                    </div>
-                                   <ng-template #more>
-                                    <a href="javascript:void(0)" (click)="loadAction(user.id)">Xem thêm...</a>
-                                  </ng-template>
+                                   <a href="javascript:void(0)" *ngIf="!isActionLast" (click)="loadAction(user.id)">Xem thêm...</a>
                                   </div>
                                 </ng-template>
                             </li>

@@ -10,16 +10,21 @@ import { AccountManagementComponent } from './components/profile/account-managem
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { AuthGuard } from './auth/authguard';
+import { FavoritePostComponent } from './components/post/favorite-post/favorite-post.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 const routes: Routes = [
-
+{path: 'thanh-toan', component: PaymentComponent},
   {path: 'post/:id', component: PostDetailComponent},
+  {path: 'tin-yeu-thich', component: FavoritePostComponent},
   {path: 'dang-tin', component: CreatePostComponent, canActivate: [AuthGuard]},
   {path: 'filter', component: FilterPageComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
+  {path: 'signup', component:SignupComponent},
   {path: 'trang-ca-nhan', component: ProfileComponent, canActivate: [AuthGuard],
     children: [
       {
@@ -30,7 +35,6 @@ const routes: Routes = [
       {
         path: 'thong-tin-ca-nhan',
         component: AccountManagementComponent, // another child route component that the router renders
-
       },
     ],}
 ];

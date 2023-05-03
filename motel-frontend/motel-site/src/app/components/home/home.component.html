@@ -19,118 +19,22 @@
 
                 <div class="post-section">
                     <div class="post-list">
-                        <div *ngFor="let post of posts | paginate: { itemsPerPage: 10, currentPage: page.number+1, totalItems: page.totalElements }" class="post-item">
-                            <a routerLink="/post/{{post.id}}" class="d-flex align-items-center">
-                                <div class="thumbnail">
-                                    <img [src]="post.imageStrings[0]">
-                                    <span class="number-image">
-                                        <i class="fa-regular fa-image"></i>
-                                        <span> {{post.imageStrings.length}}</span>
-                                    </span>
-                                    <div *ngIf="post.priority==1" class="ribbon-wrapper">
-                                        <div class="ribbon">Ưu tiên<i class="fa-solid fa-medal"></i></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="post-info w-100">
-                                    <div class="post-content">
-                                        <h3 class="post-title">{{post.title}}</h3>
-                                        <b style="float:right">
-                                            <a href="" *ngIf="post.accommodation?.categoryId == 1">Phòng trọ</a>
-                                            <a href="" *ngIf="post.accommodation?.categoryId == 2">Nhà nguyên căn</a>
-                                            <a href="" *ngIf="post.accommodation?.categoryId == 3">Chung cư, CCMN</a>
-                                            <a href="" *ngIf="post.accommodation?.categoryId == 4">Tìm người ở ghép</a>
-                                        </b>
-                                        <div class="post-config">
-                                            <span class="price me-3">{{post.accommodation.price/1000000 | number:'1.1-1'}} triệu/tháng</span>
-                                            <i class="fa-solid fa-chart-area"></i>
-                                            <span class="acreage ms-1">{{post.accommodation.acreage}} m<sup>2</sup></span>
-                                        </div>
-                                        <div class="post-location">
-                                            <i class="fa-solid fa-location-dot"></i>
-                                            <span class="location ms-2">{{post.accommodation.address}}</span>
-                                        </div>
-                                        <div class="contact mt-3 d-flex justify-content-between">
-                                            <div class="info">
-                                                {{post.user?.fullName}}
-                                            </div>
-                                            <a class="btn-save">
-                                                <i class="fa-regular fa-heart"></i>
-                                            </a>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            </a>
+                        <div *ngFor="let post of posts | paginate: { itemsPerPage: 10, currentPage: page.number+1, totalItems: page.totalElements }"
+                            class="post-item">
+                            <app-post-item [post]="post"></app-post-item>
                         </div>
                     </div>
                     <div class="text-center">
-                        <pagination-controls (pageChange)="getAllPost($event)"
-                                            [maxSize]="5"
-                                                                                >
+                        <pagination-controls (pageChange)="getAllPost($event)" [maxSize]="5">
 
                         </pagination-controls>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="filter-box">
-                    <h4 class="filter-title">Xem theo khoảng giá</h4>
-                    <div class="content">
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{maxPrice: 1000000}">Dưới 1 triệu</a>
-                        </h5>
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{minPrice: 1000000, maxPrice: 3000000}">Từ 1 đến 3 triệu</a>
-                        </h5>
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{minPrice: 1000000, maxPrice: 5000000}">Từ 3 đến 5 triệu</a>
-                        </h5>
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{minPrice: 1000000, maxPrice: 7000000}">Từ 5 đến 10 triệu</a>
-                        </h5>
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{minPrice: 10000000}">Từ 10 triệu trở lên</a>
-                        </h5>
-                    </div>
-                </div>
-
-                <div class="filter-box">
-                    <h4 class="filter-title">Xem theo diện tích</h4>
-                    <div class="content">
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{maxAcreage: 20}">Dưới 20 m<sup>2</sup></a>
-                        </h5>
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{minAcreage: 20, maxAcreage: 30}">Từ 20 m<sup>2</sup> đến 30 m<sup>2</sup></a>
-                        </h5>
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{minAcreage: 30, maxAcreage: 50}">Từ 30 m<sup>2</sup> đến 50 m<sup>2</sup></a>
-                        </h5>
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{minAcreage: 50, maxAcreage: 70}">Từ 50 m<sup>2</sup> đến 70 m<sup>2</sup></a>
-                        </h5>
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{minAcreage: 70}">Từ 70 m<sup>2</sup> trở lên</a>
-                        </h5>
-                    </div>
-                </div>
-
-                <div class="filter-box">
-                    <h4 class="filter-title">Xem theo khu vực</h4>
-                    <div class="content">
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{address: 'Hà Nội'}">Hà Nội</a>
-                        </h5>
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{address: 'Đã Nẵng'}">Đã Nẵng</a>
-                        </h5>
-                        <h5 class="item">
-                            <a [routerLink]="['/filter']" [queryParams]="{address: 'Hồ Chí Minh'}">Thành phố Hồ Chí Minh</a>
-                        </h5>
-                    </div>
-                </div>
+                <app-side-bar-filter></app-side-bar-filter>
             </div>
+            
         </div>
     </div>
 </div>
