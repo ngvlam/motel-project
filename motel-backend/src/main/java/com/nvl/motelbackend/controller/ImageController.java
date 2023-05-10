@@ -41,7 +41,7 @@ public class ImageController {
     }
 
     @GetMapping("/image/post/{postId}")
-    public List<ImageDTO> getImageDTOByIdPost(@PathVariable Long postId) {
+    public List<ImageDTO> getImageDTOByPostId(@PathVariable Long postId) {
         return imageService.getImageDTOByPostId(postId);
     }
 

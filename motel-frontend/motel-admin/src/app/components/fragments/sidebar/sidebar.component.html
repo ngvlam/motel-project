@@ -7,7 +7,7 @@
                 <li class="submenu"> <a routerLink="/posts"><i class="fa-solid fa-blog"></i> <span> Quản lý tin đăng </span> <span class="menu-arrow"></span></a>
                     
                 </li>
-                <li class="submenu"> <a routerLink="/users"><i class="fas fa-user"></i> <span> Quản lý người dùng </span> <span class="menu-arrow"></span></a>
+                <li class="submenu" *ngIf="role.includes('ROLE_ADMIN')" > <a routerLink="/users"><i class="fas fa-user"></i> <span> Quản lý người dùng </span> <span class="menu-arrow"></span></a>
                 </li>
                 <li class="submenu">
                     <a routerLink="/violate">
@@ -15,12 +15,12 @@
                         <span class="menu-arrow"></span>
                     </a>
                 </li>
-                <li class="submenu">
+                <!-- <li class="submenu">
                     <a routerLink="/activity">
                         <i class="fa-solid fa-calendar-days"></i><span> Hoạt động hệ thống </span> 
                         <span class="menu-arrow"></span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

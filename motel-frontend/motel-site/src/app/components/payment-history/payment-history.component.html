@@ -1,0 +1,29 @@
+<div class="d-flex flex-column w-100" style="background-color: rgb(249, 249, 249);  height: 90vh;">
+    <div class="page-wrapper">
+        <div class="d-flex justify-content-center">
+            <div class="page-right">
+                <h3>Lịch sử giao dịch</h3>
+                <div class="row mt-3">
+                    <table>
+                        <thead>
+                            <th>Mã giao dịch</th>
+                            <th>Thời gian tạo</th>
+                            <th>Số tiền</th>
+                            <th>Trạng thái</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let payment of payments">
+                                <td>{{payment.orderId}}</td>
+                                <td>{{payment.createdAt | date: 'dd/MM/yyyy HH:mm'}}</td>
+                                <td>{{payment.amount | thousandsSeparator}} đ</td>
+                                <td *ngIf="payment.status == '0'"><span class="label label-wait">Đang chờ</span></td>
+                                <td *ngIf="payment.status == '1'"><span class="label label-success">Thành công</span></td>
+                                <td *ngIf="payment.status == '2'"><span class="label label-danger">Thất bại</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

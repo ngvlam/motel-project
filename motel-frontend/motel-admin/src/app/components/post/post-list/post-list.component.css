@@ -24,11 +24,20 @@ animation: spin 1s infinite linear;
 to { transform: rotate(360deg); }
 }
 
+.post-title {
+    overflow: hidden;
+	-webkit-line-clamp: 2;  /* số dòng hiển thị */
+  	-webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
 .post-tag {
     font-size: 12px;
     color: #009688;
     border: 1px solid #009688;
+    display: inline-block;
 }
+
 
 .post-content {
     margin-top: 26px;

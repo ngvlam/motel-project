@@ -7,5 +7,6 @@ export class User {
     block!: boolean;
     b64!: string;
     roles!: string[];
+    balance!: number;
   }
   

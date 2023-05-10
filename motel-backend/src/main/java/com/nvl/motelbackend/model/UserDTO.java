@@ -26,6 +26,7 @@ public class UserDTO {
     private String b64;
 
     private String fileType;
+    private double balance;
 
     @Enumerated(EnumType.STRING)
     private List<RoleName> roles;

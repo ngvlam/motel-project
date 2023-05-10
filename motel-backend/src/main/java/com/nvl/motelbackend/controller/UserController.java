@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.AbstractMap;
 import java.util.List;
 
-@Api(value = "CRUD user REST APIs")
+@Api(value = "Rest API người dùng")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -53,7 +53,6 @@ public class UserController {
 
     @GetMapping("/{id}/avatar")
     public AbstractMap.SimpleEntry<String, String> getAvatar(@PathVariable("id") Long id) {
-//        if (!validRequest(auth, id)) throw new AccessDeniedException("Access dined");
         return new AbstractMap.SimpleEntry<>("data", userService.getUserById(id).getB64());
     }
 

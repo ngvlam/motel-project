@@ -6,9 +6,9 @@
   </div>
   <div class="modal-body">
     <div class="form-group mt-1" *ngFor="let report of reportList">
-        <input type="checkbox" name="{{report}}" [(ngModel)]="selectedReport[report]">
+        <input type="checkbox" name="{{report}}" [(ngModel)]="report.checked">
         <label>
-            {{report}}
+            {{report.label}}
         </label>
     </div>
 

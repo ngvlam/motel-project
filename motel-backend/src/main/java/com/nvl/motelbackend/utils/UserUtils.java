@@ -7,11 +7,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class UserUtils {
+    public static void checkUserOwnerShip(Long userId, Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        if (!userId.equals(userDetails.getId())) {
+            throw new MotelAPIException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+    }
     public static void checkUpdateProfileAuthorization(Long userId, Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
             if (!userId.equals(userDetails.getId()) && !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-                throw new MotelAPIException(HttpStatus.FORBIDDEN, "Access dined");
+                throw new MotelAPIException(HttpStatus.FORBIDDEN, "Access denied");
             }
     }
 }

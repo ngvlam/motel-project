@@ -38,6 +38,8 @@ public class User {
 
     private boolean block;
 
+    private double balance;
+
     @Lob
     private String b64;
 

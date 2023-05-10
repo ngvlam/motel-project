@@ -1,0 +1,43 @@
+<div class="d-flex flex-column w-100" style="background-color: rgb(249, 249, 249);  height: 90vh;">
+    <div class="page-wrapper">
+        <div class="d-flex justify-content-center">
+            <div class="page-right">
+                <h3>Kết quả thanh toán</h3>
+                <div class="row mt-3">
+                    <table>
+                        <tr>
+                            <th>Mã giao dịch:</th>
+                            <td>{{transactionNo}}</td>
+                          </tr>
+                        <tr>
+                          <th>Số hóa đơn:</th>
+                          <td>{{orderId}}</td>
+                        </tr>
+                        <tr>
+                          <th>Số tiền:</th>
+                          <td>{{amount | thousandsSeparator}}</td>
+                        </tr>
+                        <tr>
+                          <th>Hình thức thanh toán:</th>
+                          <td>{{type}}</td>
+                        </tr>
+                        <tr>
+                            <th>BankCode: </th>
+                            <td>{{BankCode}}</td>
+                        </tr>
+                        <tr>
+                            <th>Ngày giao dịch: </th>
+                            <td>{{datePay}}</td>
+                        </tr>
+                        <tr>
+                            <th>Kết quả: </th>
+                            <td style="color: blue">
+                                <b>{{resultPayment}}</b>
+                            </td>
+                        </tr>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

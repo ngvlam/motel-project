@@ -3,18 +3,6 @@
 </div>
 <section style="background-color: #eee;">
     <div class="container py-5">
-      <!-- <div class="d-flex justify-content-end">
-        <div class="">
-          <span>Danh mục: </span>
-        <select #mySelect class="custom-select w-50 float-right" (change)="filterPostByCategory(mySelect.value)" >
-          <option value="">Tất cả</option>
-          <option value="1">Phòng trọ</option>
-          <option value="2">Tìm người ở ghép</option>
-          <option value="3">Nhà nguyên căn</option>
-          <option value="4">Chung cư, CCMN</option>
-        </select>
-        </div>
-      </div> -->
       <div *ngIf="posts.length <= 0" class="alert alert-warning col-md-12" role="alert">
         Không có bài đăng nào
       </div>
@@ -40,7 +28,7 @@
                   </div>
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-6">
-                  <h5>{{post.title}} <span *ngIf="post.priority == 1"  class="post-tag"><small class="fas fa-medal"></small> Tin ưu tiên</span></h5>
+                  <h5 class="post-title">{{post.title}} <span *ngIf="post.priority == 1"  class="post-tag"><small class="fas fa-medal"></small> Tin ưu tiên</span></h5>
                   
                   <div class="post-content">
                     <div class="container">

@@ -135,6 +135,8 @@ export class UserListComponent implements OnInit{
     }
   }
 
+
+
   updatePageSize(pageSize: string) {
     this.page.size = Number(pageSize);
     this.page.number = 1;

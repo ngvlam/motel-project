@@ -8,7 +8,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <div class="mt-5">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-md-flex justify-content-between">
                             <h4 class="card-title float-left mt-2">Danh sách người dùng</h4>
                             <div class="">
                                 <div class="search-container d-inline-block">
@@ -16,7 +16,7 @@
                                     <span class="search-icon" [ngClass]="{'hidden': searchText}"><i class="fa fa-search"></i></span>
                                     <button class="clear-button" *ngIf="searchText" (click)="onClearButtonClick()"><i class="fa fa-times"></i></button>
                                 </div>
-                                <a routerLink="/users/add" class="btn btn-primary float-right veiwbutton ml-3">Thêm người dùng</a> 
+                                <a routerLink="/users/add" class="btn-add btn btn-primary float-right veiwbutton ml-3">Thêm người dùng</a> 
                             </div>
                         </div>
                     </div>
@@ -148,18 +148,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="delete_asset" class="modal fade delete-modal" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body text-center"> <img th:src="@{/img/sent.png}" alt="" width="50" height="46">
-                    <h3 class="delete_class">Bạn chắc chắn muốn xóa?</h3>
-                    <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Hủy</a>
-                        <button href="submit" class="btn btn-danger btnConfirm">Xác nhận</button>
                     </div>
                 </div>
             </div>

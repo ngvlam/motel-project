@@ -29,6 +29,5 @@ public class FavoritePost {
     @Column(name = "added_timestamp")
     private LocalDateTime addedTimestamp;
 
-    // constructors, getters, and setters
 
 }

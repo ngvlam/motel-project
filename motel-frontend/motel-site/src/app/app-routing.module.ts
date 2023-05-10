@@ -13,9 +13,16 @@ import { AuthGuard } from './auth/authguard';
 import { FavoritePostComponent } from './components/post/favorite-post/favorite-post.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { TestNotComponent } from './components/test-not/test-not.component';
+import { NotificationManagementComponent } from './components/profile/notification-management/notification-management.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { DepositComponent } from './components/profile/deposit/deposit.component';
+import { PaymentResultComponent } from './components/profile/payment-result/payment-result.component';
+import { PaymentHistoryComponent } from './components/payment-history/payment-history.component';
 
 const routes: Routes = [
 {path: 'thanh-toan', component: PaymentComponent},
+{path: 'a', component: TestNotComponent},
   {path: 'post/:id', component: PostDetailComponent},
   {path: 'tin-yeu-thich', component: FavoritePostComponent},
   {path: 'dang-tin', component: CreatePostComponent, canActivate: [AuthGuard]},
@@ -25,6 +32,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
   {path: 'signup', component:SignupComponent},
+  {path: 'chat', component: ChatComponent},
   {path: 'trang-ca-nhan', component: ProfileComponent, canActivate: [AuthGuard],
     children: [
       {
@@ -36,6 +44,25 @@ const routes: Routes = [
         path: 'thong-tin-ca-nhan',
         component: AccountManagementComponent, // another child route component that the router renders
       },
+      {
+        path: 'thong-bao',
+        component: NotificationManagementComponent
+      },
+
+      {
+        path: 'nap-tien',
+        component: DepositComponent
+      },
+
+      {
+        path: 'ket-qua-thanh-toan',
+        component: PaymentResultComponent
+      },
+
+      {
+        path: 'lich-su-thanh-toan',
+        component: PaymentHistoryComponent
+      }
     ],}
 ];
 

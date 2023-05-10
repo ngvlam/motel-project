@@ -15,12 +15,12 @@ export class UserService {
   }
 
   getAllApproverAccounts(page: number, pageSize: number, sort:string, accountType: string[]): Observable<Page<User>> {
-    return this.http.get<Page<User>>(`${this.apiUrl}/users?page=${page}&roles=${accountType.join(',')}`
+    return this.http.get<Page<User>>(`${this.apiUrl}/users?roles=${accountType.join(',')}`
     + `&page=${page}&size=${pageSize}&sort=${sort}`);
   }
 
   getAllApproverSearchAccounts(page: number, pageSize: number, query:string, sort:string, accountType: string[]): Observable<Page<User>> {
-    return this.http.get<Page<User>>(`${this.apiUrl}/users?page=${page}&roles=${accountType.join(',')}`
+    return this.http.get<Page<User>>(`${this.apiUrl}/users?roles=${accountType.join(',')}`
     + `&page=${page}&size=${pageSize}&sort=${sort}&query=${query}`);
   }
 

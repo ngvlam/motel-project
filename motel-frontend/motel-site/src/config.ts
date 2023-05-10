@@ -5,6 +5,6 @@ export const vnpayConfig = {
      secretKey : 'OPYZCTAARJHQJYOAFFICVZONYGBHOISD',
      vnpUrl : 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html',
      vnpApi :"https://sandbox.vnpayment.vn/merchant_webapi/api/transaction",
-     returnUrl : 'http://localhost:4000/home'
+     returnUrl : 'http://localhost:4200/trang-ca-nhan/ket-qua-thanh-toan'
 
 }

@@ -64,6 +64,13 @@ private apiUrl = '/api';
     return userId;
   }
 
+  getUserEmail() {
+    const jwtToken = this.cookieService.get('access_token');
+    const decodedToken = this.jwtHelper.decodeToken(jwtToken);
+    const userEmail = decodedToken?.sub || '';
+    return userEmail;
+  }
+
   signup(account: Account) : Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/auth/signup`, account)
   }

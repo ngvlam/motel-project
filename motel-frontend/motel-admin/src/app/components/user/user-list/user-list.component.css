@@ -92,3 +92,39 @@ ngb-pagination ::ng-deep ul > li.active > a {
   .clear-button:hover {
     color: red;
   }
+
+
+  @media only screen and (min-device-width:320px)and (max-device-width:480px) {
+    .recordPerPage {
+        display: none;
+    }
+
+    ngb-pagination ::ng-deep .pagination{
+        justify-content: center;
+    }
+
+    .card-title {
+        width: 100%;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+
+    .btn-add {
+        margin-top: 24px;
+    }
+
+    .checkbox-list {
+        display: flex;
+    }
+    
+    .checkbox-list .form-check {
+        flex: 0 0 25%;
+        max-width: 20%;
+    }
+  }

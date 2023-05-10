@@ -3,6 +3,9 @@
     --text-color: #2c2c2c;
     --grey-color: #999;
     --select2-single-height: 32px;
+    --success: #5cb85c;
+    --wait: #f0ad4e;
+    --danger: #d9534f;
 }
 
 ul{

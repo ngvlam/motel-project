@@ -1,0 +1,54 @@
+.page-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0px;
+    padding-left: 280px;
+    height: auto;
+    position: relative;
+    top: 60px;
+    margin-bottom: 140px;
+}
+
+.page-right {
+    width: 696px;
+    padding: 24px;
+    background-color: #fff;
+    margin-top: 20px;
+}
+
+table {
+    
+}
+
+/* table, tr{
+    border: 1px solid;
+} */
+
+th, td {
+    padding: 12px;
+}
+
+td {
+    border-top: 1px solid #ddd;
+}
+
+table>tbody>tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.label-wait {
+    color: var(--wait);
+}
+
+.label {
+    font-weight: 500;
+}
+
+.label-success {
+    color: var(--success);
+}
+
+.label-danger {
+    color: var(--danger);
+}

@@ -39,6 +39,15 @@ import { FavoritePostComponent } from './components/post/favorite-post/favorite-
 import { SideBarFilterComponent } from './components/layout/side-bar-filter/side-bar-filter.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { TestNotComponent } from './components/test-not/test-not.component';
+import { TimeAgoPipe } from './pipe/time-ago.pipe';
+import { NotificationManagementComponent } from './components/profile/notification-management/notification-management.component';
+import { EditPostComponent } from './components/post/edit-post/edit-post.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { DepositComponent } from './components/profile/deposit/deposit.component';
+import { PaymentResultComponent } from './components/profile/payment-result/payment-result.component';
+import { PaymentHistoryComponent } from './components/payment-history/payment-history.component';
+import { ThousandsSeparatorPipe } from './pipe/thousands-separator.pipe';
 
 @NgModule({
   declarations: [
@@ -65,7 +74,16 @@ import { PaymentComponent } from './components/payment/payment.component';
     SideBarFilterComponent,
     SignupComponent,
     PaymentComponent,
-    PhoneHidePipe
+    PhoneHidePipe,
+    TimeAgoPipe,
+    ThousandsSeparatorPipe,
+    TestNotComponent,
+    NotificationManagementComponent,
+    EditPostComponent,
+    ChatComponent,
+    DepositComponent,
+    PaymentResultComponent,
+    PaymentHistoryComponent
   ],
   imports: [
     BrowserModule,

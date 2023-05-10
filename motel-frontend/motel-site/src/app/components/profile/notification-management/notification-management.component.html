@@ -1,0 +1,40 @@
+<div class="d-flex flex-column w-100" style="background-color: rgb(249, 249, 249);">
+    <div class="page-wrapper">
+        <div class="d-flex justify-content-center">
+            <div class="page-right">
+                <h3>Quản lý thông báo</h3>
+                <div class="">
+                    <div class="d-flex justify-content-end">
+                        <select class="form-select" [(ngModel)]="seenSelect" (ngModelChange)="filterNotification()">
+                            <option value="">Tất cả</option>
+                            <option value="false">Thông báo chưa đọc</option>
+                            <option value="true">Thông báo đã đọc</option>
+                        </select>
+                    </div>
+                    <ul class="notification-list">
+                        <li *ngIf="notifications.length <=0">Hiện tại không có thông báo nào</li>
+                        <li [ngStyle]="{'background-color': (notification.seen)?'#FFFFFF':'#EDF2FA'}"
+                            *ngFor="let notification of notifications | paginate: { itemsPerPage: 10, currentPage: page.number+1, totalItems: page.totalElements }" class="notification-item"
+                            (click)="seen(notification)">
+                            <a routerLink="/post/{{notification.post.id}}" class="notification-link">
+                                <p class="message">
+                                    Bài đăng <b>{{notification.post.title}}</b> của bạn đã
+                                    <span *ngIf="notification.notificationName == notiName.APPROVE"
+                                        style="color: green"> được duyệt</span>
+                                    <span *ngIf="notification.notificationName == notiName.BLOCK"
+                                        style="color: red"> bị từ chối</span>
+                                </p>
+                                <span class="time-notif">{{notification.createdAt | timeAgo}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="text-center">
+                        <pagination-controls (pageChange)="getNotification($event)" [maxSize]="5">
+
+                        </pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

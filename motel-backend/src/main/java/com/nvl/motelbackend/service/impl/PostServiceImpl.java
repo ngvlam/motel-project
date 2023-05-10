@@ -1,5 +1,6 @@
 package com.nvl.motelbackend.service.impl;
 
+import com.nvl.motelbackend.config.NotificationEvent;
 import com.nvl.motelbackend.entity.Accommodation;
 import com.nvl.motelbackend.entity.ActionName;
 import com.nvl.motelbackend.entity.Post;
@@ -182,12 +183,16 @@ public class PostServiceImpl implements PostService {
             post.setApproved(true);
             post.setNotApproved(false);
             actionService.createAction(post, user, ActionName.APPROVE);
+            applicationEventPublisher.publishEvent(new NotificationEvent(this, post));
+
         }
         else {
             User user = userRepository.findByEmail(usernameApproved).orElseThrow(() -> new MotelAPIException(HttpStatus.NOT_FOUND, "Không tìm thấy tài khoản: " + usernameApproved));
             post.setApproved(false);
             post.setNotApproved(true);
             actionService.createAction(post, user, ActionName.BLOCK);
+            applicationEventPublisher.publishEvent(new NotificationEvent(this, post));
+
         }
 
         Post updatedPost = postRepository.save(post);

@@ -1,5 +1,6 @@
 package com.nvl.motelbackend.controller;
 
+import com.nvl.motelbackend.interceptor.RateLimit;
 import com.nvl.motelbackend.model.PostDTO;
 import com.nvl.motelbackend.model.SearchDTO;
 import com.nvl.motelbackend.service.PostService;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Api(value = "CRUD Rest APIs for Post resources")
+@Api(value = "Rest API bài đăng")
 @RestController
 @RequestMapping("/api")
 public class PostController {

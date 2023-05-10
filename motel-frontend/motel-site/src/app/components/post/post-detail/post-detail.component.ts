@@ -46,8 +46,13 @@ export class PostDetailComponent implements OnInit{
   ngOnInit(): void {
     this.route.url.subscribe(url => {
       const {id} = this.route.snapshot.params;
+      this.getPostById(id)
+      this.marker.position = this.center
+    })
+  }
 
-      this.postService.getPostById(id)
+  getPostById(id: number) {
+    this.postService.getPostById(id)
       .subscribe(data => {
         this.post = data;
         this.center.lat = this.post.accommodation.xcoordinate!;
@@ -57,11 +62,12 @@ export class PostDetailComponent implements OnInit{
         else
           this.avatar = defaultAvatar;
       });
-      this.marker.position = this.center
-    })
   }
 
   openModalReport() {
-    this.modalService.show(ReportModalComponent)
+    const initialState = {
+      postId: this.post.id
+    };
+    this.modalService.show(ReportModalComponent, {initialState})
   }
 }

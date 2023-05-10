@@ -1,13 +1,13 @@
 <div class="header-box">
     <header class="w-100">
-        <div class="w-100 nav-box d-flex justify-content-between">
+        <div class="w-100 nav-box d-md-flex justify-content-between">
             <div class="menu-with-logo d-flex align-items-center">
                 <div class="logo ms-3">
                     <a routerLink="">
                         <img src="/assets/logo.png" alt="" class="logo-img">
                     </a>
                 </div>
-                <ul class="menu d-flex">
+                <ul class="menu d-md-flex">
                     <li>
                         <a routerLink="">
                             <span class="text"> Trang chủ</span>
@@ -37,19 +37,58 @@
                     </li>
                 </ul>
             </div>
-            
+
             <div class="login-group me-4 d-flex align-items-center">
                 <div class="all-btn  d-flex align-items-center">
                     <a routerLink="tin-yeu-thich" class="favorite-post-link" title="Danh sách tin đã lưu">
                         <i class="heart-icon d-block fa-regular fa-heart"></i>
-                        <span class="total-favorite-post">{{totalQuantityFavorite}}</span>
+                        <span class="total-favorite-post"
+                            *ngIf="totalQuantityFavorite != 0">{{totalQuantityFavorite}}</span>
                     </a>
+
+                    <div *ngIf="user" class="notification-box">
+                        <a #dropdownNotif (click)="toggleDropdownNotif()" href="javascript:void(0)"
+                            class="favorite-post-link" title="Thông báo">
+                            <i class="heart-icon d-block fa-regular fa-bell"></i>
+                            <span class="total-favorite-post"
+                                *ngIf="totalQuantityNotifUnseen!=0">{{totalQuantityNotifUnseen}}</span>
+                        </a>
+                        <div class="dropdown" id="dropdownNotif" *ngIf="showDropdownNotif">
+                            <p class="header">Thông báo</p>
+
+                            <ul class="notification-list">
+                                <li [ngStyle]="{'background-color': (notification.seen)?'#FFFFFF':'#EDF2FA'}"
+                                    *ngFor="let notification of notifications" class="notification-item"
+                                    (click)="seen(notification)">
+                                    <a routerLink="/post/{{notification.post.id}}" class="notification-link">
+                                        <p class="message">
+                                            Bài đăng <b>{{notification.post.title}}</b> của bạn đã
+                                            <span *ngIf="notification.notificationName == notiName.APPROVE"
+                                                style="color: green"> được duyệt</span>
+                                            <span *ngIf="notification.notificationName == notiName.BLOCK"
+                                                style="color: red"> bị từ chối</span>
+                                        </p>
+                                        <span class="time-notif">{{notification.createdAt | timeAgo}}</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div *ngIf="totalQuantityNotifUnseen==0" class="empty-notif-icon">
+                                <img src="https://staticfile.batdongsan.com.vn/images/empty-noti.svg" alt="no data">
+                            </div>
+
+                            <a href="" class="notif-link" routerLink="/trang-ca-nhan/thong-bao">
+                                Xem tất cả
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
 
                     <a *ngIf="!user" routerLink="login">Đăng nhập</a>
                     <span *ngIf="!user" class="line"></span>
                     <a *ngIf="!user" routerLink="signup">Đăng ký</a>
 
-                    <div *ngIf="user" class="welcome-user" (click)="toggleDropdown()">
+                    <div *ngIf="user" class="welcome-user" #dropdown (click)="toggleDropdown()">
                         <img [src]="avatar" class="avatar">
                         <div class="user-name">{{user.fullName}}</div>
                         <i class="fa-solid fa-angle-down"></i>

@@ -98,9 +98,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateProfile(UserDTO userDTO, long id, Authentication authentication) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id", "User", id));
 
         UserUtils.checkUpdateProfileAuthorization(id, authentication);
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id", "User", id));
 
         user.setPhone(userDTO.getPhone());
         user.setFullName(userDTO.getFullName());
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
             throw new MotelAPIException(HttpStatus.CONFLICT, "Email đã tồn tại");
         }
         User user = new User();
-
+        user.setBalance(20000);
         if (accountDTO.getFullName().trim().length() <= 0)
             user.setFullName(user.getEmail());
         else

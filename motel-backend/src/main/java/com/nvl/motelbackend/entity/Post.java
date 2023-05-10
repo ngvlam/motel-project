@@ -30,9 +30,10 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
     private boolean approved;
 
-    @Column(name = "not_approved")
+    @Column(name = "not_approved", nullable = false)
     private boolean notApproved;
 
     private boolean del;
@@ -40,11 +41,11 @@ public class Post {
     private int priority;
 
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @OneToMany(cascade = CascadeType.ALL,
@@ -72,4 +73,6 @@ public class Post {
             orphanRemoval = true)
     private List<Action> actions = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<ReportPost> reportPosts = new ArrayList<>();
 }

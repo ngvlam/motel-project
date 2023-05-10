@@ -124,3 +124,80 @@ img.avatar {
     display: block;
     padding: 2px;
 }
+
+.notification-box {
+    position: relative;
+}
+
+.notification-box .dropdown {
+    
+}
+
+#dropdownNotif {
+    position: absolute;
+    top: 46px;
+    left: -200px;
+    background-color: #fff;
+    width: 400px;
+    box-shadow: 0px 4px 10px rgba(182,182,182,0.18) !important;
+    z-index: 2;
+}
+
+#dropdownNotif .header {
+    text-align: center;
+    color: #2c2c2c;
+    padding: 12px 0;
+    border-bottom: 1px solid #f2f2f2;
+    font-size: 16px;
+    line-height: 24px !important;
+    font-weight: bold;
+}
+
+.empty-notif-icon {
+    padding: 24px 0;
+    border-bottom: 1px solid #f2f2f2;
+    text-align: center;
+}
+
+#dropdownNotif .notif-link {
+    display: block;
+    text-align: center;
+    color: var(--red-color);
+}
+
+.notification-list {
+    padding-left: 0;
+}
+
+.notification-link .message {
+    overflow: hidden;
+	-webkit-line-clamp: 2;  /* số dòng hiển thị */
+  	-webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    margin-bottom: 0;
+}
+
+.notification-link span.time-notif {
+    font-size: 12px;
+    color: #888;
+    font-weight: normal;
+}
+
+@media only screen and (min-device-width:320px)and (max-device-width:480px) {
+    .logo {
+        width: 100%;
+        text-align: center;
+    }
+
+    .menu {
+        display: none;
+    }
+
+    .welcome-user {
+        display: none;
+    }
+
+    .btn-post {
+        display: none;
+    }
+}

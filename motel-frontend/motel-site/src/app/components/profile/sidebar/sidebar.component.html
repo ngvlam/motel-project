@@ -1,5 +1,5 @@
 <div>
-    
+
     <div class="sidebar">
         <div class="d-flex flex-column align-items-center align-items-sm-start">
             <div class="info">
@@ -8,11 +8,11 @@
                     <span class="user-name">{{user?.fullName}}</span>
                 </a>
                 <div class="balance-box">
-                    Số dư: <b>20.000đ</b>
+                    Số dư: <b>{{user?.balance}} đ</b>
                 </div>
             </div>
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                
+
                 <li class="nav-item">
                     <a routerLink="danh-sach-tin-dang" class="nav-link align-middle px-0">
                         <i class="fa-solid fa-list"></i> <span class="ms-1 d-none d-sm-inline">Danh sách tin đăng</span>
@@ -21,22 +21,44 @@
 
                 <li class="nav-item">
                     <a routerLink="thong-tin-ca-nhan" class="nav-link px-0 align-middle">
-                        <i class="fa-regular fa-user"></i> <span class="ms-1 d-none d-sm-inline">Cài đặt tài khoản</span></a>
+                        <i class="fa-regular fa-user"></i> 
+                        <span class="ms-1 d-none d-sm-inline">Cài đặt tài khoản</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a routerLink="thong-bao" class="nav-link px-0 align-middle">
+                        <i class="fa-regular fa-bell"></i> 
+                        <span class="ms-1 d-none d-sm-inline">Quản lý thông báo</span>
+                    </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                        <i class="fa-solid fa-wallet"></i> <span class="ms-1 d-none d-sm-inline">Quản lý số dư</span> </a>
+                        <i class="fa-solid fa-wallet"></i> <span class="ms-1 d-none d-sm-inline">Quản lý số dư</span>
+                    </a>
                     <ul class="collapse hide nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                         <li class="w-100">
-                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Nạp tiền<nav></nav></span> </a>
+                            <a routerLink="nap-tien" class="nav-link px-0"> 
+                                <i class="fa-solid fa-money-bill-transfer"></i> 
+                                <span class="d-none d-sm-inline"> Nạp tiền<nav></nav>
+                                </span> 
+                            </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Lịch sử giao dịch</span> </a>
+                            <a routerLink="lich-su-thanh-toan" class="nav-link px-0"> 
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                <span class="d-none d-sm-inline"> Lịch sử giao dịch</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
-    
+                <!-- <li class="nav-item">
+                    <a routerLink="nap-tien" class="nav-link px-0 align-middle">
+                        <i class="fa-solid fa-wallet"></i> 
+                        <span class="ms-1 d-none d-sm-inline">Nạp tiền</span>
+                    </a>
+                </li> -->
             </ul>
         </div>
     </div>
