@@ -11,7 +11,7 @@ import { defaultAvatar } from 'src/config';
 })
 export class SidebarComponent implements OnInit{
 
-  user?: User;
+  user: User = new User();
   avatar: any = defaultAvatar;
 
   constructor(private authService: AuthService,

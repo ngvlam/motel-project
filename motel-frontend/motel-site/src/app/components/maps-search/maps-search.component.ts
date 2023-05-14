@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MapGeocoder } from '@angular/google-maps';
+import { MapGeocoder, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { Router } from '@angular/router';
 import { debounceTime } from 'rxjs';
 import { Page } from 'src/app/model/page';
@@ -88,29 +88,63 @@ export class MapsSearchComponent implements OnInit{
       this.marker.position = event.latLng.toJSON();
   }
 
-  optionsMarkerSearch = {
-    draggable: false,
-    animation: google.maps.Animation.BOUNCE
-  } 
-  markerSearch: google.maps.LatLngLiteral[] = [];
+  // optionsMarkerSearch = {
+  //   draggable: false,
+  //   animation: google.maps.Animation.DROP
+  // } 
+
+  // labelMarkerSearch = {
+  //   color: 'white',
+  //   text: ''
+  // }
+
+  // markerSearch: google.maps.LatLngLiteral[] = [];
+  markerSearch: any = []
+  infoContent = '';
 
   generateMarker() {
+    this.markerSearch = []
     this.searchForm.xCoordinate = this.marker.position.lat;
     this.searchForm.yCoordinate = this.marker.position.lng;
     this.searchForm.radius = this.radius
     this.postService.searchPost(this.searchForm, 0, '').subscribe({
       next: data => {
         this.page = data;
-        this.page.content.forEach(item => this.markerSearch.push({lat: +item.accommodation.xCoordinate, lng: +item.accommodation.yCoordinate}))
-        for(let i = 1; i < this.page.totalPages; i++) {
+        this.page.content.forEach(
+          item => {
+            this.markerSearch.push({
+              position: {
+                lat: +item.accommodation.xcoordinate,
+                lng: +item.accommodation.ycoordinate
+              },
+              label: {
+                color: 'red',
+                text: (item.accommodation.price/1000000).toString() + "triệu đ",
+                fontWeight: '600'
+              },
+              info: `<a href="http://localhost:4200/post/${item.id}">${item.title}</a>`,
+              options: { animation: google.maps.Animation.DROP },
+            })
+          })
+        // for(let i = 1; i < this.page.totalPages; i++) {
 
-        }
+        // }
+        console.log(this.markerSearch)
       },
       error: err => {
         console.log(err);
       }
     })
     
+  }
+
+  @ViewChild(MapInfoWindow, { static: false })
+  info!: MapInfoWindow;
+
+  
+  openInfo(marker: MapMarker, content: any) {
+    this.infoContent = content;
+    this.info.open(marker);
   }
 
   searchByMaps() {

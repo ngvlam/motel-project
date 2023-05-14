@@ -13,13 +13,9 @@
             </div>
             <div class="col-md-2">
                 <!-- <label for="">Chọn khu vực</label> -->
-                <select class="form-select" ngModel [ngModelOptions]="{standalone: true}" [(ngModel)]="searchForm.address">
-                    <option [ngValue]="undefined">Tất cả khu vực</option>
-                    <option value="Cầu Giấy">Cầu Giấy</option>
-                    <option value="Bắc Từ Liêm">Bắc Từ Liêm</option>
-                    <option value="Nam Từ Liêm">Nam Từ Liêm</option>
-                    <option value="Ba Đình">Ba Đình</option>
-                </select>
+                <select2 [data]="province" (update)="updateAdress($event)"
+                placeholder="-- Khu vực--">
+            </select2>
             </div>
             <div class="col-md-2">
                 <!-- <label for="">Chọn khu vực</label> -->

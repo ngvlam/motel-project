@@ -1,4 +1,4 @@
-<div class="d-flex flex-column w-100" style="background-color: rgb(249, 249, 249);  height: 90vh;">
+<div class="d-flex flex-column w-100" style="background-color: rgb(249, 249, 249);  height: 100vh;">
     <div class="page-wrapper">
         <div class="d-flex justify-content-center">
             <div class="page-right">
@@ -7,15 +7,15 @@
                     <table>
                         <tr>
                             <th>Mã giao dịch:</th>
-                            <td>{{transactionNo}}</td>
+                            <td>{{orderId}}</td>
                           </tr>
-                        <tr>
+                        <!-- <tr>
                           <th>Số hóa đơn:</th>
                           <td>{{orderId}}</td>
-                        </tr>
+                        </tr> -->
                         <tr>
                           <th>Số tiền:</th>
-                          <td>{{amount | thousandsSeparator}}</td>
+                          <td>{{amount | thousandsSeparator}} VND</td>
                         </tr>
                         <tr>
                           <th>Hình thức thanh toán:</th>

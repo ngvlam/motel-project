@@ -1,6 +1,7 @@
 package com.nvl.motelbackend.controller;
 
 import com.nvl.motelbackend.entity.Payment;
+import com.nvl.motelbackend.model.VNPayResponse;
 import com.nvl.motelbackend.security.CustomUserDetails;
 import com.nvl.motelbackend.service.PaymentService;
 import io.swagger.annotations.Api;
@@ -12,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Api("Rest Api thanh toán")
@@ -39,11 +42,24 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.addPayment(user.getId(), payment, encryptedKey, hashedSalt));
     }
 
+//    @ApiOperation("Cập nhật trạng thái thanh toán")
+//    @PutMapping("/payments/{orderId}/status/{status}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
+//    public ResponseEntity<Payment> updateStatus(Authentication authentication, @PathVariable String orderId, @PathVariable int status)  {
+//        return ResponseEntity.ok(paymentService.updatePayment(orderId, status));
+//    }
+//
+//    @PostMapping("/vnpay")
+//    public ResponseEntity<?> createVNPayPayment(@RequestBody VNPayRequest vnPayRequest) {
+//        String paymentUrl = paymentService.createPayment(vnPayRequest);
+//        return ResponseEntity.ok(paymentUrl);
+//    }
+
     @ApiOperation("Cập nhật trạng thái thanh toán")
-    @PutMapping("/payments/{orderId}/status/{status}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
-    public ResponseEntity<Payment> updateStatus(Authentication authentication, @PathVariable String orderId, @PathVariable int status)  {
-        return ResponseEntity.ok(paymentService.updatePayment(orderId, status));
+    @PutMapping("/payments/vnpay/response")
+    public ResponseEntity<?> handleVNPayResponse(HttpServletRequest request) throws UnsupportedEncodingException {
+        Payment payment = paymentService.handleResponse(request);
+        return ResponseEntity.ok(payment);
     }
 
     @GetMapping("/users/{userId}/payments")

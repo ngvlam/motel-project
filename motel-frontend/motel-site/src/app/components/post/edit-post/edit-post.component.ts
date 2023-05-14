@@ -1,13 +1,15 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapGeocoder } from '@angular/google-maps';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { debounceTime } from 'rxjs';
+import { debounceTime, firstValueFrom } from 'rxjs';
+import { Image } from 'src/app/model/image';
 import { Post } from 'src/app/model/post';
 import { ConfirmationModalService } from 'src/app/services/confirmation-modal.service';
 import { GeocodingApiServiceService } from 'src/app/services/geocoding-api-service.service';
+import { ImageHandlerService } from 'src/app/services/image-handler.service';
 import { ImageService } from 'src/app/services/image.service';
 import { PostService } from 'src/app/services/post.service';
 import { ProvinceService } from 'src/app/services/province.service';
@@ -19,27 +21,29 @@ import { MotelValidators } from 'src/app/validators/motel-site-validator';
   styleUrls: ['./edit-post.component.css']
 })
 export class EditPostComponent {
-  postFormGroup!: FormGroup
-  
-  province: {value: string, label: string}[] = []
-  district: {value: string, label: string}[] = []
-  ward: {value: string, label: string}[] = []
 
-/// CONFIG GOOGLE MAP
+  postFormGroup!: FormGroup
+  post: Post = new Post()
+
+  province: { value: number, label: string }[] = []
+  district: { value: number, label: string }[] = []
+  ward: { value: number, label: string }[] = []
+
+  /// CONFIG GOOGLE MAP
 
   marker = {
     position: {
     },
     options: {
       draggable: true
-    } 
+    }
   }
 
 
   display: any;
   center = {
-      lat: 21.037376869189334,
-      lng: 105.77866948660191
+    lat: 21.037376869189334,
+    lng: 105.77866948660191
   };
 
   markerPosition = {
@@ -51,18 +55,18 @@ export class EditPostComponent {
 
   //Event
   addMarker(event: google.maps.MapMouseEvent) {
-      // if (!this.isMarkerDisplayed) {
-      // if(event.latLng != null)
-      //   this.markerPosition = event.latLng.toJSON();
-      //   this.isMarkerDisplayed = true;
-      // }
-      if(event.latLng != null)
-        this.markerPosition = event.latLng.toJSON();
+    // if (!this.isMarkerDisplayed) {
+    // if(event.latLng != null)
+    //   this.markerPosition = event.latLng.toJSON();
+    //   this.isMarkerDisplayed = true;
+    // }
+    if (event.latLng != null)
+      this.markerPosition = event.latLng.toJSON();
   }
 
   onDragEnd(event: any) {
-    if(event.latLng != null)
-        this.markerPosition = event.latLng.toJSON();
+    if (event.latLng != null)
+      this.markerPosition = event.latLng.toJSON();
   }
 
   // onMarkerPositionChanged(event: any) {
@@ -71,10 +75,10 @@ export class EditPostComponent {
   // }
 
   move(event: google.maps.MapMouseEvent) {
-      if (event.latLng != null) this.display = event.latLng.toJSON();
+    if (event.latLng != null) this.display = event.latLng.toJSON();
   }
 
-// END CONFIG GOOGLE MAP
+  // END CONFIG GOOGLE MAP
   streetInput = new FormControl('');
 
   constructor(
@@ -87,44 +91,50 @@ export class EditPostComponent {
     private geocoder: MapGeocoder,
     private router: Router,
     private el: ElementRef,
+    private imageHandler: ImageHandlerService,
     private confirmationModalService: ConfirmationModalService,
-    private decimalPipe: DecimalPipe,
-    ) {
+    private route: ActivatedRoute
+  ) {
 
-      this.postFormGroup = this.formBuilder.group({
-        address: new FormControl('', [Validators.required, MotelValidators.notOnlyWhiteSpace]),
-        title: new FormControl('', [Validators.required,
-                                  Validators.minLength(10),
-                                  Validators.maxLength(100),
-                                  MotelValidators.notOnlyWhiteSpace]),
-        content: new FormControl('', [Validators.required,
-                                Validators.minLength(10),
-                                Validators.maxLength(1000),
-                                MotelValidators.notOnlyWhiteSpace]),
-        priority: new FormControl(''),
+    this.postFormGroup = this.formBuilder.group({
+      address: new FormControl('', [Validators.required, MotelValidators.notOnlyWhiteSpace]),
+      title: new FormControl('', [Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(100),
+      MotelValidators.notOnlyWhiteSpace]),
+      content: new FormControl('', [Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(1000),
+      MotelValidators.notOnlyWhiteSpace]),
+      priority: new FormControl(''),
 
-        user: this.formBuilder.group({
-          id: new FormControl('1')
-        }),
+      user: this.formBuilder.group({
+        id: new FormControl('1')
+      }),
 
-        accommodation: this.formBuilder.group({
-          acreage: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
-          toilet: new FormControl('', [Validators.required]),
-          internet: new FormControl(''),
-          parking: new FormControl(''),
-          airConditioner: new FormControl(''),
-          heater: new FormControl(''),
-          tv: new FormControl(''),
-          price: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
-          categoryId: new FormControl('', [Validators.required]),
-          xCoordinate: new FormControl(''),
-          yCoordinate: new FormControl('')
-        }),
-        files: new FormControl('')
-      })
-    }
+      accommodation: this.formBuilder.group({
+        acreage: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
+        toilet: new FormControl('', [Validators.required]),
+        internet: new FormControl(''),
+        parking: new FormControl(''),
+        airConditioner: new FormControl(''),
+        heater: new FormControl(''),
+        tv: new FormControl(''),
+        price: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
+        categoryId: new FormControl('', [Validators.required]),
+        xCoordinate: new FormControl(''),
+        yCoordinate: new FormControl('')
+      }),
+      files: new FormControl('')
+    })
+  }
 
   ngOnInit(): void {
+
+    this.route.url.subscribe(url => {
+      const { id } = this.route.snapshot.params;
+      this.initValueForm(id)
+    })
 
     // // Chia hàng nghìn giá
     // this.postFormGroup.get('accommodation.price')?.valueChanges.subscribe(value => {
@@ -139,8 +149,8 @@ export class EditPostComponent {
     this.markerPosition = this.center;
     // Khởi tạo lấy tất cả các tỉnh
     this.provinceService.getAllProvinces().subscribe(
-      data => 
-        this.province = data.map(item => ({value: item.code, label: item.name}))
+      data =>
+        this.province = data.map(item => ({ value: item.province_id, label: item.province_name }))
     )
 
     //Delay cập nhật google từ địa chỉ
@@ -156,9 +166,13 @@ export class EditPostComponent {
     ).subscribe(value => {
       this.addressSelected.street = value as string
       this.commitAddress()
-    }) 
+    })
 
     // Lấy vị trí hiện tại
+    this.getCurrentPosition()
+  }
+
+  getCurrentPosition() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.center = {
@@ -170,7 +184,41 @@ export class EditPostComponent {
     }
   }
 
-  
+  async initValueForm(postId: number) {
+    const post = await this.getPostById(postId);
+    this.postFormGroup.patchValue({
+      address: this.post.accommodation.address,
+      title: this.post.title,
+      content: this.post.content,
+      accommodation: {
+        categoryId: this.post.accommodation.categoryId,
+        toilet: this.post.accommodation.toilet,
+        price: this.post.accommodation.price,
+        acreage: this.post.accommodation.acreage,
+        parking: this.post.accommodation.parking,
+        internet: this.post.accommodation.internet,
+        airConditioner: this.post.accommodation.airConditioner,
+        tv: this.post.accommodation.tv,
+        heater: this.post.accommodation.heater
+      }
+    })
+    this.initFilesFromPost(post.id!)
+  }
+
+  async getPostById(id: number):Promise<Post> {
+    const data = await firstValueFrom(this.postService.getPostById(id));
+    // .subscribe(data => {
+    //   this.post = data;
+    //   this.center.lat = this.post.accommodation.xcoordinate!;
+    //   this.center.lng = this.post.accommodation.ycoordinate!;
+    // });
+    this.post = data;
+    this.center.lat = this.post.accommodation.xcoordinate!;
+    this.center.lng = this.post.accommodation.ycoordinate!;
+    return data
+  }
+
+  //========================HANDLE ADDRESS=================
   addressSelected = {
     street: '',
     ward: '',
@@ -182,14 +230,14 @@ export class EditPostComponent {
   getDistrict(event: any) {
     this.provinceService.getDistrictsByProvince(event.value).subscribe(
       data => {
-          this.district = data.map(item => ({value: item.code, label: item.name}))
+        this.district = data.map(item => ({ value: item.district_id, label: item.district_name }))
       }
     )
 
     const selectedOption = this.province.find((option) => option.value === event.value);
     if (selectedOption) {
       this.addressSelected.province = selectedOption.label;
-    } 
+    }
 
   }
 
@@ -198,15 +246,15 @@ export class EditPostComponent {
     this.provinceService.getWardsByProvince(event.value).subscribe(
       data => {
         this.ward = []
-        this.ward = data.map(item => ({value: item.code, label: item.name}))
+        this.ward = data.map(item => ({ value: item.ward_id, label: item.ward_name }))
       }
-        
+
     )
 
     const selectedOption = this.district.find((option) => option.value === event.value);
     if (selectedOption) {
       this.addressSelected.district = selectedOption.label;
-    } 
+    }
     this.commitAddress()
   }
 
@@ -214,9 +262,9 @@ export class EditPostComponent {
   commitAddress() {
     this.postFormGroup.patchValue({
       address: Object.entries(this.addressSelected)
-      .filter(([key, value]) => value !== null && value !== '')
-      .map(([key, value]) => value)
-      .join(', ')
+        .filter(([key, value]) => value !== null && value !== '')
+        .map(([key, value]) => value)
+        .join(', ')
     });
   }
 
@@ -225,7 +273,7 @@ export class EditPostComponent {
     const selectedOption = this.ward.find((option) => option.value === event.value);
     if (selectedOption) {
       this.addressSelected.ward = selectedOption.label;
-    } 
+    }
     this.commitAddress()
   }
 
@@ -238,7 +286,7 @@ export class EditPostComponent {
       //     lng: results[0].geometry.location.lng()
       //   };
       // }
-      if(results.status == 'OK') {
+      if (results.status == 'OK') {
         this.center = {
           lat: results.results[0].geometry.location.lat(),
           lng: results.results[0].geometry.location.lng()
@@ -298,7 +346,31 @@ export class EditPostComponent {
   // HANDLE SELECT FILE
 
   files: any[] = [];
-
+  images: Image[] = new Array()
+  initFilesFromPost(postId: number) {
+    // imageStrings.forEach(item => {
+    //   this.files.push({name: 'Ảnh phòng trọ', preview: item})
+    // })
+    this.imageService.getImagesByPostId(postId).subscribe( {
+      next: data => {
+        this.images = data;
+        const files: Array<File> = [];
+        for (const image of this.images) {
+          image.uri = 'data:' + image.fileType + ';base64,' + image.uri;
+          const dataBlob = this.imageHandler.getBlobFromBase64(image.uri, image.fileType);
+          const file = new File([dataBlob], image.fileName, {type: image.fileType});
+          this.files.push({name: image.fileName, preview: image.uri, file:file})
+        }
+      },
+      error: error => {
+        console.log(error);
+      }
+    }
+      
+      
+      // }
+    );
+  }
 
   onFileSelected(event: any) {
     const files = Array.from(event.target.files) as File[];
@@ -307,7 +379,7 @@ export class EditPostComponent {
     }
 
     files.map(file => {
-      if(file.size <= 4*1024*1024) {
+      if (file.size <= 4 * 1024 * 1024) {
         const reader = new FileReader();
         reader.onload = () => {
           this.files.push({ name: file.name, preview: reader.result as string, file: file });
@@ -357,13 +429,13 @@ export class EditPostComponent {
     if (this.postFormGroup.invalid) {
       this.postFormGroup.markAllAsTouched();
       const invalidControl = this.el.nativeElement.querySelector('.ng-invalid');
-      invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center'});
+      invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       this.toastr.warning('Vui lòng điền thông tin bắt buộc', 'Cảnh báo', {
         positionClass: 'toast-top-center'
       });
     }
-    
-    else if(this.postFormGroup.get('files')?.value.length <= 0) {
+
+    else if (this.postFormGroup.get('files')?.value.length <= 0) {
       this.toastr.warning('Vui lòng chọn ít nhất một ảnh', 'Cảnh báo', {
         positionClass: 'toast-top-center'
       });
@@ -383,18 +455,20 @@ export class EditPostComponent {
       post.accommodation.ycoordinate = this.markerPosition.lng;
 
       this.postService.createPost(post).subscribe({
-        next : data => {
+        next: data => {
           this.addImageForPost(data.id!);
         },
 
         error: err => console.log(err)
-        }
+      }
       );
     }
   }
 
   addImageForPost(postId: number) {
     if (postId != null) {
+      this.imageService.deleteAllImage(postId).subscribe();
+
       const formData = new FormData();
 
       for (const image of this.postFormGroup.value.files) {
@@ -403,8 +477,8 @@ export class EditPostComponent {
 
       this.imageService.addImages(postId, formData).subscribe({
         next: data => {
-          if(data) {
-            this.toastr.success('Tin được đăng thành công và chờ kiểm duyệt')
+          if (data) {
+            this.toastr.success('Tin được đăng lại thành công và chờ kiểm duyệt')
             this.showLoadding = false;
             // this.toastr.info('Tự động chuyển trang sau 5s', '', {
             //   positionClass: 'toast-top-center',
@@ -413,7 +487,7 @@ export class EditPostComponent {
             // setTimeout(() => {
             //   this.router.navigate(['/home']);
             // }, 5000);
-            this.openModalConfirmNavigate()
+            // this.openModalConfirmNavigate()
           }
         },
         error: err => console.log(err)
@@ -422,24 +496,24 @@ export class EditPostComponent {
 
   }
 
-  countdown = 5;
-  openModalConfirmNavigate() {
-    const interval = setInterval(() => {
-      this.countdown--;
-      if (this.countdown === 0) {
-        clearInterval(interval);
-        this.router.navigate(['/home']);
-      }
-    }, 1000);
-    this.confirmationModalService.openModal('Xác nhận', `Trang sẽ được tự động chuyển sau ${this.countdown}s
-    Bạn có muốn tiếp tục đăng tin không?`)
-    .subscribe(result => {
-      if (!result.confirmed) {
-        this.router.navigate(['/home']);
-      }
-      else {
-        clearInterval(interval);
-      }
-    });
-  }
+  // countdown = 5;
+  // openModalConfirmNavigate() {
+  //   const interval = setInterval(() => {
+  //     this.countdown--;
+  //     if (this.countdown === 0) {
+  //       clearInterval(interval);
+  //       this.router.navigate(['/home']);
+  //     }
+  //   }, 1000);
+  //   this.confirmationModalService.openModal('Xác nhận', `Trang sẽ được tự động chuyển sau ${this.countdown}s
+  //   Bạn có muốn tiếp tục đăng tin không?`)
+  //     .subscribe(result => {
+  //       if (!result.confirmed) {
+  //         this.router.navigate(['/home']);
+  //       }
+  //       else {
+  //         clearInterval(interval);
+  //       }
+  //     });
+  // }
 }

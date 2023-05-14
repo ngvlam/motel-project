@@ -50,6 +50,7 @@ export class MyPostListComponent implements OnInit{
           this.postService.hidePost(id).subscribe({
             next: data => {
               this.toastr.success('Ẩn tin đăng thành công', 'Ẩn tin đăng')
+              location.reload()
             },
             error: error => {
               this.toastr.error('Có lỗi trong quả trình ẩn tin' + error, 'Ẩn tin đăng')

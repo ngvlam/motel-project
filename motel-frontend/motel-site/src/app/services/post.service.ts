@@ -34,6 +34,11 @@ export class PostService {
     return this.http.post<Post>(`${this.apiUrl}/posts`, post);
   }
 
+  updatePost(post: Post, postId: number): Observable<Post> {
+    return this.http.put<Post>(`${this.apiUrl}/posts/${postId}`, post);
+
+  }
+
   searchPost(searchForm: SearchForm, page: number, sort: string): Observable<Page<Post>> {
   
     let params = new HttpParams();

@@ -12,42 +12,36 @@ import { Ward } from '../model/ward';
 })
 
 export class ProvinceService {
-    baseApi = 'https://vn-public-apis.fpo.vn';
+    baseApi = 'https://vapi.vnappmob.com/api/province';
     constructor(private http: HttpClient) {}
 
     getAllProvinces() : Observable<Province[]>{
-      return this.http.get<GetResponseProvince>(`${this.baseApi}/provinces/getAll?limit=-1`).pipe(
-        map(response => response.data.data)
+      return this.http.get<GetResponseProvince>(`${this.baseApi}`).pipe(
+        map(response => response.results)
       )
     }
     
     getDistrictsByProvince(provinceCode: string) : Observable<District[]>{
-      return this.http.get<GetResponseDistrict>(`${this.baseApi}/districts/getByProvince?provinceCode=${provinceCode}&limit=-1`).pipe(
-        map(response => response.data.data)
+      return this.http.get<GetResponseDistrict>(`${this.baseApi}/district/${provinceCode}`).pipe(
+        map(response => response.results)
       )
     }
 
-    getWardsByProvince(districtCode: string) : Observable<District[]>{
-      return this.http.get<GetResponseWard>(`${this.baseApi}/wards/getByDistrict?districtCode=${districtCode}&limit=-1`).pipe(
-        map(response => response.data.data)
+    getWardsByProvince(districtCode: string) : Observable<Ward[]>{
+      return this.http.get<GetResponseWard>(`${this.baseApi}/ward/${districtCode}`).pipe(
+        map(response => response.results)
       )
     }
 }
 
 interface GetResponseProvince {
-  data: {
-    data: Province[];
-  }
+  results: Province[]
 }
 
 interface GetResponseDistrict {
-  data: {
-    data: District[];
-  }
+  results: District[]
 }
 
 interface GetResponseWard {
-  data: {
-    data: Ward[];
-  }
+  results: Ward[]
 }

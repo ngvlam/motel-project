@@ -23,18 +23,22 @@ public class NotificationEventListener implements ApplicationListener<Notificati
         Post post = notificationEvent.getPost();
         NotificationDTO notificationDTO;
         String emailSubject;
+
         if (post.isApproved()) {
             notificationDTO = notificationService.createNotification(post.getUser(), post, NotificationName.APPROVE);
         } else {
             notificationDTO = notificationService.createNotification(post.getUser(), post, NotificationName.BLOCK);
         }
         notificationService.sendNotification(notificationDTO);
+
+        //Gửi email
         try {
             String emailContent = getEmailContent(post.isApproved(), post.getTitle());
             notificationService.sendEmail(post.getUser().getEmail(), emailContent);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+
     }
     private String getEmailContent(boolean isApproved, String postTitle) {
         String emailContent;

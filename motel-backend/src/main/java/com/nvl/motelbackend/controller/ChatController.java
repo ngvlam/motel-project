@@ -44,7 +44,13 @@ public class ChatController {
 
     @PostMapping("/messages")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
-    public void sendMessage(@RequestBody ChatMessageDTO chatMessage) {
+    public void sendMessage(Authentication authentication, @RequestBody ChatMessageDTO chatMessage) {
+        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+//        chatMessage.setSentAt(LocalDateTime.now());
+//        chatMessage.setSenderId(user.getId());
+
+        chatService.saveMessages(user.getId(), chatMessage);
+
         messagingTemplate.convertAndSendToUser(
                 chatMessage.getReceiver().getEmail(),
                 "/topic/messages",

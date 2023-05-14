@@ -11,22 +11,16 @@
                                     <label for="" class="control-label">
                                         Tỉnh/Thành
                                     </label>
-                                    <select2 
-                                    [data]="province"
-                                    (update)="getDistrict($event)"
-                                    placeholder="-- Tỉnh/thành--"
-                                    >
+                                    <select2 [data]="province" (update)="getDistrict($event)"
+                                        placeholder="-- Tỉnh/thành--">
                                     </select2>
                                 </div>
                                 <div class="col-sm-6 col-xs-12">
                                     <label for="" class="control-label">
                                         Quận/Huyện
                                     </label>
-                                    <select2 #myselect2
-                                    [data]="district"
-                                    (update)="getWard($event)"
-                                    placeholder="-- Quận/Huyện--"
-                                    >
+                                    <select2 #myselect2 [data]="district" (update)="getWard($event)"
+                                        placeholder="-- Quận/Huyện--">
                                     </select2>
                                 </div>
                             </div>
@@ -35,18 +29,16 @@
                                     <label for="" class="control-label">
                                         Phường/Xã
                                     </label>
-                                    <select2 
-                                    [data]="ward"
-                                    placeholder="-- Phường/Xã--"
-                                    (update)="updateWardToAddress($event)"
-                                    >
+                                    <select2 [data]="ward" placeholder="-- Phường/Xã--"
+                                        (update)="updateWardToAddress($event)">
                                     </select2>
                                 </div>
                                 <div class="col-sm-6 col-xs-12">
                                     <label for="" class="control-label">
                                         Số nhà, đường
                                     </label>
-                                    <input type="text" class="form-input" [formControl]="streetInput" placeholder="Nhập đường">
+                                    <input type="text" class="form-input" [formControl]="streetInput"
+                                        placeholder="Nhập đường">
                                 </div>
                             </div>
                             <div class="col-sm-12 mt-3">
@@ -54,33 +46,29 @@
                                     Địa chỉ
                                     <span class="red_require">*</span>
                                 </label>
-                                <input type="text" class="form-input"  formControlName="address" placeholder="Nhập địa chỉ và kéo điểm màu đỏ tới vị trí chính xác">
-                                <div *ngIf="address?.invalid && (address?.dirty || address?.touched)" class="invalid-input">         
-                                    <div *ngIf="address?.errors?.['required'] || address?.errors?.['notOnlyWhiteSpace']">
+                                <input type="text" class="form-input" formControlName="address"
+                                    placeholder="Nhập địa chỉ và kéo điểm màu đỏ tới vị trí chính xác">
+                                <div *ngIf="address?.invalid && (address?.dirty || address?.touched)"
+                                    class="invalid-input">
+                                    <div
+                                        *ngIf="address?.errors?.['required'] || address?.errors?.['notOnlyWhiteSpace']">
                                         Vui lòng nhập địa chỉ
                                     </div>
                                 </div>
                             </div>
                             <div class="google-map mt-4">
-                                <google-map height="400px"
-                                        width="100%"
-                                        [center]="center"
-                                        [zoom]="zoom"
-                                        (mapClick)="addMarker($event)"
-                                        (mapMousemove)="move($event)">
+                                <google-map height="400px" width="100%" [center]="center" [zoom]="zoom"
+                                    (mapClick)="addMarker($event)" (mapMousemove)="move($event)">
 
-                                    <map-marker  
-                                    [options]="marker.options"
-                                    [position]="markerPosition"
-                                    (mapDragend)="onDragEnd($event)"
-                                    >
-                                    
-                                    </map-marker>    
+                                    <map-marker [options]="marker.options" [position]="markerPosition"
+                                        (mapDragend)="onDragEnd($event)">
+
+                                    </map-marker>
                                 </google-map>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form-section">
                         <h2 class="title">Thông tin bài viết</h2>
                         <div class="form-group">
@@ -90,10 +78,14 @@
                                         Tiêu đề
                                         <span class="red_require">*</span>
                                     </label>
-                                    <textarea type="text" id="post-title" placeholder="VD: Cho thuê phòng trọ chính chủ tại Cầu Giấy" formControlName="title"></textarea>
+                                    <textarea type="text" id="post-title"
+                                        placeholder="VD: Cho thuê phòng trọ chính chủ tại Cầu Giấy"
+                                        formControlName="title"></textarea>
                                     <span class="description">Tối thiểu 10 ký tự, tối đa 99 ký tự</span>
-                                    <div *ngIf="title?.invalid && (title?.dirty || title?.touched)" class="invalid-input">         
-                                        <div *ngIf="title?.errors?.['required'] || title?.errors?.['notOnlyWhiteSpace']">
+                                    <div *ngIf="title?.invalid && (title?.dirty || title?.touched)"
+                                        class="invalid-input">
+                                        <div
+                                            *ngIf="title?.errors?.['required'] || title?.errors?.['notOnlyWhiteSpace']">
                                             Vui lòng nhập tiêu đề
                                         </div>
                                         <div *ngIf="title?.errors?.['minlength']">
@@ -109,10 +101,14 @@
                                         Nội dung bài viết
                                         <span class="red_require">*</span>
                                     </label>
-                                    <textarea type="text" id="post-content" placeholder="VD: Khu nhà có vị trí thuận lợi, gần công viên, gần trường học ..." formControlName="content"></textarea>
+                                    <textarea type="text" id="post-content"
+                                        placeholder="VD: Khu nhà có vị trí thuận lợi, gần công viên, gần trường học ..."
+                                        formControlName="content"></textarea>
                                     <span class="description">Tối thiểu 10 ký tự, tối đa 1000 ký tự</span>
-                                    <div *ngIf="content?.invalid && (content?.dirty || content?.touched)" class="invalid-input">         
-                                        <div *ngIf="content?.errors?.['required'] || content?.errors?.['notOnlyWhiteSpace']">
+                                    <div *ngIf="content?.invalid && (content?.dirty || content?.touched)"
+                                        class="invalid-input">
+                                        <div
+                                            *ngIf="content?.errors?.['required'] || content?.errors?.['notOnlyWhiteSpace']">
                                             Vui lòng nhập nội dung bài viết
                                         </div>
                                         <div *ngIf="content?.errors?.['minlength']">
@@ -123,7 +119,7 @@
                             </div>
                         </div>
                     </div>
-                
+
                     <div class="form-section">
                         <h2 class="title">Thông tin phòng</h2>
                         <div class="form-group" formGroupName="accommodation">
@@ -139,8 +135,10 @@
                                         <option value="3">Chung cư, CCMN</option>
                                         <option value="4">Tìm người ở ghép</option>
                                     </select>
-                                    <div *ngIf="categoryId?.invalid && (categoryId?.dirty || categoryId?.touched)" class="invalid-input">         
-                                        <div *ngIf="categoryId?.errors?.['required'] || categoryId?.errors?.['notOnlyWhiteSpace']">
+                                    <div *ngIf="categoryId?.invalid && (categoryId?.dirty || categoryId?.touched)"
+                                        class="invalid-input">
+                                        <div
+                                            *ngIf="categoryId?.errors?.['required'] || categoryId?.errors?.['notOnlyWhiteSpace']">
                                             Vui lòng chọn chuyên mục
                                         </div>
                                     </div>
@@ -156,12 +154,14 @@
                                         <option value="CHUNG">Chung</option>
                                         <option value="CHUA_XAC_DINH">Chưa xác định</option>
                                     </select>
-                                    <div *ngIf="categoryId?.invalid && (categoryId?.dirty || categoryId?.touched)" class="invalid-input">         
-                                        <div *ngIf="categoryId?.errors?.['required'] || categoryId?.errors?.['notOnlyWhiteSpace']">
+                                    <div *ngIf="categoryId?.invalid && (categoryId?.dirty || categoryId?.touched)"
+                                        class="invalid-input">
+                                        <div
+                                            *ngIf="categoryId?.errors?.['required'] || categoryId?.errors?.['notOnlyWhiteSpace']">
                                             Vui lòng chọn chuyên mục
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -170,10 +170,13 @@
                                         Mức giá
                                         <span class="red_require">*</span>
                                     </label>
-                                    
-                                    <input type="text" appNumbersOnly class="form-input" formControlName="price" placeholder="Nhập giá, VD: 3000000">
-                                    <div *ngIf="price?.invalid && (price?.dirty || price?.touched)" class="invalid-input">         
-                                        <div *ngIf="price?.errors?.['required'] || price?.errors?.['notOnlyWhiteSpace']">
+
+                                    <input type="text" appNumbersOnly class="form-input" formControlName="price"
+                                        placeholder="Nhập giá, VD: 3000000">
+                                    <div *ngIf="price?.invalid && (price?.dirty || price?.touched)"
+                                        class="invalid-input">
+                                        <div
+                                            *ngIf="price?.errors?.['required'] || price?.errors?.['notOnlyWhiteSpace']">
                                             Vui lòng nhập giá cả
                                         </div>
                                     </div>
@@ -183,9 +186,12 @@
                                         Diện tích
                                         <span class="red_require">*</span>
                                     </label>
-                                    <input type="text" appNumbersOnly class="form-input" formControlName="acreage" placeholder="Nhập diện tích, VD: 20 m2 thì nhập 20">
-                                    <div *ngIf="acreage?.invalid && (acreage?.dirty || acreage?.touched)" class="invalid-input">         
-                                        <div *ngIf="acreage?.errors?.['required'] || acreage?.errors?.['notOnlyWhiteSpace']">
+                                    <input type="text" appNumbersOnly class="form-input" formControlName="acreage"
+                                        placeholder="Nhập diện tích, VD: 20 m2 thì nhập 20">
+                                    <div *ngIf="acreage?.invalid && (acreage?.dirty || acreage?.touched)"
+                                        class="invalid-input">
+                                        <div
+                                            *ngIf="acreage?.errors?.['required'] || acreage?.errors?.['notOnlyWhiteSpace']">
                                             Vui lòng nhập diện tích
                                         </div>
                                     </div>
@@ -221,7 +227,7 @@
                             </div>
                         </div>
                     </div>
-                
+
                     <div class="form-section">
                         <h2 class="title">Hình ảnh</h2>
                         <label for="" class="control-label">
@@ -232,7 +238,8 @@
                                 <div class="selected-file me-2" *ngFor="let file of files; let i = index">
                                     <img [src]="file.preview" alt="{{ file.name }}" width="100" height="120">
                                     <div class="file-details">
-                                    <button class="btn btn-sm btn-outline-light" type="button" (click)="removeFile(i)">X</button>
+                                        <button class="btn btn-sm btn-outline-light" type="button"
+                                            (click)="removeFile(i)">X</button>
                                     </div>
                                 </div>
                             </div>
@@ -240,17 +247,134 @@
                                 <label for="file-input" class="label-select-img">
                                     <i class="fa-solid fa-plus"></i>
                                 </label>
-                                <input id="file-input" type="file" formControlName="files" multiple (change)="onFileSelected($event)" accept="image/*" />
+                                <input id="file-input" type="file" formControlName="files" multiple
+                                    (change)="onFileSelected($event)" accept="image/*" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-section">
-                        <h2 class="title">Chọn gói tin</h2>
+                        <h2 class="title">Cấu hình tin đăng</h2>
+                        <div class="package-wrapper">
+                            <div class="package-inner">
+                                <h6 style="font-size: 14px;">Chọn loại tin đăng</h6>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <div class="package-item" (click)="selectPackage(1)"
+                                            [ngClass]="{selected: selectedPackage === 1}">
+                                            <h6 class="package-title">Tin thường</h6>
+                                            <span class="package-price"><b>0</b> đ/ngày</span>
+                                            <hr>
+                                            <svg width="1.67em" height="1em" viewBox="0 0 40 26" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg" font-size="24px">
+                                                <path d="M14.5 6H38.5" stroke="#CCCCCC" stroke-width="2.5"
+                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M14.5 11H38.5" stroke="#CCCCCC" stroke-width="2.5"
+                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M14.5 16H38.5" stroke="#CCCCCC" stroke-width="2.5"
+                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M14.5 21H38.5" stroke="#505050" stroke-width="2.5"
+                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path
+                                                    d="M5.71207 24.3366L8.13685 25.9343C8.4468 26.1386 8.83162 25.8348 8.73965 25.4585L8.03908 22.5924C8.01935 22.5126 8.02168 22.4286 8.04582 22.3501C8.06995 22.2716 8.1149 22.2017 8.1755 22.1486L10.3499 20.2664C10.6356 20.0191 10.4881 19.526 10.1211 19.5012L7.28145 19.3096C7.20496 19.3039 7.1316 19.2757 7.06991 19.2284C7.00822 19.181 6.96074 19.1164 6.93299 19.042L5.87393 16.2684C5.84515 16.1895 5.79396 16.1215 5.72717 16.0736C5.66038 16.0257 5.58115 16 5.5 16C5.41885 16 5.33962 16.0257 5.27283 16.0736C5.20604 16.1215 5.15485 16.1895 5.12607 16.2684L4.06701 19.042C4.03926 19.1164 3.99178 19.181 3.93009 19.2284C3.8684 19.2757 3.79504 19.3039 3.71855 19.3096L0.878944 19.5012C0.511873 19.526 0.364409 20.0191 0.650114 20.2664L2.8245 22.1486C2.8851 22.2017 2.93005 22.2716 2.95418 22.3501C2.97832 22.4286 2.98065 22.5126 2.96092 22.5924L2.31122 25.2504C2.20085 25.702 2.66264 26.0664 3.03458 25.8214L5.28793 24.3366C5.35131 24.2947 5.42487 24.2724 5.5 24.2724C5.57513 24.2724 5.64869 24.2947 5.71207 24.3366Z"
+                                                    fill="#505050"></path>
+                                            </svg>
+                                            <p>Tin được hiển thị bình thường, thấp hơn tin ưu tiên</p>
+                                            <p>Tự động ẩn tin sau <b>3 ngày</b></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="package-item" (click)="selectPackage(2)"
+                                            [ngClass]="{selected: selectedPackage === 2}">
+                                            <h6 class="package-title priority">Tin ưu tiên</h6>
+                                            <span class="package-price"><b>5000</b> đ/ngày</span>
+                                            <hr>
+                                            <svg width="1.67em" height="1em" viewBox="0 0 40 26" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg" font-size="24px">
+                                                <path d="M14.5 6H38.5" stroke="#E03C31" stroke-width="2.5"
+                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M14.5 11H38.5" stroke="#CCCCCC" stroke-width="2.5"
+                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M14.5 16H38.5" stroke="#CCCCCC" stroke-width="2.5"
+                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M14.5 21H38.5" stroke="#CCCCCC" stroke-width="2.5"
+                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path
+                                                    d="M5.71207 8.33663L8.13685 9.93433C8.4468 10.1386 8.83162 9.83481 8.73965 9.45854L8.03908 6.59241C8.01935 6.51259 8.02168 6.42859 8.04582 6.35008C8.06995 6.27157 8.1149 6.20174 8.1755 6.14862L10.3499 4.26645C10.6356 4.01914 10.4881 3.52601 10.1211 3.50123L7.28145 3.30957C7.20496 3.30389 7.1316 3.27572 7.06991 3.22836C7.00822 3.181 6.96074 3.11638 6.93299 3.04204L5.87393 0.268389C5.84515 0.189481 5.79396 0.121548 5.72717 0.0736107C5.66038 0.0256733 5.58115 0 5.5 0C5.41885 0 5.33962 0.0256733 5.27283 0.0736107C5.20604 0.121548 5.15485 0.189481 5.12607 0.268389L4.06701 3.04204C4.03926 3.11638 3.99178 3.181 3.93009 3.22836C3.8684 3.27572 3.79504 3.30389 3.71855 3.30957L0.878944 3.50123C0.511873 3.52601 0.364409 4.01914 0.650114 4.26645L2.8245 6.14862C2.8851 6.20174 2.93005 6.27157 2.95418 6.35008C2.97832 6.42859 2.98065 6.51259 2.96092 6.59241L2.31122 9.25042C2.20085 9.70195 2.66264 10.0664 3.03458 9.82137L5.28793 8.33663C5.35131 8.29468 5.42487 8.27239 5.5 8.27239C5.57513 8.27239 5.64869 8.29468 5.71207 8.33663Z"
+                                                    fill="#E03C31"></path>
+                                            </svg>
+                                            <p>Tin được hiển thị trên đầu</p>
+                                            <p>Lựa chọn số ngày hiển thị</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="selectedPackage==2">
+                                    <h6 style="font-size: 14px; margin-top: 12px;">Số ngày đăng</h6>
+                                    <div class="number-of-day row">
+                                        <div class="col-md-3">
+                                            <div class="number-of-day-item" (click)="selectNumberOfDays(7)" [ngClass]="{selected: numberOfDays === 7}">
+                                                <span>7 ngày</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="number-of-day-item" (click)="selectNumberOfDays(10)" [ngClass]="{selected: numberOfDays === 10}">
+                                                <span>10 ngày</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="number-of-day-item" (click)="selectNumberOfDays(15)" [ngClass]="{selected: numberOfDays === 15}">
+                                                <span>15 ngày</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="number-of-day-item" (click)="selectNumberOfDays(30)" [ngClass]="{selected: numberOfDays === 30}">
+                                                <span>30 ngày</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="title">Thanh toán</h2>
+                        <div class="pay-wrapper">
+                            <div class="label-wrapper">
+                                <div class="d-flex justify-content-between">
+                                    <div class="label-pay">Loại tin</div>
+                                    <div *ngIf="selectedPackage==1" class="label-value">Tin thường</div>
+                                    <div *ngIf="selectedPackage==2" class="label-value">Tin ưu tiên</div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="label-pay">Đơn giá / ngày</div>
+                                    <div *ngIf="selectedPackage==1" class="label-value">0 đ</div>
+                                    <div *ngIf="selectedPackage==2" class="label-value">5.000 đ</div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="label-pay">Thời gian đăng tin</div>
+                                    <div class="label-value" *ngIf="selectedPackage==1">3 ngày</div>
+                                    <div class="label-value" *ngIf="selectedPackage==2">
+                                        {{numberOfDays}} ngày
+                                        <br>
+                                    </div>
+                                </div> 
+                                <div class="d-flex justify-content-end">
+                                    <i style="font-weight: normal; color: #333; font-size: 12px;">
+                                        {{today | date :'dd/MM/yyyy'}} -> {{nextDate | date :'dd/MM/yyyy'}}
+                                    </i>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="label-pay">Tổng tiền</div>
+                                    <div class="label-value-total">{{totalMoney | thousandsSeparator}} đ</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn-submit" >
+                        <button type="submit" class="btn-submit">
                             Đăng tin
                             <span *ngIf="showLoadding" class="spinner-border spinner-border-sm" role="status">
                             </span>
@@ -265,8 +389,10 @@
                         <li><strong>Thông tin có dấu <span class="red_require">*</span> là bắt buộc.</strong></li>
                         <li><strong>Tiêu đề tin không dài quá 100 kí tự</strong></li>
                         <li>Các bạn nên điền đầy đủ thông tin vào các mục để tin đăng có hiệu quả hơn.</li>
-                        <li>Để tăng độ tin cậy và tin rao được nhiều người quan tâm hơn, hãy sửa vị trí tin rao của bạn trên bản đồ bằng cách kéo icon tới đúng vị trí của tin rao.</li>
-                        <li>Tin đăng có hình ảnh rõ ràng sẽ được xem và gọi gấp nhiều lần so với tin rao không có ảnh. Hãy đăng ảnh để được giao dịch nhanh chóng!</li>
+                        <li>Để tăng độ tin cậy và tin rao được nhiều người quan tâm hơn, hãy sửa vị trí tin rao của bạn
+                            trên bản đồ bằng cách kéo icon tới đúng vị trí của tin rao.</li>
+                        <li>Tin đăng có hình ảnh rõ ràng sẽ được xem và gọi gấp nhiều lần so với tin rao không có ảnh.
+                            Hãy đăng ảnh để được giao dịch nhanh chóng!</li>
                     </ul>
                 </div>
             </div>

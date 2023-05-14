@@ -3,12 +3,18 @@
     <div class="sidebar">
         <div class="d-flex flex-column align-items-center align-items-sm-start">
             <div class="info">
-                <a href="" class="profile-link">
+                <a routerLink="thong-tin-ca-nhan" class="d-flex align-items-center profile-link">
                     <img [src]="avatar" alt="" width="80" height="80">
-                    <span class="user-name">{{user?.fullName}}</span>
+                    <span class="user-name ms-2">{{user.fullName}}</span>
                 </a>
                 <div class="balance-box">
-                    Số dư: <b>{{user?.balance}} đ</b>
+                    <div class="balance-text">
+                        Số dư: <b>{{user.balance | thousandsSeparator}} đ</b>
+                    </div>
+                    <a routerLink="nap-tien" class="btn-deposit">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        Nạp tiền
+                    </a>
                 </div>
             </div>
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">

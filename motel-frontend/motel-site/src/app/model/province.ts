@@ -1,5 +1,5 @@
 export class Province {
-    _id!: number;
-    name!: string;
-    code!: string;
+    province_id!: number;
+    province_name!: string;
+    province_type!: string;
 }

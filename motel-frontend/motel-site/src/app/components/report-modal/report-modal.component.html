@@ -11,7 +11,7 @@
             {{report.label}}
         </label>
     </div>
-
+    <p class="red_required" *ngIf="error != ''">{{error}}</p>
     <div class="form-group mt-3">
         <label>
           Phản hồi khác

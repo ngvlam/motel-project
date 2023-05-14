@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { vnpayConfig } from 'src/config';
 import * as qs from 'qs'
@@ -96,6 +96,7 @@ export class PaymentService {
     return vnpUrl;
   }
 
+  //LẤY KẾT QUẢ THANH TOÁN
   async getPaymentResult(result: any) : Promise<string>{
     let vnp_Params = {... result}
     let secureHash = vnp_Params.vnp_SecureHash;
@@ -114,6 +115,7 @@ export class PaymentService {
     let querystring = qs
     let signData = querystring.stringify(vnp_Params, { encode: false });
     const encodedData = enc.Utf8.parse(signData);
+
 
     const hmac = HmacSHA512(encodedData, secretKey);
     const signed = hmac.toString(enc.Hex);
@@ -140,7 +142,7 @@ export class PaymentService {
           if(checkAmount){
               if(paymentStatus=="0"){ //kiểm tra tình trạng giao dịch trước khi cập nhật tình trạng thanh toán
                   if(rspCode=="00"){
-                      await this.updatePayment(orderId, "1", result.amount).subscribe()
+                      await this.updatePayment(result).subscribe()
                       
                       return 'Thanh toán thành công'
                   }
@@ -148,7 +150,7 @@ export class PaymentService {
                       //that bai
                       //paymentStatus = '2'
                       // Ở đây cập nhật trạng thái giao dịch thanh toán thất bại vào CSDL của bạn'
-                      await this.updatePayment(orderId, "2", result.amount).subscribe()
+                      await this.updatePayment(result).subscribe()
                       return 'Thanh toán thất bại'
                   }
               }
@@ -185,10 +187,23 @@ export class PaymentService {
     return this.http.post<Payment>(`${this.apiUrl}/payments?encryptedKey=${encryptedKey}&hashedSalt=${hashedSalt}`, payment)
   }
 
-  updatePayment(orderId: string, status: string, amount:number) : Observable<Payment> {
-    return this.http.put<Payment>(`${this.apiUrl}/payments/${orderId}/status/${status}?amount=${amount}`, null)
+  // updatePayment(orderId: string, status: string, amount:number) : Observable<Payment> {
+  //   return this.http.put<Payment>(`${this.apiUrl}/payments/${orderId}/status/${status}?amount=${amount}`, null)
 
-  }
+  // }
+
+  
+  updatePayment(result: any) : Observable<Payment> {
+    let params = new HttpParams();
+
+    for (const key in result) {
+      if (result.hasOwnProperty(key)) {
+        params = params.append(key, result[key]);
+      }
+    }
+    return this.http.put<Payment>(`${this.apiUrl}/payments/vnpay/response?${params.toString()}`, null)
+
+  } 
 
   getPaymentByUserId(userId: number) : Observable<Payment[]> {
     return this.http.get<Payment[]>(`${this.apiUrl}/users/${userId}/payments`)

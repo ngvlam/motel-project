@@ -95,7 +95,7 @@ to { transform: rotate(360deg); }
     color: #fff;
 }
 
-.post-status.hiden {
+.post-status .hidden {
     color: #fff;
     background-color: #333;
 }

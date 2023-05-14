@@ -1,10 +1,7 @@
 package com.nvl.motelbackend.interceptor;
 
 import com.nvl.motelbackend.security.JwtTokenProvider;
-import io.github.bucket4j.Bandwidth;
-import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Bucket4j;
-import io.github.bucket4j.Refill;
+import io.github.bucket4j.*;
 import io.github.bucket4j.local.LocalBucket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,11 +45,14 @@ public class RateLimitInterceptor implements HandlerInterceptor {
                 // Get the client ID and check the bucket
                 String clientId = getClientId(request);
                 LocalBucket bucket = buckets.computeIfAbsent(clientId, k->Bucket.builder().addLimit(limit).build());
+                ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
 
-                if (bucket.tryConsume(1)) {
+                if (probe.isConsumed()) {
                     return true;
                 } else {
                     response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+                    long remainingTime = probe.getNanosToWaitForRefill() / 1_000_000_000 / 60;
+                    response.setHeader("Retry-After", String.valueOf(remainingTime));
                     response.getWriter().write("Too many requests");
                     response.getWriter().flush();
                     response.getWriter().close();
@@ -72,7 +72,8 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             return clientId;
         } else {
             // Return a default client ID if the Authorization header is missing or invalid
-            return "anonymous";
+            String userIp = request.getRemoteAddr();
+            return userIp;
         }
     }
 

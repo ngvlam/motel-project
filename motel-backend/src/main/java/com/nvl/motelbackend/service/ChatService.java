@@ -11,5 +11,5 @@ public interface ChatService {
 
     Set<UserDTO> getAllReceiverBySender(Long senderId);
     List<ChatMessageDTO> getMessages(Long senderId, Long receiverId);
-    void saveMessages(ChatMessageDTO chatMessageDTO);
+    void saveMessages(Long senderId, ChatMessageDTO chatMessageDTO);
 }

@@ -7,8 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -44,8 +43,14 @@ public class PostDTO {
     @ApiModelProperty(value = "Kiểm tra trạng thái đã ẩn")
     private boolean del;
 
+    @Min(value = 0, message = "Giá trị của trường priority phải lớn hơn hoặc bằng 0")
+    @Max(value = 1, message = "Giá trị của trường priority phải nhỏ hơn hoặc bằng 1")
     @ApiModelProperty(value = "Độ ưu tiên")
     private int priority;
+
+    @Min(value = 3, message = "Số ngày đăng tin phải lớn hơn 3")
+    @ApiModelProperty(value = "Số ngày đăng tin")
+    private int numberOfDays;
 
     @ApiModelProperty(value = "Thời gian tạo")
     private LocalDateTime createdAt;

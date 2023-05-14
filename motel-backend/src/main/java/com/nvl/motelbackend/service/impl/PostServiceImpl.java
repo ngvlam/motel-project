@@ -5,6 +5,7 @@ import com.nvl.motelbackend.entity.Accommodation;
 import com.nvl.motelbackend.entity.ActionName;
 import com.nvl.motelbackend.entity.Post;
 import com.nvl.motelbackend.entity.User;
+import com.nvl.motelbackend.exception.InsufficientBalanceException;
 import com.nvl.motelbackend.exception.MotelAPIException;
 import com.nvl.motelbackend.exception.ResourceNotFoundException;
 import com.nvl.motelbackend.model.AccommodationDTO;
@@ -17,6 +18,7 @@ import com.nvl.motelbackend.security.CustomUserDetails;
 import com.nvl.motelbackend.service.ActionService;
 import com.nvl.motelbackend.service.ImageService;
 import com.nvl.motelbackend.service.PostService;
+import com.nvl.motelbackend.utils.AppConstants;
 import com.nvl.motelbackend.utils.PostUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,9 +28,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -53,6 +58,18 @@ public class PostServiceImpl implements PostService {
         this.imageService = imageService;
         this.applicationEventPublisher = applicationEventPublisher;
     }
+
+//    @Scheduled(cron = "0 0 0 * * ?") // run every day at midnight
+//    public void autoHidePosts() {
+//        List<Post> posts = postRepository.findAll();
+//        LocalDateTime now = LocalDateTime.now();
+//        for (Post post : posts) {
+//            if (Duration.between(post.getCreatedAt(), now).toDays() > post.getNumberOfDays()) {
+//                post.setDel(true);
+//                postRepository.save(post);
+//            }
+//        }
+//    }
 
     @Override
     public Page<PostDTO> getAllPost(Pageable page) {
@@ -100,6 +117,15 @@ public class PostServiceImpl implements PostService {
         post.setApproved(false);
         post.setNotApproved(false);
         post.setUser(user);
+        if(post.getPriority() == 1) {
+            final double totalMoney = post.getNumberOfDays() * AppConstants.priorityPrice;
+            if (post.getUser().getBalance() < totalMoney) {
+                throw new InsufficientBalanceException("Số dư tài khoản không đủ");
+            }
+            post.getUser().setBalance(post.getUser().getBalance() - totalMoney);
+        }
+
+
         //Gán value cho accomodation
         Accommodation accommodation = mapper.map(postDTO.getAccommodation(), Accommodation.class);
         accommodation.setPost(post);
@@ -234,4 +260,6 @@ public class PostServiceImpl implements PostService {
             return false;
         }
     }
+
+
 }

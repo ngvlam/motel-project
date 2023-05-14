@@ -115,4 +115,10 @@ public class UserController {
         UserDTO userRes = userService.changePassword(id, newPassword, oldPassword, authentication);
         return ResponseEntity.ok(userRes);
     }
+
+    @ApiOperation("Lấy số dư hiện tại")
+    @GetMapping("/{id}/balance")
+    public ResponseEntity<?> getBalanceByUserId(@PathVariable Long id, Authentication authentication) {
+        return null;
+    }
 }

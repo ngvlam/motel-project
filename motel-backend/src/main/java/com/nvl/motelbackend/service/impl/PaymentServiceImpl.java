@@ -1,9 +1,11 @@
 package com.nvl.motelbackend.service.impl;
 
+import com.nvl.motelbackend.config.VNPayClient;
 import com.nvl.motelbackend.entity.Payment;
 import com.nvl.motelbackend.entity.User;
 import com.nvl.motelbackend.exception.MotelAPIException;
 import com.nvl.motelbackend.exception.ResourceNotFoundException;
+import com.nvl.motelbackend.model.VNPayResponse;
 import com.nvl.motelbackend.repository.PaymentRepository;
 import com.nvl.motelbackend.repository.UserRepository;
 import com.nvl.motelbackend.service.PaymentService;
@@ -11,17 +13,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
-    @Value("${vnpay.key.password}")
-    private String encryptPass;
-
-    @Value("${vnpay.key.secret}")
-    private String vnPaySecretKey;
 
     public PaymentServiceImpl(PaymentRepository paymentRepository, UserRepository userRepository) {
         this.paymentRepository = paymentRepository;
@@ -50,7 +50,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Payment addPayment(Long userId, Payment payment, String encryptedKey, String salt){
+    public Payment addPayment(Long userId, Payment payment, String encryptedKey, String salt) {
 //        String decryptedKey = AESUtil.decrypt(encryptedKey, encryptPass, salt);
 //
 //        if (decryptedKey != vnPaySecretKey) {
@@ -58,7 +58,7 @@ public class PaymentServiceImpl implements PaymentService {
 //        }
 
         boolean isHaveOrder = checkExistOrderId(payment.getOrderId());
-        if(isHaveOrder) {
+        if (isHaveOrder) {
             throw new MotelAPIException(HttpStatus.CONFLICT, "Đã tồn tại đơn: " + payment.getOrderId());
         }
 
@@ -69,11 +69,36 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Payment updatePayment(String orderId, int status) {
+    public Payment updatePayment(String orderId, int status, double amount) {
         Payment payment = getPaymentByOrderId(orderId);
         payment.setStatus(status);
+        if(status == 1) {
+            payment.getUser().setBalance(payment.getUser().getBalance() + amount);
+        }
         return paymentRepository.save(payment);
     }
 
+    @Override
+    public Payment handleResponse(HttpServletRequest request) throws UnsupportedEncodingException {
+        VNPayClient vnPayClient = new VNPayClient();
+        Map<String, String> vnpParams = vnPayClient.getParamsFromRequest(request);
 
+        if (vnPayClient.validateSignature(vnpParams)) {
+            String vnp_ResponseCode = vnpParams.get("vnp_ResponseCode");
+            double amount = Double.parseDouble(vnpParams.get("vnp_Amount"))/100;
+
+            int status;
+            if(vnp_ResponseCode.equals("00")) {
+                status = 1;
+            }else  {
+                status = 2;
+            }
+
+            return updatePayment(vnpParams.get("vnp_TxnRef"), status, amount);
+
+        } else {
+            // Handle the invalid signature
+            throw  new MotelAPIException(HttpStatus.BAD_REQUEST, "Invalid signature VNPay");
+        }
+    }
 }

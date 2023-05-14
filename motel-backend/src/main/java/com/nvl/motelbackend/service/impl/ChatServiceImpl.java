@@ -48,9 +48,12 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void saveMessages(ChatMessageDTO chatMessageDTO) {
-        chatMessageDTO.setSentAt(LocalDateTime.now());
+    public void saveMessages(Long userId, ChatMessageDTO chatMessageDTO) {
+//        chatMessageDTO.setSentAt(LocalDateTime.now());
+        User sender = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Sender", "id", userId));
+        User receiver = userRepository.findById(chatMessageDTO.getReceiver().getId()).orElseThrow(() -> new ResourceNotFoundException("Receiver", "id", chatMessageDTO.getReceiver().getId()));
         ChatMessage chatMessage = mapper.map(chatMessageDTO, ChatMessage.class);
+        chatMessage.setSender(sender);
         chatMessageRepository.save(chatMessage);
     }
 

@@ -23,12 +23,12 @@ export class ImageService {
     return this.http.post<Image[]>(`${this.apiUrl}/image/post/${postId}/multiple`, formData);
   }
 
-  getImageByteBypostId(postId: number): Observable<Image[]> {
-    return this.http.get<Image[]>(this.apiUrl + '/imageByte/post/' + postId);
+  getImagesByPostId(postId: number): Observable<Image[]> {
+    return this.http.get<Image[]>(`${this.apiUrl}/image/post/${postId}`);
   }
 
   deleteAllImage(postId: number) {
-    return this.http.delete(this.apiUrl + '/image/post/' + postId);
+    return this.http.delete(`${this.apiUrl}/image/post/${postId}`);
   }
  
   áda() {

@@ -46,6 +46,10 @@ export class AuthInterceptor implements HttpInterceptor {
       return true;
     }
 
+    if(request.method === 'GET' && url.includes('messages')) {
+      return true;
+    }
+
     // if(url.includes("ws")) {
     //   return true;
     // }

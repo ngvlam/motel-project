@@ -103,3 +103,81 @@
 .btn-submit:hover {
     background-color: rgb(255, 131, 122);
 }
+
+.package-wrapper {
+    padding-top: 16px;
+}
+
+.package-section {
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 16px;
+    border-bottom: 1px solid rgb(242, 242, 242);
+}
+
+.package-title {
+    font-size: 16px;
+    text-align: center;
+}
+
+.package-title.priority{
+    color: #ebb134;
+}
+
+.package-item {
+    border: 1px solid rgb(242, 242, 242);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 12px;
+    text-align: center;
+}
+
+.package-item.selected {
+    background-color: rgb(232, 254, 255);
+    border: 1px solid rgb(0, 124, 128);
+}
+
+
+.package-item:hover {
+    box-shadow: rgba(182, 182, 182, 0.42) 0px 8px 20px;
+}
+
+.package-price {
+    display: block;
+    text-align: center;
+}
+
+.number-of-day-item {
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.number-of-day-item.selected {
+    background-color: rgb(232, 254, 255);
+    border: 1px solid rgb(0, 124, 128);
+}
+
+.number-of-day-item:hover {
+    box-shadow: rgba(182, 182, 182, 0.42) 0px 4px 10px;
+}
+
+.pay-wrapper {
+    padding: 0 80px;
+}
+
+.label-pay {
+    color: rgb(80, 80, 80);
+}
+
+.label-value {
+    color: rgb(44, 44, 44);
+    font-weight: 500;
+}
+
+.label-value-total {
+    font-weight: bold;
+    font-size: 24px;
+}

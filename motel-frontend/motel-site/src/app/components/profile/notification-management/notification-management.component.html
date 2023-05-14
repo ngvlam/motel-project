@@ -1,4 +1,4 @@
-<div class="d-flex flex-column w-100" style="background-color: rgb(249, 249, 249);">
+<div class="d-flex flex-column w-100" style="background-color: rgb(249, 249, 249); height: 100vh;">
     <div class="page-wrapper">
         <div class="d-flex justify-content-center">
             <div class="page-right">
@@ -14,7 +14,7 @@
                     <ul class="notification-list">
                         <li *ngIf="notifications.length <=0">Hiện tại không có thông báo nào</li>
                         <li [ngStyle]="{'background-color': (notification.seen)?'#FFFFFF':'#EDF2FA'}"
-                            *ngFor="let notification of notifications | paginate: { itemsPerPage: 10, currentPage: page.number+1, totalItems: page.totalElements }" class="notification-item"
+                            *ngFor="let notification of notifications | paginate: { itemsPerPage: 6, currentPage: page.number+1, totalItems: page.totalElements }" class="notification-item"
                             (click)="seen(notification)">
                             <a routerLink="/post/{{notification.post.id}}" class="notification-link">
                                 <p class="message">

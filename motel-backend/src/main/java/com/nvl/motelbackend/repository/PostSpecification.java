@@ -56,6 +56,19 @@ public class PostSpecification implements Specification<Post> {
             double minLng = Math.toDegrees(lngInRadians - radius / earthRadius / Math.cos(latInRadians));
             double maxLng = Math.toDegrees(lngInRadians + radius / earthRadius / Math.cos(latInRadians));
 
+            if (minLat < -90) {
+                minLat = -90;
+            }
+            if (maxLat > 90) {
+                maxLat = 90;
+            }
+            if (minLng < -180) {
+                minLng = -180;
+            }
+            if (maxLng > 180) {
+                maxLng = 180;
+            }
+
             Predicate latPredicate = criteriaBuilder.between(root.get("accommodation").get("xCoordinate"), minLat, maxLat);
             Predicate lngPredicate = criteriaBuilder.between(root.get("accommodation").get("yCoordinate"), minLng, maxLng);
 

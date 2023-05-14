@@ -23,7 +23,7 @@ export class NotificationManagementComponent implements OnInit{
 
   getNotification(pageNumber: number) {
     if (this.seenSelect == '') {
-      this.notificationService.getNotification(pageNumber-1, 8).subscribe({
+      this.notificationService.getNotification(pageNumber-1, 6).subscribe({
         next: data => {
           this.page = data
           this.notifications = this.page.content
@@ -31,7 +31,7 @@ export class NotificationManagementComponent implements OnInit{
       })
     }
     else {
-      this.notificationService.getNotificationBySeen(pageNumber - 1, this.seenSelect, 8).subscribe({
+      this.notificationService.getNotificationBySeen(pageNumber - 1, this.seenSelect, 6).subscribe({
         next: data => {
           this.page = data
           this.notifications = this.page.content

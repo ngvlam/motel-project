@@ -104,6 +104,7 @@ export class ViolateComponent implements OnInit{
         this.reportPostService.removeReports(reportListIds).subscribe({
           next: data => {
             this.toastr.success("Xóa báo cáo thành công", "Xóa báo cáo")
+            this.loadReportPost(this.page.number)
           }, 
           error: error => {
             

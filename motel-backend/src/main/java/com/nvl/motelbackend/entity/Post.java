@@ -38,7 +38,13 @@ public class Post {
 
     private boolean del;
 
+    @Column(nullable = false)
     private int priority;
+
+//    private String package
+//
+    @Column(name = "number_of_days", nullable = false)
+    private int numberOfDays;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)

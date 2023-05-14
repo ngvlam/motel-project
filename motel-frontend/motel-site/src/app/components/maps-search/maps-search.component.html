@@ -63,9 +63,6 @@
              </div>
           </div>
        </div>
-        <!-- <div>
-            <button for="" (click)="generateMarker()">Lấy các vị trí trên bản đồ</button>
-        </div> -->
        
         <google-map height="400px"
             width="100%"
@@ -82,16 +79,21 @@
             <map-circle [center]="marker.position"
             [radius]="radius*1000"></map-circle>
 
-            <!-- <map-marker *ngFor="let marker of markerSearch" 
-            [options]="optionsMarkerSearch"
-            [position]="marker"
-            
+            <map-marker #markerElem="mapMarker" *ngFor="let marker of markerSearch" 
+            [options]="marker.options"
+            (mapClick)="openInfo(markerElem, marker.info)"
+            [position]="marker.position"
+            [label]="marker.label"
+            [icon]="{url: '/assets/rsz_location_icon.png'}"
             >
-            </map-marker>  -->
+            </map-marker> 
+            <map-info-window [innerHTML]="infoContent"></map-info-window>
         </google-map>
 
         <div class="d-flex justify-content-center">
-          <button class="btn btn-primary mt-3" (click)="searchByMaps()">Tìm kiếm</button>
+          <button class="btn btn-success mt-3" (click)="generateMarker()">Lấy các điểm đánh dấu</button>
+          <span>Hoặc</span>
+          <button class="btn btn-primary mt-3" (click)="searchByMaps()">Tìm tất cả</button>
           <button class="btn btn-outline-primary mt-3 ms-2" (click)="closeModal()">Đóng</button>
         </div>
       </div>

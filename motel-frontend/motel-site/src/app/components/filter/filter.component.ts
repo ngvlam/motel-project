@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchForm } from 'src/app/model/searchForm';
 import { MapsSearchComponent } from '../maps-search/maps-search.component';
+import { ProvinceService } from 'src/app/services/province.service';
 
 @Component({
   selector: 'app-filter',
@@ -16,8 +17,10 @@ export class FilterComponent implements OnInit{
 
   acreageRange = undefined
 
+  province: { value: string, label: string }[] = []
 
-  constructor(private router: Router,
+  constructor(private provinceService: ProvinceService,
+    private router: Router,
     private activatedRoute: ActivatedRoute) {
     
   }
@@ -26,6 +29,24 @@ export class FilterComponent implements OnInit{
     // this.activatedRoute.queryParams.subscribe(params => {
     //  this.searchForm = params;
     // });
+    // Khởi tạo lấy tất cả các tỉnh
+    this.provinceService.getAllProvinces().subscribe(
+      data =>
+        this.province = data.map(item => ({ value: item.province_name, label: item.province_name }))
+    )
+  }
+
+  updateAdress(event: any) {
+    let province = event.value;
+
+    if(province.includes("Tỉnh ")) {
+      province = province.replace("Tỉnh ", "")
+    }
+
+    if(province.includes("Thành phố ")) {
+      province = province.replace("Thành phố ", "")
+    }
+    this.searchForm.address = province
   }
 
   isModalActive = false;
@@ -72,7 +93,7 @@ export class FilterComponent implements OnInit{
   }
 
   setValueAcreage(){
-    switch(this.priceRange!) {
+    switch(this.acreageRange!) {
       case "1": {
         this.searchForm.maxAcreage=20;
         break;

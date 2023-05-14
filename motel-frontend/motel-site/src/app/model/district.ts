@@ -1,5 +1,4 @@
 export class District {
-    _id!: number;
-    name!: string;
-    code!: string;
+    district_id!: number;
+    district_name!: string;
 }

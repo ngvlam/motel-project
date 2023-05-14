@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class ChatMessage {
     @Column(name = "message_content")
     private String messageContent;
 
+    @CreationTimestamp
     @Column(name = "send_at", nullable = false)
     private LocalDateTime sentAt;
 }

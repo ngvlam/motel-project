@@ -11,5 +11,5 @@ public @interface RateLimit {
 
     int value() default 5;
 
-    int duration() default 1;
+    int duration() default 5;
 }

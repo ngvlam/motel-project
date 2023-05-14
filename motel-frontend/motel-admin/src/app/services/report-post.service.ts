@@ -24,7 +24,7 @@ import { Observable } from "rxjs";
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
         }),
-        body: { reportIds }
+        body: reportIds
       };
       return this.http.delete(`${this.apiUrl}/report-posts`, options)
     }

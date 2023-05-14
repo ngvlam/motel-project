@@ -1,4 +1,4 @@
-<div class="d-flex flex-column w-100">
+<div class="d-flex flex-column w-100" style="height:100vh">
     <div class="page-wrapper">
         <h3 class="title">Tin đăng của tôi</h3>
     <div class="post-section">
@@ -7,7 +7,7 @@
                 <div class="spinner"></div>
             </div>
             <div *ngIf="posts.length <= 0">
-                <h3 style="color: red;">Người dùng không có tin đăng nào</h3>
+                <h3 style="color: red;">Không có tin đăng nào</h3>
             </div>
             <div *ngFor="let post of posts | paginate: { itemsPerPage: 10, currentPage: page.number+1, totalItems: page.totalElements }" class="post-item d-flex align-items-center">
                 <a routerLink="/post/{{post.id}}">
@@ -21,9 +21,9 @@
                             <div class="ribbon">Ưu tiên<i class="fa-solid fa-medal"></i></div>
                         </div>
                         <div class="post-status">
-                            <span *ngIf="!post.approved && !post.notApproved" class="waiting">Đợi duyệt</span>
-                            <span *ngIf="post.del" class="hiden">Đã ẩn</span>
-                            <span *ngIf="post.notApproved" class="rejected">Bị từ chối</span>
+                            <span *ngIf="!post.approved && !post.notApproved && !post.del" class="waiting">Đợi duyệt</span>
+                            <span *ngIf="post.notApproved && !post.del" class="rejected">Bị từ chối</span>
+                            <span *ngIf="post.del" class="hidden">Đã ẩn</span>
                         </div>
                         <div *ngIf="post.del" class="overlay-img">
                             
@@ -53,8 +53,8 @@
                 </div>
                 
                 <div class="btn-group d-flex flex-column">
-                    <button class="btn-update">Sửa tin</button>
-                    <button class="btn-hide" (click)="openModalConfirmHide(post.title!, post.id!)">Ẩn tin</button>
+                    <button class="btn-update" routerLink="/post/{{post.id}}/sua-tin">Sửa tin</button>
+                    <button class="btn-hide" *ngIf="!post.del" (click)="openModalConfirmHide(post.title!, post.id!)">Ẩn tin</button>
                 </div>
             </div>
         </div>

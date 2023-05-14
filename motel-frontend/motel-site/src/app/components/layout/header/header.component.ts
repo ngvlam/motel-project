@@ -41,8 +41,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.updateProfileHeader()
     this.updateTotalFavoritePost()
-    this.getNotification()
-    this.connectSocketNotification()
+
+    if (this.authService.isLoggedIn()) {
+      this.getNotification()
+      this.connectSocketNotification()
+    }
   }
 
   updateTotalFavoritePost() {

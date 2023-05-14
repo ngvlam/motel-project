@@ -19,6 +19,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { DepositComponent } from './components/profile/deposit/deposit.component';
 import { PaymentResultComponent } from './components/profile/payment-result/payment-result.component';
 import { PaymentHistoryComponent } from './components/payment-history/payment-history.component';
+import { EditPostComponent } from './components/post/edit-post/edit-post.component';
 
 const routes: Routes = [
 {path: 'thanh-toan', component: PaymentComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path: 'post/:id', component: PostDetailComponent},
   {path: 'tin-yeu-thich', component: FavoritePostComponent},
   {path: 'dang-tin', component: CreatePostComponent, canActivate: [AuthGuard]},
+  {path: 'post/:id/sua-tin', component: EditPostComponent, canActivate: [AuthGuard]},
   {path: 'filter', component: FilterPageComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},

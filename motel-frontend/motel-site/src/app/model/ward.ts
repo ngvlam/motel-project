@@ -1,5 +1,4 @@
 export class Ward {
-    _id!: number;
-    name!: string;
-    code!: string;
+    ward_id!: number;
+    ward_name!: string;
 }

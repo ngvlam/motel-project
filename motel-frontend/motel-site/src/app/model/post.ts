@@ -1,4 +1,4 @@
-import { Accomodation } from "./accommodation";
+import { Accommodation } from "./accommodation";
 import { User } from "./user";
 
 export class Post {
@@ -12,9 +12,9 @@ export class Post {
     del?: boolean;
     priority?: number;
 
-    isFavorite?: boolean;
+    numberOfDays?: number;
 
     user?: User;
-    accommodation!: Accomodation;
+    accommodation!: Accommodation;
     imageStrings!: string[];
 } 

@@ -78,6 +78,7 @@ public class PostController {
         return postService.searchPost(searchRequest, page);
     }
 
+    @RateLimit
     @ApiOperation("Đăng tin mới")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     @PostMapping("/posts")

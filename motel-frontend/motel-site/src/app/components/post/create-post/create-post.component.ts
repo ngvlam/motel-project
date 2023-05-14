@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit} from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { GeocodingApiServiceService } from 'src/app/services/geocoding-api-service.service';
@@ -20,28 +20,28 @@ import { ConfirmationModalService } from 'src/app/services/confirmation-modal.se
   styleUrls: ['./create-post.component.css'],
   providers: [DecimalPipe]
 })
-export class CreatePostComponent implements OnInit{
+export class CreatePostComponent implements OnInit {
   postFormGroup!: FormGroup
-  
-  province: {value: string, label: string}[] = []
-  district: {value: string, label: string}[] = []
-  ward: {value: string, label: string}[] = []
 
-/// CONFIG GOOGLE MAP
+  province: { value: number, label: string }[] = []
+  district: { value: number, label: string }[] = []
+  ward: { value: number, label: string }[] = []
+
+  ///============ CONFIG GOOGLE MAP================
 
   marker = {
     position: {
     },
     options: {
       draggable: true
-    } 
+    }
   }
 
 
   display: any;
   center = {
-      lat: 21.037376869189334,
-      lng: 105.77866948660191
+    lat: 21.037376869189334,
+    lng: 105.77866948660191
   };
 
   markerPosition = {
@@ -53,18 +53,18 @@ export class CreatePostComponent implements OnInit{
 
   //Event
   addMarker(event: google.maps.MapMouseEvent) {
-      // if (!this.isMarkerDisplayed) {
-      // if(event.latLng != null)
-      //   this.markerPosition = event.latLng.toJSON();
-      //   this.isMarkerDisplayed = true;
-      // }
-      if(event.latLng != null)
-        this.markerPosition = event.latLng.toJSON();
+    // if (!this.isMarkerDisplayed) {
+    // if(event.latLng != null)
+    //   this.markerPosition = event.latLng.toJSON();
+    //   this.isMarkerDisplayed = true;
+    // }
+    if (event.latLng != null)
+      this.markerPosition = event.latLng.toJSON();
   }
 
   onDragEnd(event: any) {
-    if(event.latLng != null)
-        this.markerPosition = event.latLng.toJSON();
+    if (event.latLng != null)
+      this.markerPosition = event.latLng.toJSON();
   }
 
   // onMarkerPositionChanged(event: any) {
@@ -73,10 +73,10 @@ export class CreatePostComponent implements OnInit{
   // }
 
   move(event: google.maps.MapMouseEvent) {
-      if (event.latLng != null) this.display = event.latLng.toJSON();
+    if (event.latLng != null) this.display = event.latLng.toJSON();
   }
 
-// END CONFIG GOOGLE MAP
+  // END CONFIG GOOGLE MAP
   streetInput = new FormControl('');
 
   constructor(
@@ -91,40 +91,42 @@ export class CreatePostComponent implements OnInit{
     private el: ElementRef,
     private confirmationModalService: ConfirmationModalService,
     private decimalPipe: DecimalPipe,
-    ) {
+  ) {
 
-      this.postFormGroup = this.formBuilder.group({
-        address: new FormControl('', [Validators.required, MotelValidators.notOnlyWhiteSpace]),
-        title: new FormControl('', [Validators.required,
-                                  Validators.minLength(10),
-                                  Validators.maxLength(100),
-                                  MotelValidators.notOnlyWhiteSpace]),
-        content: new FormControl('', [Validators.required,
-                                Validators.minLength(10),
-                                Validators.maxLength(1000),
-                                MotelValidators.notOnlyWhiteSpace]),
-        priority: new FormControl(''),
+    // Thông tin địa chỉ
+    this.postFormGroup = this.formBuilder.group({
+      address: new FormControl('', [Validators.required, MotelValidators.notOnlyWhiteSpace]),
+      title: new FormControl('', [Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(100),
+      MotelValidators.notOnlyWhiteSpace]),
+      content: new FormControl('', [Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(1000),
+      MotelValidators.notOnlyWhiteSpace]),
+      priority: new FormControl(''),
 
-        user: this.formBuilder.group({
-          id: new FormControl('1')
-        }),
+      user: this.formBuilder.group({
+        id: new FormControl('1')
+      }),
 
-        accommodation: this.formBuilder.group({
-          acreage: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
-          toilet: new FormControl('', [Validators.required]),
-          internet: new FormControl(''),
-          parking: new FormControl(''),
-          airConditioner: new FormControl(''),
-          heater: new FormControl(''),
-          tv: new FormControl(''),
-          price: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
-          categoryId: new FormControl('', [Validators.required]),
-          xCoordinate: new FormControl(''),
-          yCoordinate: new FormControl('')
-        }),
-        files: new FormControl('')
-      })
-    }
+      // TIện ích
+      accommodation: this.formBuilder.group({
+        acreage: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
+        toilet: new FormControl('', [Validators.required]),
+        internet: new FormControl(''),
+        parking: new FormControl(''),
+        airConditioner: new FormControl(''),
+        heater: new FormControl(''),
+        tv: new FormControl(''),
+        price: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
+        categoryId: new FormControl('', [Validators.required]),
+        xCoordinate: new FormControl(''),
+        yCoordinate: new FormControl('')
+      }),
+      files: new FormControl('')
+    })
+  }
 
   ngOnInit(): void {
 
@@ -138,11 +140,13 @@ export class CreatePostComponent implements OnInit{
     //   }
     // });
 
+    this.selectPackage(1)
+
     this.markerPosition = this.center;
     // Khởi tạo lấy tất cả các tỉnh
     this.provinceService.getAllProvinces().subscribe(
-      data => 
-        this.province = data.map(item => ({value: item.code, label: item.name}))
+      data =>
+        this.province = data.map(item => ({ value: item.province_id, label: item.province_name }))
     )
 
     //Delay cập nhật google từ địa chỉ
@@ -158,7 +162,7 @@ export class CreatePostComponent implements OnInit{
     ).subscribe(value => {
       this.addressSelected.street = value as string
       this.commitAddress()
-    }) 
+    })
 
     // Lấy vị trí hiện tại
     if (navigator.geolocation) {
@@ -172,7 +176,7 @@ export class CreatePostComponent implements OnInit{
     }
   }
 
-  
+
   addressSelected = {
     street: '',
     ward: '',
@@ -184,14 +188,14 @@ export class CreatePostComponent implements OnInit{
   getDistrict(event: any) {
     this.provinceService.getDistrictsByProvince(event.value).subscribe(
       data => {
-          this.district = data.map(item => ({value: item.code, label: item.name}))
+        this.district = data.map(item => ({ value: item.district_id, label: item.district_name }))
       }
     )
 
     const selectedOption = this.province.find((option) => option.value === event.value);
     if (selectedOption) {
       this.addressSelected.province = selectedOption.label;
-    } 
+    }
 
   }
 
@@ -199,16 +203,15 @@ export class CreatePostComponent implements OnInit{
   getWard(event: any) {
     this.provinceService.getWardsByProvince(event.value).subscribe(
       data => {
-        this.ward = []
-        this.ward = data.map(item => ({value: item.code, label: item.name}))
+        this.ward = data.map(item => ({ value: item.ward_id, label: item.ward_name }))
       }
-        
+
     )
 
     const selectedOption = this.district.find((option) => option.value === event.value);
     if (selectedOption) {
       this.addressSelected.district = selectedOption.label;
-    } 
+    }
     this.commitAddress()
   }
 
@@ -216,9 +219,9 @@ export class CreatePostComponent implements OnInit{
   commitAddress() {
     this.postFormGroup.patchValue({
       address: Object.entries(this.addressSelected)
-      .filter(([key, value]) => value !== null && value !== '')
-      .map(([key, value]) => value)
-      .join(', ')
+        .filter(([key, value]) => value !== null && value !== '')
+        .map(([key, value]) => value)
+        .join(', ')
     });
   }
 
@@ -227,7 +230,7 @@ export class CreatePostComponent implements OnInit{
     const selectedOption = this.ward.find((option) => option.value === event.value);
     if (selectedOption) {
       this.addressSelected.ward = selectedOption.label;
-    } 
+    }
     this.commitAddress()
   }
 
@@ -240,7 +243,7 @@ export class CreatePostComponent implements OnInit{
       //     lng: results[0].geometry.location.lng()
       //   };
       // }
-      if(results.status == 'OK') {
+      if (results.status == 'OK') {
         this.center = {
           lat: results.results[0].geometry.location.lat(),
           lng: results.results[0].geometry.location.lng()
@@ -264,6 +267,7 @@ export class CreatePostComponent implements OnInit{
   }
 
 
+  // ==============LẤY CÁC GIÁ TRỊ FORM============
   get xCoordinate() {
     return this.postFormGroup.get('accommodation.xCoordinate')
   }
@@ -297,8 +301,7 @@ export class CreatePostComponent implements OnInit{
   }
 
 
-  // HANDLE SELECT FILE
-
+  //============ HANDLE SELECT FILE===============
   files: any[] = [];
 
 
@@ -309,7 +312,7 @@ export class CreatePostComponent implements OnInit{
     }
 
     files.map(file => {
-      if(file.size <= 4*1024*1024) {
+      if (file.size <= 4 * 1024 * 1024) {
         const reader = new FileReader();
         reader.onload = () => {
           this.files.push({ name: file.name, preview: reader.result as string, file: file });
@@ -352,20 +355,62 @@ export class CreatePostComponent implements OnInit{
 
   //END HANDLE SELECT FILES
 
-  // HANDLE SUBMIT FORM
+  // ====================XỬ LÝ CHỌN LOẠI TIN ĐĂNG====================
+
+  selectedPackage!: number;
+  numberOfDays: number = 7;
+  totalMoney!: number;
+  today: Date = new Date()
+  nextDate: Date = new Date()
+
+
+  selectPackage(packageNumber: number) {
+    this.selectedPackage = packageNumber;
+    this.calculateTotal();
+  }
+
+  selectNumberOfDays(numberDay: number) {
+    this.numberOfDays = numberDay;
+    this.nextDate = new Date()
+    this.nextDate.setDate(this.today.getDate() + numberDay);
+    this.calculateTotal();
+  }
+
+  calculateTotal() {
+    let pricePerDay = 0;
+    switch (this.selectedPackage) {
+      case 1:
+        pricePerDay = 0;
+        this.nextDate.setDate(this.today.getDate() + 3);
+        this.totalMoney = 0;
+        break;
+      case 2:
+        pricePerDay = 5000;
+        this.totalMoney = pricePerDay * this.numberOfDays;
+
+        break;
+    }
+  }
+
+  // onChangePackage() {
+  //   this.calculateTotal();
+  // }
+
+
+  //=================== HANDLE SUBMIT FORM==================
   disableSubmit = false;
   showLoadding = false;
   onSubmit() {
     if (this.postFormGroup.invalid) {
       this.postFormGroup.markAllAsTouched();
       const invalidControl = this.el.nativeElement.querySelector('.ng-invalid');
-      invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center'});
+      invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       this.toastr.warning('Vui lòng điền thông tin bắt buộc', 'Cảnh báo', {
         positionClass: 'toast-top-center'
       });
     }
-    
-    else if(this.postFormGroup.get('files')?.value.length <= 0) {
+
+    else if (this.postFormGroup.get('files')?.value.length <= 0) {
       this.toastr.warning('Vui lòng chọn ít nhất một ảnh', 'Cảnh báo', {
         positionClass: 'toast-top-center'
       });
@@ -374,23 +419,39 @@ export class CreatePostComponent implements OnInit{
       this.disableSubmit = true;
       this.showLoadding = true;
 
+
       const post: Post = {
         title: this.postFormGroup.value.title,
         content: this.postFormGroup.value.content,
         accommodation: this.postFormGroup.controls['accommodation'].value,
         imageStrings: []
       }
+
+      post.priority = this.selectedPackage == 1 ? 0 : 1;
+      post.numberOfDays = this.selectedPackage == 1 ? 3 : this.numberOfDays;
+
       post.accommodation.address = this.postFormGroup.value.address;
       post.accommodation.xcoordinate = this.markerPosition.lat;
       post.accommodation.ycoordinate = this.markerPosition.lng;
 
       this.postService.createPost(post).subscribe({
-        next : data => {
+        next: data => {
           this.addImageForPost(data.id!);
         },
 
-        error: err => console.log(err)
+        error: err => {
+          if (err.status == "402") {
+            this.toastr.error('Số dư không đủ')
+            this.confirmationModalService.openModal('Số dư', `Số dư hiện tại của bạn không đủ. Bạn có muốn nạp tiền không?`)
+              .subscribe(result => {
+                if (result.confirmed) {
+                  this.router.navigate(['/trang-ca-nhan/nap-tien']);
+                }
+              });
+          }
+          this.showLoadding = false;
         }
+      }
       );
     }
   }
@@ -405,7 +466,7 @@ export class CreatePostComponent implements OnInit{
 
       this.imageService.addImages(postId, formData).subscribe({
         next: data => {
-          if(data) {
+          if (data) {
             this.toastr.success('Tin được đăng thành công và chờ kiểm duyệt')
             this.showLoadding = false;
             // this.toastr.info('Tự động chuyển trang sau 5s', '', {
@@ -424,6 +485,8 @@ export class CreatePostComponent implements OnInit{
 
   }
 
+
+  // TÙY CHỌN TIẾP TỤC ĐĂNG TIN
   countdown = 5;
   openModalConfirmNavigate() {
     const interval = setInterval(() => {
@@ -435,13 +498,13 @@ export class CreatePostComponent implements OnInit{
     }, 1000);
     this.confirmationModalService.openModal('Xác nhận', `Trang sẽ được tự động chuyển sau ${this.countdown}s
     Bạn có muốn tiếp tục đăng tin không?`)
-    .subscribe(result => {
-      if (!result.confirmed) {
-        this.router.navigate(['/home']);
-      }
-      else {
-        clearInterval(interval);
-      }
-    });
+      .subscribe(result => {
+        if (!result.confirmed) {
+          this.router.navigate(['/home']);
+        }
+        else {
+          clearInterval(interval);
+        }
+      });
   }
 }
