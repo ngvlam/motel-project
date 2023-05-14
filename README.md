@@ -11,8 +11,8 @@ Các chức năng chính
   + Quản lý thông tin cá nhân
   + Quản lý thông báo
 - Người kiểm duyệt
-  +Quản lý tin đăng
-  +Quản lý báo cáo vi phạm
+  + Quản lý tin đăng
+  + Quản lý báo cáo vi phạm
 - Người quản trị
   + Quản lý thành viên
 
