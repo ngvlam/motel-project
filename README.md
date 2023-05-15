@@ -18,4 +18,4 @@ Các chức năng chính
 
 Tên tài khoản admin  | Mật khẩu
 ------------- | -------------
-nvlam@xyz.com  | lam12345
+nvlam@xyz.com  | lam123456
