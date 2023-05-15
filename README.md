@@ -16,3 +16,6 @@ Các chức năng chính
 - Người quản trị
   + Quản lý thành viên
 
+Tên tài khoản admin  | Mật khẩu
+------------- | -------------
+nvlam@xyz.com  | lam12345
